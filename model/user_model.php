@@ -16,7 +16,7 @@ function registerUser($username, $email, $password, $equipFavorit, $conn)
 
     $query->execute();
 
-    if ($query->rowCount() > 0) {
+    if (userExists($email, $conn) == false) {
         return false; // L'usuari ja existeix
     }
 
@@ -51,20 +51,27 @@ function getLeagueName($equipFavorit, $conn)
     $nomLliga = $query->fetch(PDO::FETCH_COLUMN);
     return $nomLliga; // Return del nom de la lliga exclusivament
 }
+function userExists($email, $conn)
+{
+    // Comprovar si l'usuari existeix
+    $query = $conn->prepare("SELECT * FROM usuaris WHERE correu_electronic = :email");
+    $query->bindParam(':email', $email);
+
+    $query->execute();
+
+    if ($query->rowCount() > 0) {
+        return true; // L'usuari existeix
+    } else {
+        return false; // L'usuari no existeix
+    }
+}
 
 function getUserData($email, $conn)
 {
-    // Preparo la consulta només per comprobar el email
-    $conn;
-    $sql = $conn->prepare("SELECT correu_electronic 
-                           FROM usuaris 
-                           WHERE correu_electronic = :email");
-    $sql->bindParam(':email', $email);
-    $sql->execute();
-    $dbEmail = $sql->fetch(PDO::FETCH_ASSOC);
+
 
     // Si el correu electronic existeix, agafa dades de L'usuari que son necessaries pel correcte funcionament de la Web
-    if ($dbEmail['correu_electronic'] === $email) {
+    if (userExists($email, $conn)) {
 
         $sql = $conn->prepare("SELECT id, nom_usuari, equip_favorit, contrasenya 
                                FROM usuaris 
@@ -102,4 +109,22 @@ function ultimaIdDisponible($conn)
     }
 
     return $contador; // Retorna el contador si no hi ha buits
+}
+
+/**
+ * Almacena el token de recuperación en la base de datos.
+ *
+ * @param string $email El correo electrónico del usuario.
+ * @param string $token El token de recuperación.
+ * @param PDO $conn La conexión a la base de datos.
+ * @return bool True si el token se almacenó correctamente, False en caso contrario.
+ */
+function storeToken($email, $token, $conn) {
+    $sql = "UPDATE usuaris SET reset_token_hash = :token WHERE correu_electronic = :email";
+    $query = $conn->prepare($sql);
+    $hashedToken = password_hash($token, PASSWORD_DEFAULT);
+    $query->bindParam(':token', $hashedToken);
+    $query->bindParam(':email', $email);
+
+    return $query->execute();
 }

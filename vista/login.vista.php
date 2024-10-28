@@ -46,7 +46,8 @@ if (isset($_GET['back']) && $_GET['back'] == true) {
 
             <input type="submit" class="btn-submit" value="Logar-se">
         </form>
-
+        <a href="./forgotpassword.view.php" class="btn-back">Has oblidat la contrasneya?</a> <!-- Redirecció a form per enviar email -->
+        <br>
         <a href="<?php echo $_SERVER['PHP_SELF']; ?>?back=true" class="btn-back">Tornar enrere</a> <!-- Botó per netejar els camps del formulari i tornar enrere -->
     </div>
 </body>
