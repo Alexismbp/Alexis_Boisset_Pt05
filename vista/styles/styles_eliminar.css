@@ -1,0 +1,94 @@
+/* Alexis Boisset */
+
+/* styles_delete.css */
+
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Centra verticalmente */
+}
+
+.container {
+    max-width: 400px;
+    margin: 20px;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid #dc3545; /* Bordes rojos */
+}
+
+h1 {
+    font-size: 2.5em;
+    text-align: center;
+    color: #dc3545; /* Color rojo para el título */
+    margin-bottom: 20px;
+}
+
+/* Estilo para los mensajes de feedback */
+.alert {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* Estilos para el formulario */
+label {
+    display: block;
+    font-weight: bold;
+    margin: 10px 0 5px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #dc3545; /* Bordes rojos */
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.form-control:focus {
+    border-color: #c82333; /* Rojo más oscuro al enfocar el campo */
+    outline: none;
+}
+
+/* Estilo del botón de eliminar */
+.btn-danger {
+    background-color: #dc3545; /* Rojo para el botón de eliminar */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1.1em;
+}
+
+.btn-danger:hover {
+    background-color: #c82333; /* Rojo más oscuro al pasar el mouse */
+}
+
+/* Estilo del enlace de regreso */
+.btn-secondary {
+    display: inline-block;
+    margin-top: 20px;
+    text-align: center;
+    color: white;
+    background-color: #6c757d; /* Color gris para el botón de regresar */
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268; /* Gris más oscuro al pasar el mouse */
+}

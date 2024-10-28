@@ -1,0 +1,49 @@
+Consultas al model desde la vista (index.php)
+Con solo utilizar las cookies en el mantener la sesion activa ya vale?
+La tematica sirve? No busca por autor si no por equipo favorito,
+varios usuarios pueden tener la misma pagina principal.
+
+Preguntar que le parece el config.php como controlador a parte y hacer un require del mismo en cada pagina.
+Que le parece el define('BASE_URL'), como lo pondría el.
+Que le parece la manera del session_maxlifetime.
+
+
+
+<!---->
+Que cuando me loguee salga al lado del articulo dos botones. Uno para modificar y el otro para eliminar.
+El de modificar me lleva al formulario de crear pero con los datos previamente puestos que se mandan
+al pulsar el boton que esta al lado del articulo, cada articulo tendra su boton. El boton de eliminar
+sencillamente elimina haciendo aparecer el modal de confirmacion y lo mismo, manda un POST al delete con
+los datos del articulo para eliminar.
+
+Con esto me quito de encima:
+List.php (llistar, porque ya lo hago en la pagina principal).
+Delete.php (esborrar, porque lo tendre al lado de cada articulo).
+
+El crear.php lo dejo pero no se donde lo pondré en el disenyo
+
+Estos botones estaran solo activos si el usuario esta logueado.
+
+funcion SESSIO GC-LIFETIME
+
+Proteccion para que una persona que ponga en la URL que solo este disponible para usuarios logueados no pueda entrar por URL
+utilizar: if ($_SESSION['loggedin]) //code else header Location login.view.php.
+
+https://stackoverflow.com/questions/520237/how-do-i-expire-a-php-session-after-30-minutes
+
+""""""""""""""""""ME FALTAN LAS COOKIES""""""""""""""""""
+
+utilizar password_hash() password_verify()
+
+Incluir de alguna manera la liga seleccionada cuando se inicia sesion para que solo pueda
+ver partidos de esa liga y posteriormente introducir el resultado esperado.
+Pt05:
+
+Mínimo 3 campos mas en la base de datos.
+Para el punto de canvi o recuperacio de contrasenya se necesita minimo tres vistas 
+(la de canviar contrasenya, la del token per contrasenya oblidada, i el posible template para correo electronico que hay que mandar con PHPMailer)
+
+Hacer minimo dos autenticaciones sociales, una con OAuth2 y otra con HybridAuth.
+
+Dos campos de token para recuperar contrasenya y remember me y otro campo mas de la BBDD para "si ese campo tiene contenido, es porque es autenticacion social",
+por ejemplo, este ultimo campo puede tener como contenido: "twitter", "github", "reddit"
