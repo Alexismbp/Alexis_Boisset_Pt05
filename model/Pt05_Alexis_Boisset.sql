@@ -8,10 +8,10 @@
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
-DROP DATABASE IF EXISTS `Pt04_Alexis_Boisset`;
+DROP DATABASE IF EXISTS `Pt05_Alexis_Boisset`;
 
-CREATE DATABASE IF NOT EXISTS `Pt04_Alexis_Boisset`;
-USE `Pt04_Alexis_Boisset`;
+CREATE DATABASE IF NOT EXISTS `Pt05_Alexis_Boisset`;
+USE `Pt05_Alexis_Boisset`;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -25,7 +25,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */
 ;
 --
--- Base de datos: `Pt04_Alexis_Boisset`
+-- Base de datos: `Pt05_Alexis_Boisset`
 --
 
 -- --------------------------------------------------------
