@@ -1,7 +1,9 @@
 <?php
 require "../model/db_conn.php";
-require "../model/user_model.php";
-require '../vendor/autoload.php'; // Autoload de Composer
+require "../model/user.model.php";
+require '../lib/PHPMailer-master/src/Exception.php';
+require '../lib/PHPMailer-master/src/PHPMailer.php';
+require '../lib/PHPMailer-master/src/SMTP.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -23,11 +25,11 @@ if ($conn && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $_SESSION['success'] = 'S\'ha enviat un correu amb instruccions per restablir la contrasenya.';
 
-            header('Location: ../vista/login.vista.php');
+            header('Location: ../vista/login.view.php');
             exit();
         } else {
             $_SESSION['failure'] = 'Algo ha fallat';
-            header('Location: ../vista/forgotpassword.view.php');
+            header('Location: ../vista/forgot-password.view.php');
             exit();
         }
     }
