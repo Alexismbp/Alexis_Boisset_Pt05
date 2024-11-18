@@ -58,5 +58,5 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
 
 $totalPages = ceil($totalPartits / $partitsPerPage);
 
-include "views/index.view.php";
+include "views/main/index.view.php";
 ?>
