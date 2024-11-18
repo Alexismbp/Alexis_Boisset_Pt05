@@ -50,7 +50,7 @@ function sendRecoveryEmail($email, $token)
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com'; 
         $mail->SMTPAuth = true;
-        $mail->Username = 'a.boisset@sapalomera.cat';
+        $mail->Username = 'a.boisset@alexisboisset.cat';
         $mail->Password = 'zpfh ujxj brmh mqdm';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = '587';
