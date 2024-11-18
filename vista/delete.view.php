@@ -1,6 +1,6 @@
 <!-- Alexis Boisset -->
 <?php
-require "../controlador/config.php"; // Detecció de temps d'inactivitat
+require "../../private/controlador/config.php"; // Detecció de temps d'inactivitat
 session_start();
 
 if (!isset($_SESSION['loggedin'])) {
@@ -16,7 +16,7 @@ if (!isset($_SESSION['loggedin'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eliminar Partit</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../styles/styles_delete.css"> <!-- Fulla d'estils personalitzada -->
+    <link rel="stylesheet" href="styles/styles_delete.css"> <!-- Fulla d'estils personalitzada -->
 </head>
 
 <body>
@@ -35,7 +35,7 @@ if (!isset($_SESSION['loggedin'])) {
         ?>
 
         <!-- Formulari -->
-        <form id="deleteForm" action="../controlador/delete.php" method="post">
+        <form id="deleteForm" action="../../private/controlador/delete.php" method="post">
             <label for="id">ID del partit a eliminar (numèrica):</label>
             <input type="text" class="form-control" id="id" name="partit_id" placeholder="Escriu l'ID del partit" value="<?php echo $_GET['id'] ?>" required>
 

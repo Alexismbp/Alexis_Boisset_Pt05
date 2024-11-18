@@ -111,20 +111,40 @@ function ultimaIdDisponible($conn)
     return $contador; // Retorna el contador si no hi ha buits
 }
 
+
 /**
- * Almacena el token de recuperación en la base de datos.
- *
- * @param string $email El correo electrónico del usuario.
- * @param string $token El token de recuperación.
- * @param PDO $conn La conexión a la base de datos.
- * @return bool True si el token se almacenó correctamente, False en caso contrario.
+ * Almacena el token de recuperación en la base de datos
+ * @param string $email Email del usuario
+ * @param string $token Token generado
+ * @param PDO $conn Conexión a la base de datos
+ * @return bool Retorna true si se almacena correctamente, false en caso contrario
  */
 function storeToken($email, $token, $conn) {
-    $sql = "UPDATE usuaris SET reset_token_hash = :token WHERE correu_electronic = :email";
-    $query = $conn->prepare($sql);
-    $hashedToken = password_hash($token, PASSWORD_DEFAULT);
-    $query->bindParam(':token', $hashedToken);
-    $query->bindParam(':email', $email);
-
-    return $query->execute();
+    try {
+        // Crear fecha de expiración (2 horas desde ahora)
+        $expiry = date('Y-m-d H:i:s', strtotime('+2 hours'));
+        
+        // Preparar la consulta
+        $sql = "UPDATE usuaris SET reset_token_hash = :token, reset_token_expires_at = :expiry WHERE correu_electronic = :email";
+        $stmt = $conn->prepare($sql);
+        
+        // Vincular parámetros
+        $stmt->bindParam(':token', $token);
+        $stmt->bindParam(':expiry', $expiry);
+        $stmt->bindParam(':email', $email);
+        
+        // Ejecutar la consulta
+        $result = $stmt->execute();
+        
+        // Verificar si se actualizó alguna fila
+        if ($stmt->rowCount() > 0) {
+            return true;
+        }
+        
+        return false;
+        
+    } catch (PDOException $e) {
+        error_log("Error en storeToken: " . $e->getMessage());
+        return false;
+    }
 }

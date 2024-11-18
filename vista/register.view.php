@@ -78,7 +78,7 @@ if (isset($_GET['netejar']) && $_GET['netejar'] == true) {
 
         <a href="<?php echo $_SERVER['PHP_SELF']; ?>?netejar=true" class="btn-back">Netejar</a> <!-- Boto per netejar camps formulari -->
         <br>
-        <a href="../index.php" class="btn-back">Tornar a la pàgina principal</a>
+        <a href="../../index.php" class="btn-back">Tornar a la pàgina principal</a>
     </div>
 </body>
 

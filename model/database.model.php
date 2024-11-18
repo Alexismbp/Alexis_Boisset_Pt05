@@ -3,10 +3,10 @@
 
 /* ABANS CLASS DATABASE */
 
-$servername = "127.0.0.1";  // Host del servidor MySQL
-$dbname = "Pt04_Alexis_Boisset";  // Nom de la base de dades
-$username = "root";  // Nom d'usuari MySQL
-$password = "";  // Contrasenya MySQL
+$servername = "bbdd.alexisboisset.cat";  // Host del servidor MySQL
+$dbname = "ddb237139";  // Nom de la base de dades
+$username = "ddb237139";  // Nom d'usuari MySQL
+$password = "rEmhyn-johwiz-9citzy";  // Contrasenya MySQL
 
 // Funció per connectar a BD
 function connect()

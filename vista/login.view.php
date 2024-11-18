@@ -15,18 +15,17 @@ if (isset($_GET['back']) && $_GET['back'] == true) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logar-se</title>
-    <link rel="stylesheet" href="styles/styles_login.css">
+    <link rel="stylesheet" href="../styles/styles_login.css">
 </head>
 
 <body>
     <div class="container">
         <h1>Logar-se</h1>
-        <?php if (isset($_SESSION['session_ended']) && $_SESSION['session_ended'] = true): ?>
+        <?php if (isset($_SESSION['session_ended']) && $_SESSION['session_ended'] == true): ?>
             <h3>Sessió expirada</h3>
-        <?php endif ?>
+        <?php endif; ?>
 
-
-        <form action="../controlador/login.controller.php" method="POST">
+        <form action="../../private/controlador/login.controller.php" method="POST">
             <!-- FEEDBACK -->
             <?php
             if (isset($_SESSION['failure'])) {
@@ -46,9 +45,9 @@ if (isset($_GET['back']) && $_GET['back'] == true) {
 
             <input type="submit" class="btn-submit" value="Logar-se">
         </form>
-        <a href="./forgotpassword.view.php" class="btn-back">Has oblidat la contrasneya?</a> <!-- Redirecció a form per enviar email -->
+        <a href="forgotpassword.vista.php" class="btn-back">Has oblidat la contrasneya?</a>
         <br>
-        <a href="<?php echo $_SERVER['PHP_SELF']; ?>?back=true" class="btn-back">Tornar enrere</a> <!-- Botó per netejar els camps del formulari i tornar enrere -->
+        <a href="<?php echo $_SERVER['PHP_SELF']; ?>?back=true" class="btn-back">Tornar enrere</a>
     </div>
 </body>
 
