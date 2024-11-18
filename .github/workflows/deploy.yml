@@ -28,11 +28,11 @@ jobs:
           .gitignore
           .DS_Store
           node_modules/
-          vendor/
           *.log
           *.tmp
           *.bak
           *.swp
-          composer.lock
-          package-lock.json
+          package-lock.json 
+          LICENSE
+          README.md
           
