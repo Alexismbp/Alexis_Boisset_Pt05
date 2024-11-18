@@ -17,7 +17,7 @@ if (isset($_GET['partitsPerPage'])) {
     // Si no hi ha GET agafem valor de cookie (si existeix)
     $partitsPerPage = (int)$_COOKIE['partitsPerPage'];
 } else {
-    $partitsPerPage = 5; // Valor per defecte
+    $partitsPerPage = 5; // Per defecte
 }
 
 // Selecció de lliga
@@ -33,7 +33,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
         // Si no hi ha GET agafem valor de cookie (si existeix)
         $lligaSeleccionada = $_COOKIE['lliga'];
     } else {
-        $lligaSeleccionada = 'LaLiga'; // Valor per defecte
+        $lligaSeleccionada = 'LaLiga'; // Per defecte
     }
 }
 
