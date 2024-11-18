@@ -25,7 +25,7 @@ if (isset($_GET['back']) && $_GET['back'] == true) {
             <h3>Sessió expirada</h3>
         <?php endif; ?>
 
-        <form action="../../private/controlador/login.controller.php" method="POST">
+        <form action="../../private/controller/login.controller.php" method="POST">
             <!-- FEEDBACK -->
             <?php
             if (isset($_SESSION['failure'])) {
@@ -45,7 +45,7 @@ if (isset($_GET['back']) && $_GET['back'] == true) {
 
             <input type="submit" class="btn-submit" value="Logar-se">
         </form>
-        <a href="forgotpassword.vista.php" class="btn-back">Has oblidat la contrasneya?</a>
+        <a href="forgotpassword.view.php" class="btn-back">Has oblidat la contrasneya?</a>
         <br>
         <a href="<?php echo $_SERVER['PHP_SELF']; ?>?back=true" class="btn-back">Tornar enrere</a>
     </div>

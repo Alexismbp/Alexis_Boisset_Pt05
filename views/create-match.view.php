@@ -1,7 +1,7 @@
 <?php
 // Alexis Boisset
 
-require "../../private/controlador/config.controller.php"; // Detecció de temps d'inactivitat
+require "../../private/controller/config.controller.php"; // Detecció de temps d'inactivitat
 
 session_start(); // Inicia la sessió per a gestionar l'estat de l'usuari i les dades del formulari.
 
@@ -40,7 +40,7 @@ $edit = (isset($_SESSION['editant'])) ? "readonly" : ""; // Si l'usuari està ed
 <body>
     <div class="container">
         <h1>Crear o Editar Partit</h1>
-        <form action="../../private/controlador/save-match.controller.php" method="POST">
+        <form action="../../private/controller/save-match.controller.php" method="POST">
             <!-- FEEDBACK -->
             <?php
             // Mostra missatges d'èxit o error SI EXISTEIXEN.

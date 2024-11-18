@@ -1,7 +1,10 @@
 <!-- Alexis Boisset -->
 <?php
-require "../private/config.controller.php"; // Fitxer per detectar innactivitat
-require "../private/model/porra.model.php"; // Fitxer per obtenir partits
+require_once "models/database/database.model.php"; // Fitxer per obtenir connexió a la base de dades
+require_once "controller/config.controller.php"; // Fitxer per detectar innactivitat
+require_once "models/utils/porra.model.php"; // Fitxer per obtenir partits
+
+$conn = Database::connect(); // Connexió a la base de dades
 
 session_start();
 
@@ -55,5 +58,5 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
 
 $totalPages = ceil($totalPartits / $partitsPerPage);
 
-include "vista/index.view.php";
+include "views/index.view.php";
 ?>

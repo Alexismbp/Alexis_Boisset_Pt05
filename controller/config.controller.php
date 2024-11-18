@@ -25,7 +25,7 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 
     session_start(); // Vuelvo a abrir la session para tener feedback de sesion expirada
     $_SESSION['failure'] = "Sessió expirada";
 
-    header("Location: " . BASE_URL . "/vista/login.vista.php"); // Redirigir al login
+    header("Location: " . BASE_URL . "/view/login.view.php"); // Redirigir al login
     exit();
 } elseif ($_SESSION['loggedin'] == true) {
     $_SESSION['LAST_ACTIVITY'] = time(); // Actualizar el tiempo de última actividad

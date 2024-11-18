@@ -8,7 +8,7 @@ Aquest projecte és una aplicació de **porra de futbol** en què els usuaris po
 
 ```plaintext
 ALEXIS_BOISSET_PT04/
-├── controlador
+├── controller
 │   ├── config.php                 # Configuració general del projecte.
 │   ├── delete.php                 # Controla la eliminació d'elements (ex: partits o prediccions).
 │   ├── guardar_prediccio.php      # Guarda la predicció d'un usuari.
@@ -26,7 +26,7 @@ ALEXIS_BOISSET_PT04/
 ├── scripts
 │   ├── lligaequip.js              # Script per mostrar equips segons la lliga seleccionada.
 │
-├── vista
+├── view
 │   ├── styles
 │   │   ├── styles_crear.css       # Estils per la pàgina de creació de registres.
 │   │   ├── styles_eliminar.css    # Estils per la pàgina d'eliminació.
@@ -38,8 +38,8 @@ ALEXIS_BOISSET_PT04/
 │   ├── change_pswd.php            # Pàgina per canviar la contrasenya de l'usuari.
 │   ├── crear_partit.php           # Form per crear nous partits (amb selecció de lliga/equip).
 │   ├── eliminar.php               # Interfície per eliminar elements.
-│   ├── index.vista.php            # Pàgina principal que mostra els partits i prediccions.
-│   ├── login.vista.php            # Formulari de login.
+│   ├── index.view.php            # Pàgina principal que mostra els partits i prediccions.
+│   ├── login.view.php            # Formulari de login.
 │   ├── register.view.php          # Formulari de registre.
 │
 ├── .gitignore                     # Arxius i carpetes a ignorar en Git.
@@ -90,9 +90,9 @@ Aquests són els usuaris que venen registrats a la base de dades per defecte:
 
 1. **Registrar-se**: Si és la primera vegada que accedeixes, ves a la pàgina de registre (`register.view.php`) i crea un compte amb les teves dades. Aquí pots seleccionar la teva lliga preferida i el teu equip favorit.
    
-2. **Iniciar Sessió**: Un cop registrat, pots iniciar sessió a la pàgina de login (`login.vista.php`) amb les teves credencials.
+2. **Iniciar Sessió**: Un cop registrat, pots iniciar sessió a la pàgina de login (`login.view.php`) amb les teves credencials.
 
-3. **Fer Prediccions**: A la pàgina principal (`index.vista.php`), podràs veure una llista de partits. Si el partit encara no s'ha jugat, pots introduir una predicció pel resultat.
+3. **Fer Prediccions**: A la pàgina principal (`index.view.php`), podràs veure una llista de partits. Si el partit encara no s'ha jugat, pots introduir una predicció pel resultat.
 
 4. **Revisar els Resultats**: Quan un partit es jugui, podràs veure el resultat real comparat amb la teva predicció. Els gols apareixeran en verd si has encertat i en vermell si no.
 

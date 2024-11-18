@@ -81,7 +81,7 @@ try {
     $_SESSION['lliga'] = getLeagueName($equipFavorit, $conn);
     $_SESSION['equip'] = $equipFavorit;
 } finally {
-    header("Location: ../vista/register.view.php");
+    header("Location: ../view/register.view.php");
     exit();
 }
 

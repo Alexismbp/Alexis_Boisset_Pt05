@@ -1,9 +1,5 @@
 <?php
 // Alexis Boisset
-require "db_conn.model.php";
-$conn = connect();
-
-global $conn;
 
 function insertPartido($conn, $equipo_local_id, $equipo_visitante_id, $liga_id, $fecha, $goles_local, $goles_visitante)
 {

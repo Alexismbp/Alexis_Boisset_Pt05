@@ -51,6 +51,6 @@ try {
 } catch (\Throwable $th) {
     $_SESSION['failure'] = "Error: " . $th->getMessage();
 } finally {
-    header("Location: ../vista/login.vista.php");
+    header("Location: ../view/login.view.php");
     exit();
 }

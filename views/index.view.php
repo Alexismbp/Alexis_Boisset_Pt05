@@ -6,18 +6,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestor de partits</title>
-    <link rel="stylesheet" href="vista/styles/styles.css">
+    <link rel="stylesheet" href="view/styles/styles.css">
 </head>
 
 <header>
     <?php if (!isset($_SESSION['loggedin'])): ?>
         <!-- Opciones de logarse o registrar-se cuando no está logado -->
-        <a href="vista/login.vista.php" class="btn-login">Logar-se</a>
-        <a href="vista/register.view.php" class="btn-register">Enregistrar-se</a>
+        <a href="view/login.view.php" class="btn-login">Logar-se</a>
+        <a href="view/register.view.php" class="btn-register">Enregistrar-se</a>
     <?php else: ?>
         <!-- Mensaje cuando el usuario ya está logado -->
         <p>Benvingut, <?php echo $_SESSION['username']; ?>!</p>
-        <a href="controlador/logout.controller.php" class="btn-logout">Tancar sessió</a>
+        <a href="controller/logout.controller.php" class="btn-logout">Tancar sessió</a>
     <?php endif; ?>
 </header>
 
@@ -39,8 +39,8 @@
     <!-- Enllaços per a gestionar els partits (només loguejat) -->
     <?php if ($_SESSION['loggedin']) : ?>
         <ul>
-            <li><a href="vista/crear_partit.php">Crear nou partit</a></li>
-            <li><a href="vista/eliminar.php">Eliminar un partit</a></li>
+            <li><a href="view/crear_partit.php">Crear nou partit</a></li>
+            <li><a href="view/eliminar.php">Eliminar un partit</a></li>
         </ul>
     <?php endif ?>
 
@@ -116,7 +116,7 @@
                     <!-- WORK IN PROGRESS, no afecta al funcionament del programa -->
                     <?php if (!$partit['jugat'] && $_SESSION['loggedin'] == true): ?>
                         <span><b>Work in progress, better not to touch (risk of crash)</b></span>
-                        <form action="controlador/guardar_prediccio.php" method="POST">
+                        <form action="controller/guardar_prediccio.php" method="POST">
                             <input type="hidden" name="partit_id" value="<?php echo $partit['id']; ?>">
                             <label for="gols_local">Gols Local:</label>
                             <input type="number" name="gols_local" min="0" required>
@@ -129,8 +129,8 @@
 
                     <!-- Si esta loguejat mostra botons de edit y delete -->
                     <?php if ($_SESSION['loggedin']): ?>
-                        <a href="controlador/save_partit.php?id=<?php echo $partit['id'] ?>">Editar Partit</a>
-                        <a href="vista/eliminar.php?id=<?php echo $partit['id'] ?>">Eliminar Partit</a>
+                        <a href="controller/save_partit.php?id=<?php echo $partit['id'] ?>">Editar Partit</a>
+                        <a href="view/eliminar.php?id=<?php echo $partit['id'] ?>">Eliminar Partit</a>
                     <?php endif; ?>
                     <span>ID de partit: <?php echo $partit['id'] ?></span>
                 </div>

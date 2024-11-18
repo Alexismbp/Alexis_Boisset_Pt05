@@ -10,7 +10,7 @@ use PHPMailer\PHPMailer\Exception;
 
 session_start();
 
-$conn = connect();
+Databaseconnect();
 
 if ($conn && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = htmlspecialchars($_POST['email']);
@@ -25,11 +25,11 @@ if ($conn && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $_SESSION['success'] = 'S\'ha enviat un correu amb instruccions per restablir la contrasenya.';
 
-            header('Location: ../vista/login.view.php');
+            header('Location: ../view/login.view.php');
             exit();
         } else {
             $_SESSION['failure'] = 'Algo ha fallat';
-            header('Location: ../vista/forgot-password.view.php');
+            header('Location: ../view/forgot-password.view.php');
             exit();
         }
     }

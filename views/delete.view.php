@@ -1,10 +1,10 @@
 <!-- Alexis Boisset -->
 <?php
-require "../../private/controlador/config.php"; // Detecció de temps d'inactivitat
+require "../../private/controller/config.php"; // Detecció de temps d'inactivitat
 session_start();
 
 if (!isset($_SESSION['loggedin'])) {
-    header("Location: ./login.vista.php");
+    header("Location: ./login.view.php");
 }
 ?>
 
@@ -35,7 +35,7 @@ if (!isset($_SESSION['loggedin'])) {
         ?>
 
         <!-- Formulari -->
-        <form id="deleteForm" action="../../private/controlador/delete.php" method="post">
+        <form id="deleteForm" action="../../private/controller/delete.php" method="post">
             <label for="id">ID del partit a eliminar (numèrica):</label>
             <input type="text" class="form-control" id="id" name="partit_id" placeholder="Escriu l'ID del partit" value="<?php echo $_GET['id'] ?>" required>
 

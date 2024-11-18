@@ -21,7 +21,7 @@ if (isset($_SESSION['success'])) {
     <h1>Recupera la teva contrasenya</h1>
 
     <p>Introdueix el teu e-mail i t'envíarem un correu per introduir una nova contrasenya</p>
-    <form action="../../private/controlador/password-recover.controller.php" method="post">
+    <form action="../../private/controller/password-recover.controller.php" method="post">
         <label for="email">Email:</label>
         <input type="email" name="email" id="email" value="<?php echo isset($_SESSION['email']) ? $_SESSION['email'] : ''; ?>">
         <br>

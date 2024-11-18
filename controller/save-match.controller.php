@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
 
         if (dadesEdicio($conn, $partit, $id)) {
 
-            header("Location: ../vista/crear_partit.php");
+            header("Location: ../view/crear_partit.php");
             exit();
         } else {
             $missatgesError[] = "Aquest partit no existeix";
@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
         $_SESSION["gols_visitant"] = $gols_visitant;
         $_SESSION['errors'] = $missatgesError;
 
-        header("Location: ../vista/crear_partit.php");
+        header("Location: ../view/crear_partit.php");
         exit();
     }
 
@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
         $_SESSION["data"] = $data;
         $_SESSION["gols_local"] = $gols_local;
         $_SESSION["gols_visitant"] = $gols_visitant;
-        header("Location: ../vista/crear_partit.php");
+        header("Location: ../view/crear_partit.php");
         exit();
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id']) && $conn) {
@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
 
         if (dadesEdicio($conn, $partit, $id)) {
 
-            header("Location: ../vista/crear_partit.php");
+            header("Location: ../view/crear_partit.php");
             exit();
         } else {
             $missatgesError[] = "Aquest partit no existeix";
@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
     exit();
 } else {
     $_SESSION['failure'] = "Alguna cosa no ha funcionat com s'esperava";
-    header("Location: ../vista/crear_partit.php");
+    header("Location: ../view/crear_partit.php");
     exit();
 }
 
