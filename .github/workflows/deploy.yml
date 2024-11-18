@@ -32,5 +32,4 @@ jobs:
           *.swp
           composer.lock
           package-lock.json
-          env*
           

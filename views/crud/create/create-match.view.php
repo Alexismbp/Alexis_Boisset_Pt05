@@ -1,7 +1,7 @@
 <?php
 // Alexis Boisset
 
-require "../../private/controller/config.controller.php"; // Detecció de temps d'inactivitat
+require_once BASE_PATH . '/controller/session/session.controller.php'; // Detecció de temps d'inactivitat
 
 session_start(); // Inicia la sessió per a gestionar l'estat de l'usuari i les dades del formulari.
 
@@ -31,7 +31,7 @@ $edit = (isset($_SESSION['editant'])) ? "readonly" : ""; // Si l'usuari està ed
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear o Editar Partit</title>
-    <link rel="stylesheet" href="../styles/styles_crear.css">
+    <link rel="stylesheet" href="./styles_crear.css">
 
     <script src="../../private/scripts/lligaequip.js" defer></script>
 

@@ -1,6 +1,6 @@
 <!-- Alexis Boisset -->
 <?php
-require "../../private/controller/config.php"; // Detecció de temps d'inactivitat
+require "../../private/controller/session.controller.php"; // Detecció de temps d'inactivitat
 session_start();
 
 if (!isset($_SESSION['loggedin'])) {

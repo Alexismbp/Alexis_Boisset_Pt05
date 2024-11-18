@@ -9,6 +9,7 @@ class Database
     private static $dbname = DB_NAME;  // Nom de la base de dades
     private static $username = DB_USER;  // Nom d'usuari MySQL
     private static $password = DB_PASS;  // Contrasenya MySQL
+    private static $charset = DB_CHARSET;  // Joc de caràcters
     private static $logfile = 'database.log'; // Archivo de logs
 
     // Constructor vacío
@@ -27,7 +28,7 @@ class Database
             self::$dbname = strtolower(self::$dbname);
 
             // Generar el DSN->(Data Source Name)
-            $dsn = "mysql:host=" . self::$servername . ";dbname=" . self::$dbname;
+            $dsn = "mysql:host=" . self::$servername . ";dbname=" . self::$dbname . ";charset=" . self::$charset;
 
             // Creem una nova connexió PDO
             $conn = new PDO($dsn, self::$username, self::$password);
