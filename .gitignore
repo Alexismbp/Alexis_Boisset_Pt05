@@ -399,6 +399,7 @@ FodyWeavers.xsd
 
 DUDASXAVI*
 env*
+.DS_Store
 
 # Ignorar la carpeta .github
 .github/
