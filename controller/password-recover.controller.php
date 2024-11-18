@@ -1,16 +1,15 @@
 <?php
 require "../model/db_conn.php";
 require "../model/user.model.php";
-require '../lib/PHPMailer-master/src/Exception.php';
-require '../lib/PHPMailer-master/src/PHPMailer.php';
-require '../lib/PHPMailer-master/src/SMTP.php';
+
+require __DIR__ . '/../vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 session_start();
 
-Databaseconnect();
+$conn = Database::connect();
 
 if ($conn && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = htmlspecialchars($_POST['email']);
