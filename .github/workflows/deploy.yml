@@ -22,8 +22,10 @@ jobs:
         local-dir: ./
         server-dir: /
         exclude: |
+          .git*
           .git/
           .github/
+          .gitignore
           .DS_Store
           node_modules/
           vendor/

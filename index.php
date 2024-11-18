@@ -1,7 +1,7 @@
 <!-- Alexis Boisset -->
 <?php
 require_once "models/database/database.model.php"; // Fitxer per obtenir connexió a la base de dades
-require_once "controller/session.controller.php"; // Fitxer per detectar innactivitat
+require_once "controller/session/session.controller.php"; // Fitxer per detectar innactivitat
 require_once "models/utils/porra.model.php"; // Fitxer per obtenir partits
 
 $conn = Database::connect(); // Connexió a la base de dades
