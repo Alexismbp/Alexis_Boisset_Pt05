@@ -5,7 +5,7 @@ session_start();
 // Netejar variable de sessió "email" y tornar a Index.php
 if (isset($_GET['back']) && $_GET['back'] == true) {
     unset($_SESSION['email']);
-    header("Location: ../index.php");
+    header("Location:" . BASE_URL);
 }
 ?>
 <!DOCTYPE html>
@@ -15,7 +15,7 @@ if (isset($_GET['back']) && $_GET['back'] == true) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logar-se</title>
-    <link rel="stylesheet" href="../styles/styles_login.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>views/auth/login/styles_login.css">
 </head>
 
 <body>
@@ -25,17 +25,9 @@ if (isset($_GET['back']) && $_GET['back'] == true) {
             <h3>Sessió expirada</h3>
         <?php endif; ?>
 
-        <form action="../../private/controllers/login.controller.php" method="POST">
-            <!-- FEEDBACK -->
-            <?php
-            if (isset($_SESSION['failure'])) {
-                echo '<div class="message error">' . $_SESSION['failure'] . '</div>';
-                unset($_SESSION['failure']);
-            } elseif (isset($_SESSION['success'])) {
-                echo '<div class="message success">' . $_SESSION['success'] . '</div>';
-                unset($_SESSION['success']);
-            }
-            ?>
+        <form action="<?php echo BASE_URL; ?>controllers/auth/login.controller.php" method="POST">
+            
+            <?php include BASE_PATH . 'views/layouts/errors.view.php'; ?>
 
             <label for="email">Correu electrònic:</label>
             <input type="email" id="email" name="email" class="input-field" value="<?php echo $_SESSION['email']; ?>" required>
