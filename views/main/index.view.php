@@ -12,12 +12,12 @@
 <header>
     <?php if (!isset($_SESSION['loggedin'])): ?>
         <!-- Opciones de logarse o registrar-se cuando no está logado -->
-        <a href="view/login.view.php" class="btn-login">Logar-se</a>
-        <a href="view/register.view.php" class="btn-register">Enregistrar-se</a>
+        <a href="<?php echo BASE_URL?>views/auth/login/login.view.php" class="btn-login">Logar-se</a>
+        <a href="<?php echo BASE_URL?>views/auth/register/register.view.php" class="btn-register">Enregistrar-se</a>
     <?php else: ?>
         <!-- Mensaje cuando el usuario ya está logado -->
         <p>Benvingut, <?php echo $_SESSION['username']; ?>!</p>
-        <a href="controller/logout.controller.php" class="btn-logout">Tancar sessió</a>
+        <a href="<?php echo BASE_URL?>controllers/auth/logout.controller.php" class="btn-logout">Tancar sessió</a>
     <?php endif; ?>
 </header>
 
@@ -39,8 +39,8 @@
     <!-- Enllaços per a gestionar els partits (només loguejat) -->
     <?php if ($_SESSION['loggedin']) : ?>
         <ul>
-            <li><a href="view/crear_partit.php">Crear nou partit</a></li>
-            <li><a href="view/eliminar.php">Eliminar un partit</a></li>
+            <li><a href="<?php echo BASE_URL?>views/crud/create/create-match.view.php">Crear nou partit</a></li>
+            <li><a href="<?php echo BASE_URL?>views/crud/delete/delete.view.php">Eliminar un partit</a></li>
         </ul>
     <?php endif ?>
 
@@ -116,7 +116,7 @@
                     <!-- WORK IN PROGRESS, no afecta al funcionament del programa -->
                     <?php if (!$partit['jugat'] && $_SESSION['loggedin'] == true): ?>
                         <span><b>Work in progress, better not to touch (risk of crash)</b></span>
-                        <form action="controller/guardar_prediccio.php" method="POST">
+                        <form action="controllers/guardar_prediccio.php" method="POST">
                             <input type="hidden" name="partit_id" value="<?php echo $partit['id']; ?>">
                             <label for="gols_local">Gols Local:</label>
                             <input type="number" name="gols_local" min="0" required>
@@ -129,8 +129,8 @@
 
                     <!-- Si esta loguejat mostra botons de edit y delete -->
                     <?php if ($_SESSION['loggedin']): ?>
-                        <a href="controller/save_partit.php?id=<?php echo $partit['id'] ?>">Editar Partit</a>
-                        <a href="view/eliminar.php?id=<?php echo $partit['id'] ?>">Eliminar Partit</a>
+                        <a href="<?php echo BASE_URL?>controllers/crud/save-match.controller.php?id=<?php echo $partit['id'] ?>">Editar Partit</a>
+                        <a href="<?php echo BASE_URL?>views/crud/delete/delete.view.php?id=<?php echo $partit['id'] ?>">Eliminar Partit</a>
                     <?php endif; ?>
                     <span>ID de partit: <?php echo $partit['id'] ?></span>
                 </div>

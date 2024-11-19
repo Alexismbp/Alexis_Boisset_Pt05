@@ -25,7 +25,7 @@ if (isset($_GET['back']) && $_GET['back'] == true) {
             <h3>Sessió expirada</h3>
         <?php endif; ?>
 
-        <form action="../../private/controller/login.controller.php" method="POST">
+        <form action="../../private/controllers/login.controller.php" method="POST">
             <!-- FEEDBACK -->
             <?php
             if (isset($_SESSION['failure'])) {

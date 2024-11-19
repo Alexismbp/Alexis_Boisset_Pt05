@@ -26,7 +26,7 @@ if (isset($_GET['netejar']) && $_GET['netejar'] == true) {
     <div class="container">
         <h1>Enregistrar-se</h1>
 
-        <form action="../controller/register.controller.php" method="POST">
+        <form action="../controllers/register.controller.php" method="POST">
             <!-- FEEDBACK -->
             <?php
             if (isset($_SESSION['success'])) {
