@@ -15,7 +15,7 @@ $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 // Remover el prefijo de BASE_URL para obtener la ruta relativa
 $basePath = rtrim(parse_url(BASE_URL, PHP_URL_PATH), '/');
-$uri = ltrim(substr($uri, strlen($basePath)), '/');
+$uri = "/" . ltrim(substr($uri, strlen($basePath)), '/');
 
 // Enrutamiento básico
 if ($uri === '/' || $uri === '') {
