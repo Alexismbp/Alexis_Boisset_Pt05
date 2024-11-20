@@ -17,8 +17,9 @@ body {
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 400px;
-    text-align: center;
+    width: 90%;
+    max-width: 1200px;
+    text-align: left;
 }
 
 /* Estilos para el encabezado */
@@ -31,8 +32,9 @@ h1 {
 
 /* Estilos para el formulario */
 form {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
 }
 
 label {
@@ -209,4 +211,47 @@ input[readonly] {
         font-size: 14px;
         padding: 8px;
     }
+
+    form {
+        grid-template-columns: 1fr;
+    }
+    
+    .article-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+.article-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.article-content {
+    min-height: 150px;
+    resize: vertical;
+    font-family: Arial, sans-serif;
+    padding: 10px;
+    line-height: 1.5;
+}
+
+.input-field.article-content {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.buttons-section {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    margin-top: 20px;
 }

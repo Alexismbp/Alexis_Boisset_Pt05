@@ -1,13 +1,11 @@
 <?php
 //Alexis Boisset
 session_start();
+require_once BASE_PATH . 'controllers/utils/form.controller.php';
 
 // Netejar camps
 if (isset($_GET['netejar']) && $_GET['netejar'] == true) {
-    unset($_SESSION['username']);
-    unset($_SESSION['email']);
-    unset($_SESSION['lliga']);
-    unset($_SESSION['equip']);
+    FormController::clearFormFields(['username', 'email', 'lliga', 'equip']);
 }
 ?>
 <!DOCTYPE html>
@@ -26,24 +24,9 @@ if (isset($_GET['netejar']) && $_GET['netejar'] == true) {
     <div class="container">
         <h1>Enregistrar-se</h1>
 
-        <form action="../controllers/register.controller.php" method="POST">
+        <form action="<?php echo BASE_URL; ?>register" method="POST">
             <!-- FEEDBACK -->
-            <?php
-            if (isset($_SESSION['success'])) {
-                echo '<div class="message success">' . $_SESSION['success'] . '</div>';
-                unset($_SESSION['success']);
-            } elseif (isset($_SESSION['failure'])) {
-                echo '<div class="message error">' . $_SESSION['failure'] . '</div>';
-                unset($_SESSION['failure']);
-            }
-            if (isset($_SESSION['errors'])) {
-                foreach ($_SESSION['errors'] as $error) {
-                    echo '<div class="message error">' . $error . '</div>';
-                }
-                $edit = true;
-                unset($_SESSION['errors']);
-            }
-            ?>
+            <?php include_once BASE_PATH . "views/layouts/feedback.view.php"?> 
 
             <label for="username">Nom d'usuari:</label>
             <input type="text" id="username" name="username" class="input-field" value="<?php echo $_SESSION['username'] ?>" required>
@@ -76,7 +59,7 @@ if (isset($_GET['netejar']) && $_GET['netejar'] == true) {
             <input type="submit" class="btn-submit" value="Enregistrar-se">
         </form>
 
-        <a href="<?php echo $_SERVER['PHP_SELF']; ?>?netejar=true" class="btn-back">Netejar</a> <!-- Boto per netejar camps formulari -->
+        <a href="<?php echo FormController::getClearFormUrl(); ?>" class="btn-back">Netejar</a>
         <br>
         <a href="<?php echo BASE_URL; ?>" class="btn-back">Tornar a la pàgina principal</a>
     </div>

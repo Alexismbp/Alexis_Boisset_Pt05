@@ -1,4 +1,4 @@
-<div class="matches-container">
+<div class="matches-list">
     <?php foreach ($partits as $partit): ?>
         <div class="match-card">
             <p class="teams">
@@ -12,6 +12,10 @@
                 <p class="match-date">
                     Fecha: <?php echo date('d/m/Y', strtotime($partit['data'])); ?>
                 </p>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
+                <?php include BASE_PATH . 'views/components/match-actions.component.php'; ?>
             <?php endif; ?>
         </div>
     <?php endforeach; ?>

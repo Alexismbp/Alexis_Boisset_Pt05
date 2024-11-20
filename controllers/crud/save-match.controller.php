@@ -8,7 +8,7 @@ session_start();
 
 // Connexió a la base de dades
 try {
-    $conn = connect();
+    Database::connect();
 } catch (PDOException $e) {
     die("Error de connexió: " . $e->getMessage());
 }

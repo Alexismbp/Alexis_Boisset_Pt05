@@ -1,71 +1,56 @@
 <?php
-// Alexis Boisset
+session_start();
+
+require_once __DIR__ . '/../../models/database/database.model.php';
+require_once __DIR__ . '/../../models/user/user.model.php';
+require_once __DIR__ . '/../utils/validation.controller.php';
+require_once __DIR__ . '/../../models/env.php';
+
 try {
-    session_start();
+
+    // DEBUG
+    /* $_POST['username'] = 'Hola';
+    $_POST['password'] = 'Admin123';
+    $_POST['password_confirm'] = 'Admin123';
+    $_POST['email'] = 'hola@gmail.com';
+    $_POST['equip'] = 'FC Barcelona';
+    $_SERVER['REQUEST_METHOD'] = 'POST'; */
+
     $missatgesError = [];
-    require '../model/db_conn.php';
-    require '../model/user_model.php';
 
-    
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn = connect()) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Sanitizar entradas
+        $nomUsuari = Validation::sanitizeInput($_POST['username']);
+        $contrasenya = Validation::sanitizeInput($_POST['password']);
+        $passwordConfirm = Validation::sanitizeInput($_POST['password_confirm']);
+        $email = Validation::sanitizeInput($_POST['email']);
+        $equipFavorit = Validation::sanitizeInput($_POST['equip']);
 
-        // Agafa les dades del formulari y les formata correctament
-        $nomUsuari = validate($_POST['username']);
-        $contrasenya = validate($_POST['password']);
-        $passwordPattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/';
-        $passwordConfirm = validate($_POST['password_confirm']);
-        $email = validate($_POST['email']);
-        $equipFavorit = validate($_POST['equip']);
-        $error = false;
+        // Validar campos
+        $errors = array_filter([
+            Validation::validateUsername($nomUsuari),
+            Validation::validatePassword($contrasenya, $passwordConfirm),
+            Validation::validateEmail($email),
+            Validation::validateTeam($equipFavorit)
+        ]);
 
-        // Validació de camps
-        if (empty($nomUsuari)) {
-            $missatgesError[] = "El nom d'usuari no pot estar buit";
-            $error = true;
-        }
-
-        if (empty($contrasenya)) {
-            $missatgesError[] = "És obligatori una contrasenya";
-            $error = true;
-        } elseif (preg_match($passwordPattern, $contrasenya) === 0) {
-            $missatgesError[] = "La contrasenya ha de tenir mínim: 8 caràcters, una majúscula, una minúscula i un dígit";
-            $error = true;
-        }
-
-        if (empty($email)) {
-            $missatgesError[] = "És obligatori un correu electrònic";
-            $error = true;
-        }
-
-        if (empty($equipFavorit)) {
-            $missatgesError[] = "És obligatori un equip favorit";
-            $error = true;
-        }
-
-        if ($contrasenya !== $passwordConfirm) {
-            $missatgesError[] = "Les contrasenyes no coincideixen";
-            $error = true;
-        }
-
-        if ($error) {
+        if (!empty($errors)) {
+            $missatgesError = array_merge($missatgesError, $errors);
             throw new Exception();
         }
 
-        // Encript de la contrasenya
+        // Encriptar contraseña
         $contrasenyaHashed = password_hash($contrasenya, PASSWORD_DEFAULT);
 
-        // Registrar usuari
+        // Registrar usuario
         if (registerUser($nomUsuari, $email, $contrasenyaHashed, $equipFavorit, $conn)) {
-
-            // Asignar valores a la sesión
             $_SESSION['loggedin'] = true;
             $_SESSION['username'] = $nomUsuari;
             $_SESSION['equip'] = $equipFavorit;
             $_SESSION['lliga'] = getLeagueName($equipFavorit, $conn);
             $_SESSION['success'] = "Usuari registrat correctament";
 
-            // Redireccionar a la pàgina d'inici (prefereixo això que haver de tornar a logar-me)
-            header("Location: ../index.php");
+            header("Location: " . BASE_URL);
             exit();
         } else {
             $missatgesError[] = "Aquest correu electrònic ja s'està utilitzant";
@@ -73,23 +58,13 @@ try {
         }
     }
 } catch (Throwable $th) {
-    // Si falla assignem les dades a $_SESSION per recuperar-les al formulari
     $_SESSION['failure'] = empty($th->getMessage()) ? null : "Hi ha hagut un error: " . $th->getMessage();
     $_SESSION['errors'] = $missatgesError;
-    $_SESSION['username'] = $nomUsuari;
-    $_SESSION['email'] = $email;
-    $_SESSION['lliga'] = getLeagueName($equipFavorit, $conn);
-    $_SESSION['equip'] = $equipFavorit;
+    $_SESSION['username'] = $nomUsuari ?? '';
+    $_SESSION['email'] = $email ?? '';
+    $_SESSION['lliga'] = isset($equipFavorit) ? getLeagueName($equipFavorit, $conn) : '';
+    $_SESSION['equip'] = $equipFavorit ?? '';
 } finally {
-    header("Location: ../view/register.view.php");
+    header("Location: " . BASE_URL . "register");
     exit();
-}
-
-// Funció per prevenir entrades no desitjades de dades o injects
-function validate($data)
-{
-    $data = trim($data);
-    $data = htmlspecialchars($data);
-    $data = stripslashes($data);
-    return $data;
 }

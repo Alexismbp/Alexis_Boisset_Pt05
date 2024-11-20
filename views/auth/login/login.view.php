@@ -1,9 +1,4 @@
 <!-- Alexis Boisset -->
-<?php
-
-// Netejar variable de sessió "email" y tornar a Index.php
-
-?>
 <!DOCTYPE html>
 <html lang="ca">
 

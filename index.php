@@ -7,8 +7,8 @@ require_once __DIR__ . "/core/Router.php";
 session_start();
 
 // DEBUG
-/* $_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/login";
-$_SERVER['REQUEST_METHOD'] = "POST"; */
+/* $_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/create-match?id=91&edit=true";
+$_SERVER['REQUEST_METHOD'] = "GET"; */
 
 $router = new Router();
 
@@ -20,6 +20,12 @@ $router->get('/create', 'views/crud/create.view.php');
 $router->get('/delete', 'views/crud/delete.view.php');
 $router->get('/forgotpassword', 'views/auth/forgotpassword.view.php');
 
+// Rutas para partidos
+$router->get('/create-match', 'views/crud/create/create-match.view.php');
+$router->get('/edit-match/{id}', 'views/crud/edit/edit-match.view.php');
+$router->post('/save-match', 'controllers/crud/save-match.controller.php');
+$router->post('/update-match', 'controllers/crud/update-match.controller.php');
+
 // Definir rutas POST
 $router->post('/login', 'controllers/auth/login.controller.php');
 $router->post('/register', 'controllers/auth/register.controller.php');
@@ -27,6 +33,14 @@ $router->post('/create', 'controllers/crud/create.controller.php');
 $router->post('/delete', 'controllers/crud/delete.controller.php');
 $router->post('/forgotpassword', 'controllers/auth/forgotpassword.controller.php');
 $router->get('/logout', 'controllers/auth/logout.controller.php');
+$router->post('/save-match', 'controllers/crud/save-match.controller.php');
+$router->post('/delete-match', 'controllers/crud/delete-match.controller.php');
+
+// Rutas para artículos
+$router->post('/save-article', 'controllers/crud/save-article.controller.php');
+$router->get('/edit-article/{id}', 'views/crud/edit/edit-article.view.php');
+$router->post('/update-article', 'controllers/crud/update-article.controller.php');
+$router->post('/delete-article', 'controllers/crud/delete-article.controller.php');
 
 // Obtener y procesar la URI
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);

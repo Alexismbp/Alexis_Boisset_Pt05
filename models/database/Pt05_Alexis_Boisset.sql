@@ -265,6 +265,42 @@ VALUES (
     '$2y$10$UzJrOph0LT2CCR8.w2qBVOKnk1gArl8UonbTGn3UYtLykVuDcY.z.',
     'Crystal Palace'
   );
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `articles`
+--
+
+CREATE TABLE `articles` (
+  `id` int(11) NOT NULL,
+  `partit_id` int(11) NOT NULL,
+  `usuari_id` int(11) NOT NULL,
+  `titol` varchar(255) NOT NULL,
+  `contingut` text NOT NULL,
+  `data_creacio` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `data_modificacio` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Indices de la tabla `articles`
+--
+ALTER TABLE `articles`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `partit_id` (`partit_id`),
+  ADD KEY `usuari_id` (`usuari_id`);
+
+--
+-- AUTO_INCREMENT de la tabla `articles`
+--
+ALTER TABLE `articles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Restricciones para la tabla `articles`
+--
+ALTER TABLE `articles`
+  ADD CONSTRAINT `articles_ibfk_1` FOREIGN KEY (`partit_id`) REFERENCES `partits` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `articles_ibfk_2` FOREIGN KEY (`usuari_id`) REFERENCES `usuaris` (`id`) ON DELETE CASCADE;
+
 --
 -- Índices para tablas volcadas
 --
