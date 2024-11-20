@@ -1,6 +1,5 @@
 <!-- Alexis Boisset -->
 <?php
-session_start();
 
 // Netejar variable de sessió "email" y tornar a Index.php
 if (isset($_GET['back']) && $_GET['back'] == true) {
@@ -15,7 +14,7 @@ if (isset($_GET['back']) && $_GET['back'] == true) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logar-se</title>
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>views/auth/login/styles_login.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL?>views/auth/login/styles_login.css">
 </head>
 
 <body>

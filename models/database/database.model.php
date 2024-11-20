@@ -44,4 +44,4 @@ class Database
     }
 }
 
-
+$conn = Database::connect(); // Connexió a la base de dades

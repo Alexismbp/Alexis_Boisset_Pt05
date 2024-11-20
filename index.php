@@ -1,62 +1,41 @@
 <!-- Alexis Boisset -->
 <?php
-require_once "models/database/database.model.php"; // Fitxer per obtenir connexió a la base de dades
-require_once "controllers/session/session.controller.php"; // Fitxer per detectar innactivitat
-require_once "models/utils/porra.model.php"; // Fitxer per obtenir partits
+// FILE: index.php
 
-$conn = Database::connect(); // Connexió a la base de dades
+// Incluir archivos necesarios
+require_once "models/env.php";
+require_once "models/database/database.model.php";
+require_once "controllers/session/session.controller.php";
 
 session_start();
 
-// Definir número partits per pàgina
-if (isset($_GET['partitsPerPage'])) {
-    // Si s'ha passat el valor per GET l'agafem i aprofitem per crear la cookie
-    $partitsPerPage = (int)$_GET['partitsPerPage'];
-    setcookie('partitsPerPage', $partitsPerPage, time() + (86400 * 30), "/"); // Cookie vàlida per 30 díes
-} elseif (isset($_COOKIE['partitsPerPage'])) {
-    // Si no hi ha GET agafem valor de cookie (si existeix)
-    $partitsPerPage = (int)$_COOKIE['partitsPerPage'];
-} else {
-    $partitsPerPage = 5; // Per defecte
-}
+// Obtener la ruta solicitada
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// Selecció de lliga
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
-    // Si l'usuari està loguejat agafem la lliga del seu equip favorit
-    $lligaSeleccionada = $_SESSION['lliga'];
-} else {
-    // Si no està loguejat agafem el valor seleccionat al <select> per GET
-    if (isset($_GET['lliga'])) {
-        $lligaSeleccionada = $_GET['lliga'];
-        setcookie('lliga', $lligaSeleccionada, time() + (86400 * 30), "/"); // Cookie vàlida per 30 díes
-    } elseif (isset($_COOKIE['lliga'])) {
-        // Si no hi ha GET agafem valor de cookie (si existeix)
-        $lligaSeleccionada = $_COOKIE['lliga'];
+// Remover el prefijo si tu aplicación está en un subdirectorio
+$baseDir = ''; // Por ejemplo, '/Practiques/M07-Servidor/Alexis_Boisset_Pt05'
+$uri = substr($uri, strlen($baseDir));
+
+// Enrutamiento básico
+if ($uri === '/' || $uri === '') {
+    // Ruta principal
+    include __DIR__ . '/controllers/main.controller.php';
+} elseif ($uri === '/login') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        include __DIR__ . '/controllers/auth/login.controller.php';
     } else {
-        $lligaSeleccionada = 'LaLiga'; // Per defecte
+        include __DIR__ . '/views/auth/login.view.php';
     }
-}
-
-// Determinar la página actual
-$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
-$offset = ($page - 1) * $partitsPerPage;
-
-// Obtenir partits de la lliga seleccionada
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
-    $equipFavorit = $_SESSION['equip'];
-    $partits = getPartits($lligaSeleccionada, $partitsPerPage, $offset, $equipFavorit);
+} elseif ($uri === '/logout') {
+    include __DIR__ . '/controllers/auth/logout.controller.php';
+} elseif ($uri === '/register') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        include __DIR__ . '/controllers/auth/register.controller.php';
+    } else {
+        include __DIR__ . '/views/auth/register.view.php';
+    }
 } else {
-    $partits = getPartits($lligaSeleccionada, $partitsPerPage, $offset);
+    // Página 404 si la ruta no coincide
+    include __DIR__ . '/views/errors/404.view.php';
 }
-
-// Calcular total de partits per la paginació
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
-    $totalPartits = getTotalPartits($lligaSeleccionada, $equipFavorit);
-} else {
-    $totalPartits = getTotalPartits($lligaSeleccionada);
-}
-
-$totalPages = ceil($totalPartits / $partitsPerPage);
-
-include "views/main/index.view.php";
 ?>
