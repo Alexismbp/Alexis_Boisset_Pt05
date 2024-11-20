@@ -26,7 +26,7 @@ if (isset($_GET['back']) && $_GET['back'] == true) {
 
         <form action="<?php echo BASE_URL; ?>controllers/auth/login.controller.php" method="POST">
             
-            <?php include BASE_PATH . 'views/layouts/errors.view.php'; ?>
+            <?php include BASE_PATH . 'views/layouts/feedback.view.php.php'; ?>
 
             <label for="email">Correu electrònic:</label>
             <input type="email" id="email" name="email" class="input-field" value="<?php echo $_SESSION['email']; ?>" required>

@@ -12,9 +12,9 @@ session_start();
 // Obtener la ruta solicitada
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// Remover el prefijo si tu aplicación está en un subdirectorio
+// Si la aplicación trabaja en un subdirectorio, descomentar la siguiente línea
 
-$uri = substr($uri, strlen(BASE_URL));
+// $uri = substr($uri, strlen(BASE_URL));
 
 // Enrutamiento básico
 if ($uri === '/' || $uri === '') {
@@ -34,8 +34,27 @@ if ($uri === '/' || $uri === '') {
     } else {
         include __DIR__ . '/views/auth/register.view.php';
     }
+} elseif ($uri === '/create') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        include __DIR__ . '/controllers/crud/create.controller.php';
+    } else {
+        include __DIR__ . '/views/crud/create.view.php';
+    }
+} elseif ($uri === '/delete') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        include __DIR__ . '/controllers/crud/delete.controller.php';
+    } else {
+        include __DIR__ . '/views/crud/delete.view.php';
+    }
+} elseif ($uri === '/forgotpassword') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        include __DIR__ . '/controllers/auth/forgotpassword.controller.php';
+    } else {
+        include __DIR__ . '/views/auth/forgotpassword.view.php';
+    }
 } else {
-    // Página 404 si la ruta no coincide
-    include __DIR__ . '/views/errors/404.view.php';
+    // Enviar el encabezado 404
+    header("HTTP/1.0 404 Not Found");
+    exit();
 }
 ?>

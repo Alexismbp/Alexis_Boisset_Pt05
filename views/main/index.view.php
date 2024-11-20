@@ -12,35 +12,27 @@
 <header>
     <?php if (!isset($_SESSION['loggedin'])): ?>
         <!-- Opciones de logarse o registrar-se cuando no está logado -->
-        <a href="<?php echo BASE_URL?>views/auth/login/login.view.php" class="btn-login">Logar-se</a>
-        <a href="<?php echo BASE_URL?>views/auth/register/register.view.php" class="btn-register">Enregistrar-se</a>
+        <a href="/login" class="btn-login">Logar-se</a>
+        <a href="/register" class="btn-register">Enregistrar-se</a>
     <?php else: ?>
         <!-- Mensaje cuando el usuario ya está logado -->
         <p>Benvingut, <?php echo $_SESSION['username']; ?>!</p>
-        <a href="<?php echo BASE_URL?>controllers/auth/logout.controller.php" class="btn-logout">Tancar sessió</a>
+        <a href="/logout" class="btn-logout">Tancar sessió</a>
     <?php endif; ?>
 </header>
 
 <body>
     <?php
     // FEEDBACK
-    if (isset($_SESSION['errors'])) {
-        foreach ($_SESSION['errors'] as $error) {
-            echo '<div class="message error">' . $error . '</div>'; // Mostra cada error.
-        }
-        unset($_SESSION['errors']); // Neteja els errors de la sessió.
-    } elseif (isset($_SESSION['success'])) {
-        echo '<div class="message success">' . $_SESSION['success'] . '</div>'; // Missatge d'èxit.
-        unset($_SESSION['success']); // Neteja el missatge de la sessió.
-    }
+    include BASE_PATH . 'views/layouts/feedback.view.php';
     ?>
     <h1>Gestor de Partits</h1>
 
     <!-- Enllaços per a gestionar els partits (només loguejat) -->
     <?php if ($_SESSION['loggedin']) : ?>
         <ul>
-            <li><a href="<?php echo BASE_URL?>views/crud/create/create-match.view.php">Crear nou partit</a></li>
-            <li><a href="<?php echo BASE_URL?>views/crud/delete/delete.view.php">Eliminar un partit</a></li>
+            <li><a href="/create">Crear nou partit</a></li>
+            <li><a href="/delete">Eliminar un partit</a></li>
         </ul>
     <?php endif ?>
 
