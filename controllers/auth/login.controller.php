@@ -1,12 +1,13 @@
 <?php
 // Alexis Boisset
-session_start();
 
-require_once BASE_PATH . 'models/database/database.model.php';
-require_once BASE_PATH . 'models/user/user.model.php';
+require_once __DIR__ . '/../../models/database/database.model.php';
+require_once __DIR__ . '/../../models/user/user.model.php';
+
+
+error_log('Login controller reached');
 
 try {
-    $conn = connect();
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = htmlspecialchars($_POST['email']);

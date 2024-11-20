@@ -17,9 +17,9 @@ if (isset($_GET['netejar']) && $_GET['netejar'] == true) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enregistrar-se</title>
-    <link rel="stylesheet" href="styles/styles_register.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>views/auth/register/styles_register.css">
     <!-- Enllaç al arxiu JavaScript per carregar els <option> del <select id="equip"> -->
-    <script src="../scripts/lligaequip.js" defer></script>
+    <script src="<?php echo BASE_URL; ?>scripts/lligaequip.js" defer></script>
 </head>
 
 <body onload="actualitzarEquips('registrar', '<?php echo $_SESSION['equip'] ?>')">
@@ -78,7 +78,7 @@ if (isset($_GET['netejar']) && $_GET['netejar'] == true) {
 
         <a href="<?php echo $_SERVER['PHP_SELF']; ?>?netejar=true" class="btn-back">Netejar</a> <!-- Boto per netejar camps formulari -->
         <br>
-        <a href="../../index.php" class="btn-back">Tornar a la pàgina principal</a>
+        <a href="<?php echo BASE_URL; ?>" class="btn-back">Tornar a la pàgina principal</a>
     </div>
 </body>
 

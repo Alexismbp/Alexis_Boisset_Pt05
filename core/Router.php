@@ -1,4 +1,3 @@
-
 <?php
 class Router {
     private $routes = [];
@@ -13,11 +12,13 @@ class Router {
     
     public function dispatch($uri) {
         $method = $_SERVER['REQUEST_METHOD'];
-        
+        error_log("Routing $method $uri");
+
         if (isset($this->routes[$method][$uri])) {
-            return $this->routes[$method][$uri]; 
+            error_log("Matched route: " . $this->routes[$method][$uri]);
+            return $this->routes[$method][$uri];
         }
-        
+
         throw new Exception('Ruta no encontrada');
     }
 }

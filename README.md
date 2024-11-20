@@ -43,7 +43,6 @@ ALEXIS_BOISSET_PT04/
 │   ├── register.view.php          # Formulari de registre.
 │
 ├── .gitignore                     # Arxius i carpetes a ignorar en Git.
-├── DUDASXAVI.TXT                  # Possiblement notes o preguntes.
 └── index.php                      # Punt d'entrada principal de l'aplicació.
 ```
 

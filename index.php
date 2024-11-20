@@ -6,12 +6,16 @@ require_once __DIR__ . "/core/Router.php";
 
 session_start();
 
+// DEBUG
+/* $_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/login";
+$_SERVER['REQUEST_METHOD'] = "POST"; */
+
 $router = new Router();
 
 // Definir rutas GET
 $router->get('/', 'controllers/main.controller.php');
 $router->get('/login', 'views/auth/login/login.view.php');
-$router->get('/register', 'views/auth/login/register.view.php');
+$router->get('/register', 'views/auth/register/register.view.php');
 $router->get('/create', 'views/crud/create.view.php');
 $router->get('/delete', 'views/crud/delete.view.php');
 $router->get('/forgotpassword', 'views/auth/forgotpassword.view.php');
