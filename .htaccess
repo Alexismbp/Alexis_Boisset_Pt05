@@ -1,19 +1,5 @@
 RewriteEngine On
-RewriteBase /
-
-# Redirigir todas las solicitudes que no sean archivos existentes a index.php
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php [QSA,L]
+RewriteRule ^ index.php [QSA,L]
 
-# Manejar errores 404
 ErrorDocument 404 /views/errors/404.view.php
-
-# Bloquear acceso a archivos sensibles
-<FilesMatch "\.(env\.php)$">
-    Order allow,deny
-    Deny from all
-</FilesMatch>
-
-# Deshabilitar la indexación de directorios
-Options -Indexess
