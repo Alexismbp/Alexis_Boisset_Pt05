@@ -6,18 +6,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestor de partits</title>
-    <link rel="stylesheet" href="<?php echo BASE_URL ?>views/main/styles.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/views/main/styles.css">
 </head>
 
 <header>
     <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
         <!-- Mensaje cuando el usuario ya está logado -->
-        <p>Benvingut, <?php echo $_SESSION['username']; ?>!</p>
-        <a href="/logout" class="btn-logout">Tancar sessió</a>
+        <p>Benvingut, <?php echo htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8'); ?>!</p>
+        <a href="<?php echo BASE_URL; ?>/logout" class="btn-logout">Tancar sessió</a>
     <?php else: ?>
         <!-- Opciones de logarse o registrar-se cuando no está logado -->
-        <a href="/login" class="btn-login">Logar-se</a>
-        <a href="/register" class="btn-register">Enregistrar-se</a>
+        <a href="<?php echo BASE_URL; ?>/login" class="btn-login">Logar-se</a>
+        <a href="<?php echo BASE_URL; ?>/register" class="btn-register">Enregistrar-se</a>
     <?php endif; ?>
 </header>
 
@@ -31,8 +31,8 @@
     <!-- Enllaços per a gestionar els partits (només loguejat) -->
     <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
         <ul>
-            <li><a href="/create">Crear nou partit</a></li>
-            <li><a href="/delete">Eliminar un partit</a></li>
+            <li><a href="<?php echo BASE_URL; ?>/create">Crear nou partit</a></li>
+            <li><a href="<?php echo BASE_URL; ?>/delete">Eliminar un partit</a></li>
         </ul>
     <?php endif ?>
 
