@@ -19,7 +19,7 @@ require_once "controllers/session/session.controller.php";
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 // Línea para funcionamiento en local
-$uri = '/' . ltrim(substr($uri, strlen(BASE_URL)), '/');
+//$uri = '/' . ltrim(substr($uri, strlen(BASE_URL)), '/');
 
 // Enrutamiento básico
 if ($uri === '/' || $uri === '') {
