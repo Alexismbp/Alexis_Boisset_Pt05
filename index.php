@@ -4,9 +4,9 @@
 // FILE: index.php
 
 // Incluir archivos necesarios
-require_once BASE_PATH . "models/env.php";
-require_once BASE_PATH . "models/database/database.model.php";
-require_once BASE_PATH . "controllers/session/session.controller.php";
+require_once __DIR__ . "/models/env.php";
+require_once __DIR__ . "/models/database/database.model.php";
+require_once __DIR__ . "/controllers/session/session.controller.php";
 
 session_start();
 
