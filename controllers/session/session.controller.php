@@ -3,8 +3,6 @@
 // Control de inactivitat (tret de StackOverflow)
 // Obtener la URL base del servidor
 
-session_start();
-
 if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 2400) && ($_SESSION['loggedin'])) {
     // Si han pasado más de 40 minutos
     session_unset();

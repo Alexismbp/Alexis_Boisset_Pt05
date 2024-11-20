@@ -10,14 +10,14 @@
 </head>
 
 <header>
-    <?php if (!isset($_SESSION['loggedin'])): ?>
-        <!-- Opciones de logarse o registrar-se cuando no está logado -->
-        <a href="/login" class="btn-login">Logar-se</a>
-        <a href="/register" class="btn-register">Enregistrar-se</a>
-    <?php else: ?>
+    <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
         <!-- Mensaje cuando el usuario ya está logado -->
         <p>Benvingut, <?php echo $_SESSION['username']; ?>!</p>
         <a href="/logout" class="btn-logout">Tancar sessió</a>
+    <?php else: ?>
+        <!-- Opciones de logarse o registrar-se cuando no está logado -->
+        <a href="/login" class="btn-login">Logar-se</a>
+        <a href="/register" class="btn-register">Enregistrar-se</a>
     <?php endif; ?>
 </header>
 
@@ -29,7 +29,7 @@
     <h1>Gestor de Partits</h1>
 
     <!-- Enllaços per a gestionar els partits (només loguejat) -->
-    <?php if ($_SESSION['loggedin']) : ?>
+    <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
         <ul>
             <li><a href="/create">Crear nou partit</a></li>
             <li><a href="/delete">Eliminar un partit</a></li>
