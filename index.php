@@ -13,8 +13,8 @@ session_start();
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 // Remover el prefijo si tu aplicación está en un subdirectorio
-$baseDir = ''; // Por ejemplo, '/Practiques/M07-Servidor/Alexis_Boisset_Pt05'
-$uri = substr($uri, strlen($baseDir));
+
+$uri = substr($uri, strlen(BASE_URL));
 
 // Enrutamiento básico
 if ($uri === '/' || $uri === '') {
