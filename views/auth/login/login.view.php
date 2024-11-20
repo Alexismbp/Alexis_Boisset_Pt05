@@ -4,7 +4,7 @@
 // Netejar variable de sessió "email" y tornar a Index.php
 if (isset($_GET['back']) && $_GET['back'] == true) {
     unset($_SESSION['email']);
-    header("Location:" . BASE_URL);
+    header("Location: /");
 }
 ?>
 <!DOCTYPE html>

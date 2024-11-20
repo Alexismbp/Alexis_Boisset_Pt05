@@ -55,7 +55,7 @@ if ($uri === '/' || $uri === '') {
     }
 } else {
     // Enviar el encabezado 404 y mostrar la página de error
-    header("HTTP/1.0 404 Not Found");
+    http_response_code(404);
     include BASE_PATH . 'views/errors/404.view.php';
     exit();
 }
