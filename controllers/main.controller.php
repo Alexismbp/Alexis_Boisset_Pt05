@@ -1,9 +1,11 @@
 <?php
-// FILE: controllers/main.controller.php
-
 require_once __DIR__ . '/../models/utils/porra.model.php';
 
+// Definir ligas disponibles
+$lligues = ['LaLiga', 'Premier League', 'Ligue 1'];
+
 // Definir número de partidos por página
+$partidosPerPageOptions = [5, 10, 15, 20];
 if (isset($_GET['partitsPerPage'])) {
     $partitsPerPage = (int)$_GET['partitsPerPage'];
     setcookie('partitsPerPage', $partitsPerPage, time() + (86400 * 30), "/");
@@ -16,44 +18,13 @@ if (isset($_GET['partitsPerPage'])) {
 // Selección de liga
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
     $lligaSeleccionada = $_SESSION['lliga'];
+} elseif (isset($_GET['lliga'])) {
+    $lligaSeleccionada = $_GET['lliga'];
+    setcookie('lliga', $lligaSeleccionada, time() + (86400 * 30), "/");
+} elseif (isset($_COOKIE['lliga'])) {
+    $lligaSeleccionada = $_COOKIE['lliga'];
 } else {
-    if (isset($_GET['lliga'])) {
-        $lligaSeleccionada = $_GET['lliga'];
-        setcookie('lliga', $lligaSeleccionada, time() + (86400 * 30), "/");
-    } elseif (isset($_COOKIE['lliga'])) {
-        $lligaSeleccionada = $_COOKIE['lliga'];
-    } else {
-        $lligaSeleccionada = 'LaLiga'; // Valor por defecto
-    }
-}
-
-// Definir número partits per pàgina
-if (isset($_GET['partitsPerPage'])) {
-    // Si s'ha passat el valor per GET l'agafem i aprofitem per crear la cookie
-    $partitsPerPage = (int)$_GET['partitsPerPage'];
-    setcookie('partitsPerPage', $partitsPerPage, time() + (86400 * 30), "/"); // Cookie vàlida per 30 díes
-} elseif (isset($_COOKIE['partitsPerPage'])) {
-    // Si no hi ha GET agafem valor de cookie (si existeix)
-    $partitsPerPage = (int)$_COOKIE['partitsPerPage'];
-} else {
-    $partitsPerPage = 5; // Per defecte
-}
-
-// Selecció de lliga
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
-    // Si l'usuari està loguejat agafem la lliga del seu equip favorit
-    $lligaSeleccionada = $_SESSION['lliga'];
-} else {
-    // Si no està loguejat agafem el valor seleccionat al <select> per GET
-    if (isset($_GET['lliga'])) {
-        $lligaSeleccionada = $_GET['lliga'];
-        setcookie('lliga', $lligaSeleccionada, time() + (86400 * 30), "/"); // Cookie vàlida per 30 díes
-    } elseif (isset($_COOKIE['lliga'])) {
-        // Si no hi ha GET agafem valor de cookie (si existeix)
-        $lligaSeleccionada = $_COOKIE['lliga'];
-    } else {
-        $lligaSeleccionada = 'LaLiga'; // Per defecte
-    }
+    $lligaSeleccionada = 'LaLiga';
 }
 
 // Determinar la página actual
@@ -77,6 +48,18 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
 
 $totalPages = ceil($totalPartits / $partitsPerPage);
 
+// Pasar todas las variables necesarias a la vista
+$viewData = [
+    'lligues' => $lligues,
+    'lligaSeleccionada' => $lligaSeleccionada,
+    'partitsPerPage' => $partitsPerPage,
+    'partidosPerPageOptions' => $partidosPerPageOptions,
+    'partits' => $partits,
+    'currentPage' => $page,
+    'totalPages' => $totalPages
+];
+
 // Incluir la vista principal
+extract($viewData);
 include __DIR__ . '/../views/main/index.view.php';
 ?>

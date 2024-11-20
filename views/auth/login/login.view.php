@@ -2,10 +2,7 @@
 <?php
 
 // Netejar variable de sessió "email" y tornar a Index.php
-if (isset($_GET['back']) && $_GET['back'] == true) {
-    unset($_SESSION['email']);
-    header("Location: /");
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="ca">
@@ -24,21 +21,20 @@ if (isset($_GET['back']) && $_GET['back'] == true) {
             <h3>Sessió expirada</h3>
         <?php endif; ?>
 
-        <form action="<?php echo BASE_URL; ?>controllers/auth/login.controller.php" method="POST">
-            
-            <?php include BASE_PATH . 'views/layouts/feedback.view.php.php'; ?>
+        <form action="<?php echo BASE_URL; ?>login" method="POST">
+            <?php include BASE_PATH . 'views/layouts/feedback.view.php'; ?>
 
             <label for="email">Correu electrònic:</label>
-            <input type="email" id="email" name="email" class="input-field" value="<?php echo $_SESSION['email']; ?>" required>
+            <input type="email" id="email" name="email" class="input-field" value="<?php echo isset($_SESSION['email']) ? $_SESSION['email'] : ''; ?>" required>
 
             <label for="password">Contrasenya:</label>
             <input type="password" id="password" name="password" class="input-field" required>
 
             <input type="submit" class="btn-submit" value="Logar-se">
         </form>
-        <a href="forgotpassword.view.php" class="btn-back">Has oblidat la contrasneya?</a>
+        <a href="<?php echo BASE_URL; ?>forgotpassword" class="btn-back">Has oblidat la contrasenya?</a>
         <br>
-        <a href="<?php echo $_SERVER['PHP_SELF']; ?>?back=true" class="btn-back">Tornar enrere</a>
+        <a href="<?php echo BASE_URL; ?>" class="btn-back">Tornar enrere</a>
     </div>
 </body>
 

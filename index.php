@@ -1,62 +1,39 @@
 <?php
-// Alexis Boisset
-
-// FILE: index.php
-
-// Incluir archivos necesarios
 require_once __DIR__ . "/models/env.php";
 require_once __DIR__ . "/models/database/database.model.php";
 require_once __DIR__ . "/controllers/session/session.controller.php";
+require_once __DIR__ . "/core/Router.php";
 
 session_start();
 
-// Obtener la ruta solicitada
-$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$router = new Router();
 
-// Remover el prefijo de BASE_URL para obtener la ruta relativa
+// Definir rutas GET
+$router->get('/', 'controllers/main.controller.php');
+$router->get('/login', 'views/auth/login/login.view.php');
+$router->get('/register', 'views/auth/login/register.view.php');
+$router->get('/create', 'views/crud/create.view.php');
+$router->get('/delete', 'views/crud/delete.view.php');
+$router->get('/forgotpassword', 'views/auth/forgotpassword.view.php');
+
+// Definir rutas POST
+$router->post('/login', 'controllers/auth/login.controller.php');
+$router->post('/register', 'controllers/auth/register.controller.php');
+$router->post('/create', 'controllers/crud/create.controller.php');
+$router->post('/delete', 'controllers/crud/delete.controller.php');
+$router->post('/forgotpassword', 'controllers/auth/forgotpassword.controller.php');
+$router->get('/logout', 'controllers/auth/logout.controller.php');
+
+// Obtener y procesar la URI
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $basePath = rtrim(parse_url(BASE_URL, PHP_URL_PATH), '/');
 $uri = "/" . ltrim(substr($uri, strlen($basePath)), '/');
 
-// Enrutamiento básico
-if ($uri === '/' || $uri === '') {
-    // Ruta principal
-    include BASE_PATH . 'controllers/main.controller.php';
-} elseif ($uri === '/login') {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        include BASE_PATH . 'controllers/auth/login.controller.php';
-    } else {
-        include BASE_PATH . 'views/auth/login/login.view.php';
-    }
-} elseif ($uri === '/logout') {
-    include BASE_PATH . 'controllers/auth/logout.controller.php';
-} elseif ($uri === '/register') {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        include BASE_PATH . 'controllers/auth/register.controller.php';
-    } else {
-        include BASE_PATH . 'views/auth/register.view.php';
-    }
-} elseif ($uri === '/create') {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        include BASE_PATH . 'controllers/crud/create.controller.php';
-    } else {
-        include BASE_PATH . 'views/crud/create.view.php';
-    }
-} elseif ($uri === '/delete') {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        include BASE_PATH . 'controllers/crud/delete.controller.php';
-    } else {
-        include BASE_PATH . 'views/crud/delete.view.php';
-    }
-} elseif ($uri === '/forgotpassword') {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        include BASE_PATH . 'controllers/auth/forgotpassword.controller.php';
-    } else {
-        include BASE_PATH . 'views/auth/forgotpassword.view.php';
-    }
-} else {
-    // Enviar el encabezado 404 y mostrar la página de error
+try {
+    $controller = $router->dispatch($uri);
+    include BASE_PATH . $controller;
+} catch (Exception $e) {
     http_response_code(404);
     include BASE_PATH . 'views/errors/404.view.php';
-    exit();
 }
 ?>

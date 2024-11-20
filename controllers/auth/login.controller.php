@@ -1,56 +1,43 @@
 <?php
 // Alexis Boisset
+session_start();
+
+require_once BASE_PATH . 'models/database/database.model.php';
+require_once BASE_PATH . 'models/user/user.model.php';
+
 try {
-    session_start();
+    $conn = connect();
 
-    require "../model/db_conn.php";
-    require "../model/user_model.php";
-
-    // Connexió a BD
-    try {
-        $conn = connect();
-    } catch (PDOException $e) {
-        die("Error de connexió: " . $e->getMessage());
-    }
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
-        // Rebre dades formulari
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = htmlspecialchars($_POST['email']);
         $password = htmlspecialchars($_POST['password']);
 
-        // Obtenir dades d'usuari per utilitzar en cas de login successful (+info a la funcio al model)
-        if ($userData = getUserData($email, $conn)) {
+        $userData = getUserData($email, $conn);
 
-            $idUsuari = $userData['id'];
-            $nomUsuari = $userData['nom_usuari'];
-            $hashedPassword = $userData['contrasenya']; // Contrasenya de la BD (hashejada/encriptada)
-            $equip = $userData['equip_favorit'];
+        if ($userData) {
+            $hashedPassword = $userData['contrasenya'];
 
-            // Usar password_verify para verificar la contraseña ingresada
             if (password_verify($password, $hashedPassword)) {
-
-                $_SESSION['LAST_ACTIVITY'] = time(); // Començo time() per poder expirar la sessió en cas d'absencia
-
-                // Agafo/assigno dades esencials per el funcionament i estética de l'aplicació
+                $_SESSION['LAST_ACTIVITY'] = time();
                 $_SESSION['loggedin'] = true;
-                $_SESSION['userid'] = $idUsuari;
-                $_SESSION['username'] = $nomUsuari;
-                $_SESSION['equip'] = $equip;
-                $_SESSION['lliga'] = getLeagueName($equip, $conn);
+                $_SESSION['userid'] = $userData['id'];
+                $_SESSION['username'] = $userData['nom_usuari'];
+                $_SESSION['equip'] = $userData['equip_favorit'];
+                $_SESSION['lliga'] = getLeagueName($userData['equip_favorit'], $conn);
 
-                header("Location: ../index.php");
+                header("Location: " . BASE_URL);
                 exit();
             } else {
-                $_SESSION['failure'] = "La contrasenya no es correcta"; // Si la contrasenya no coincideix dona error
+                $_SESSION['failure'] = "La contrasenya no és correcta";
                 $_SESSION['email'] = $email;
             }
         } else {
-            $_SESSION['failure'] = "L'usuari no existeix a la base de dades"; // Si la funció retorna fals dona error (no existeix l'usuari)
+            $_SESSION['failure'] = "L'usuari no existeix a la base de dades";
         }
     }
-} catch (\Throwable $th) {
-    $_SESSION['failure'] = "Error: " . $th->getMessage();
+} catch (Exception $e) {
+    $_SESSION['failure'] = "Error: " . $e->getMessage();
 } finally {
-    header("Location: ../view/login.view.php");
+    header("Location: " . BASE_URL . "login");
     exit();
 }
