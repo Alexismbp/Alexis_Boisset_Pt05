@@ -1,4 +1,8 @@
 <!-- Alexis Boisset -->
+<?php
+require_once BASE_PATH . '/controllers/utils/session.helper.php';
+require_once BASE_PATH . '/controllers/utils/recaptcha.controller.php';
+?>
 <!DOCTYPE html>
 <html lang="ca">
 
@@ -7,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logar-se</title>
     <link rel="stylesheet" href="<?php echo BASE_URL?>views/auth/login/styles_login.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body>
@@ -19,13 +24,25 @@
         <form action="<?php echo BASE_URL; ?>login" method="POST">
             <?php include BASE_PATH . 'views/layouts/feedback.view.php'; ?>
 
-            <label for="email">Correu electrònic:</label>
-            <input type="email" id="email" name="email" class="input-field" value="<?php echo isset($_SESSION['email']) ? $_SESSION['email'] : ''; ?>" required>
+            <div class="form-group">
+                <label for="email">Correu electrònic:</label>
+                <input type="email" id="email" name="email" class="input-field" value="<?php echo SessionHelper::getFormValue('email'); ?>" required>
+            </div>
 
-            <label for="password">Contrasenya:</label>
-            <input type="password" id="password" name="password" class="input-field" required>
+            <div class="form-group">
+                <label for="password">Contrasenya:</label>
+                <input type="password" id="password" name="password" class="input-field" required>
+            </div>
 
-            <input type="submit" class="btn-submit" value="Logar-se">
+            <?php if (SessionHelper::needsCaptcha()): ?>
+                <div class="form-group captcha-container">
+                    <?php echo ReCaptchaController::renderCaptcha(); ?>
+                </div>
+            <?php endif; ?>
+
+            <div class="form-group">
+                <input type="submit" class="btn-submit" value="Logar-se">
+            </div>
         </form>
         <a href="<?php echo BASE_URL; ?>forgotpassword" class="btn-back">Has oblidat la contrasenya?</a>
         <br>

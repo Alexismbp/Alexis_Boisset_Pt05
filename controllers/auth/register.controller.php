@@ -5,6 +5,7 @@ require_once __DIR__ . '/../../models/database/database.model.php';
 require_once __DIR__ . '/../../models/user/user.model.php';
 require_once __DIR__ . '/../utils/validation.controller.php';
 require_once __DIR__ . '/../../models/env.php';
+require_once __DIR__ . '/../utils/recaptcha.controller.php';
 
 try {
 
@@ -19,12 +20,23 @@ try {
     $missatgesError = [];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Sanitizar entradas
+        // Guardar los datos del formulario primero
         $nomUsuari = Validation::sanitizeInput($_POST['username']);
-        $contrasenya = Validation::sanitizeInput($_POST['password']);
-        $passwordConfirm = Validation::sanitizeInput($_POST['password_confirm']);
         $email = Validation::sanitizeInput($_POST['email']);
         $equipFavorit = Validation::sanitizeInput($_POST['equip']);
+
+        // Verificar captcha
+        $recaptcha_response = $_POST['g-recaptcha-response'] ?? '';
+        if (!ReCaptchaController::verifyResponse($recaptcha_response)) {
+            $_SESSION['username'] = $nomUsuari;
+            $_SESSION['email'] = $email;
+            $_SESSION['equip'] = $equipFavorit;
+            throw new Exception('Por favor, completa el captcha correctamente.');
+        }
+
+        // Resto de validaciones
+        $contrasenya = Validation::sanitizeInput($_POST['password']);
+        $passwordConfirm = Validation::sanitizeInput($_POST['password_confirm']);
 
         // Validar campos
         $errors = array_filter([

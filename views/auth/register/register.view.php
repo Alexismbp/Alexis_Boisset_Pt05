@@ -18,6 +18,7 @@ if (isset($_GET['netejar']) && $_GET['netejar'] == true) {
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>views/auth/register/styles_register.css">
     <!-- Enllaç al arxiu JavaScript per carregar els <option> del <select id="equip"> -->
     <script src="<?php echo BASE_URL; ?>scripts/lligaequip.js" defer></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body onload="actualitzarEquips('registrar', '<?php echo $_SESSION['equip'] ?>')">
@@ -29,7 +30,7 @@ if (isset($_GET['netejar']) && $_GET['netejar'] == true) {
             <?php include_once BASE_PATH . "views/layouts/feedback.view.php"?> 
 
             <label for="username">Nom d'usuari:</label>
-            <input type="text" id="username" name="username" class="input-field" value="<?php echo $_SESSION['username'] ?>" required>
+            <input type="text" id="username" name="username" class="input-field" value="<?php echo SessionHelper::getFormValue('username'); ?>" required>
 
             <label for="email">E-mail:</label>
             <input type="email" id="email" name="email" class="input-field" value="<?php echo $_SESSION['email'] ?>" required>
@@ -55,6 +56,10 @@ if (isset($_GET['netejar']) && $_GET['netejar'] == true) {
 
             <label for="password_confirm">Torna a introduir la contrasenya:</label>
             <input type="password" id="password_confirm" name="password_confirm" class="input-field" required>
+
+            <div class="form-group captcha-container">
+                <?php echo ReCaptchaController::renderCaptcha(); ?>
+            </div>
 
             <input type="submit" class="btn-submit" value="Enregistrar-se">
         </form>

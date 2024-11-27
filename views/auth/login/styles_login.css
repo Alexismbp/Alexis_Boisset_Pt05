@@ -56,17 +56,37 @@ label {
     outline: none;
 }
 
+/* Estilos para grupos de formulario */
+.form-group {
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+/* Contenedor del captcha */
+.captcha-container {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.g-recaptcha {
+    margin: 0 auto;
+}
+
 /* Botón de envío (Logar-se) */
 .btn-submit {
+    display: block; /* Asegura que el botón ocupe su propia línea */
+    width: 100%; /* Hace que el botón ocupe todo el ancho disponible */
     background-color: #4CAF50;
     color: white;
-    padding: 10px 15px;
+    padding: 12px 20px;
     font-size: 16px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-bottom: 10px;
+    margin: 20px 0;
+    box-sizing: border-box;
 }
 
 .btn-submit:hover {
