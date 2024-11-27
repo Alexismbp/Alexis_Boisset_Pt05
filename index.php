@@ -7,9 +7,9 @@ require_once __DIR__ . "/core/Router.php";
 session_start();
 
 // DEBUG
-$_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/login";
+/* $_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/login";
 $_SERVER['REQUEST_METHOD'] = "GET";
-$_SESSION['login_attempts'] = 3;
+$_SESSION['login_attempts'] = 3; */
 
 $router = new Router();
 
