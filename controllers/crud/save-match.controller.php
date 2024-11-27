@@ -1,7 +1,7 @@
 <?php
 // Alexis Boisset
 require "../model/db_conn.php";
-require "../model/porra.php";
+require "../model/porra.model.php";
 
 session_start();
 

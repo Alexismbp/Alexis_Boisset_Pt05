@@ -26,7 +26,7 @@ if (isset($_GET['netejar'])) {
 <body>
     <div class="container">
         <h1>Crear Nou Partit</h1>
-        <form action="../../controllers/crud/save-match.controller.php" method="POST">
+        <form action="<?php echo BASE_URL; ?>controllers/crud/save-match.controller.php" method="POST">
             <?php require_once BASE_PATH . '/views/layouts/feedback.view.php'; ?>
             
             <div class="form-group">

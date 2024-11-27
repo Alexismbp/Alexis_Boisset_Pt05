@@ -27,7 +27,7 @@ if (!isset($_GET['id'])) {
 <body>
     <div class="container">
         <h1>Editar Partit</h1>
-        <form action="../../controllers/crud/update-match.controller.php" method="POST">
+        <form action="<?php echo BASE_URL; ?>controllers/crud/update-match.controller.php" method="POST">
             <?php require_once BASE_PATH . '/views/layouts/feedback.view.php'; ?>
             
             <input type="hidden" name="id" value="<?php echo $_GET['id']; ?>">

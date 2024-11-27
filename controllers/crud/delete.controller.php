@@ -5,7 +5,7 @@ session_start();
 
 try {
     require "../model/db_conn.php";
-    require "../model/porra.php";
+    require "../model/porra.model.php";
 
     try {
         $conn = connect(); 
