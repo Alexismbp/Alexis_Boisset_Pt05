@@ -4,8 +4,8 @@
 require_once __DIR__ . '/../../models/database/database.model.php';
 require_once __DIR__ . '/../../models/user/user.model.php';
 require_once __DIR__ . '/../utils/validation.controller.php';
-require_once __DIR__ . '/../utils/recaptcha.controller.php';
-require_once __DIR__ . '/../utils/session.helper.php';
+require_once __DIR__ . '/../utils/ReCaptchaController.php';
+require_once __DIR__ . '/../utils/SessionHelper.php';
 
 // DEBUGG
 /* $_SERVER['REQUEST_METHOD'] = 'POST';

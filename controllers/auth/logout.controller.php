@@ -1,6 +1,5 @@
 <?php
 // Alexis Boisset
-session_start(); // Iniciem per després...
-session_destroy(); // ... destruir
+session_destroy(); // destruir sesión
 header("Location: " . BASE_URL);
 exit();

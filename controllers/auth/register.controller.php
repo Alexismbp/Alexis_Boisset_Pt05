@@ -25,13 +25,15 @@ try {
         $email = Validation::sanitizeInput($_POST['email']);
         $equipFavorit = Validation::sanitizeInput($_POST['equip']);
 
-        // Verificar captcha
-        $recaptcha_response = $_POST['g-recaptcha-response'] ?? '';
-        if (!ReCaptchaController::verifyResponse($recaptcha_response)) {
-            $_SESSION['username'] = $nomUsuari;
-            $_SESSION['email'] = $email;
-            $_SESSION['equip'] = $equipFavorit;
-            throw new Exception('Por favor, completa el captcha correctamente.');
+        // Verificar captcha si es necesario
+        if (SessionHelper::needsCaptcha()) {
+            $recaptcha_response = $_POST['g-recaptcha-response'] ?? '';
+            if (!ReCaptchaController::verifyResponse($recaptcha_response)) {
+                $_SESSION['username'] = $nomUsuari;
+                $_SESSION['email'] = $email;
+                $_SESSION['equip'] = $equipFavorit;
+                throw new Exception('Por favor, completa el captcha correctamente.');
+            }
         }
 
         // Resto de validaciones

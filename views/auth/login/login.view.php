@@ -1,7 +1,7 @@
 <!-- Alexis Boisset -->
 <?php
-require_once BASE_PATH . '/controllers/utils/session.helper.php';
-require_once BASE_PATH . '/controllers/utils/recaptcha.controller.php';
+require_once BASE_PATH . '/controllers/utils/SessionHelper.php';
+require_once BASE_PATH . '/controllers/utils/ReCaptchaController.php';
 ?>
 <!DOCTYPE html>
 <html lang="ca">

@@ -57,9 +57,11 @@ if (isset($_GET['netejar']) && $_GET['netejar'] == true) {
             <label for="password_confirm">Torna a introduir la contrasenya:</label>
             <input type="password" id="password_confirm" name="password_confirm" class="input-field" required>
 
-            <div class="form-group captcha-container">
-                <?php echo ReCaptchaController::renderCaptcha(); ?>
-            </div>
+            <?php if (SessionHelper::needsCaptcha()): ?>
+                <div class="form-group captcha-container">
+                    <?php echo ReCaptchaController::renderCaptcha(); ?>
+                </div>
+            <?php endif; ?>
 
             <input type="submit" class="btn-submit" value="Enregistrar-se">
         </form>

@@ -3,7 +3,11 @@
 // Control de inactivitat (tret de StackOverflow)
 // Obtener la URL base del servidor
 
-if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 2400) && ($_SESSION['loggedin'])) {
+if (!session_id()) {
+    session_start();
+}
+
+if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 2400) && (isset($_SESSION['loggedin']) && $_SESSION['loggedin'])) {
     // Si han pasado más de 40 minutos
     session_unset();
     session_destroy();
@@ -12,6 +16,6 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 
 
     header("Location: " . BASE_URL . "/views/auth/login/login.view.php"); // Redirigir al login
     exit();
-} elseif ($_SESSION['loggedin'] == true) {
+} elseif (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     $_SESSION['LAST_ACTIVITY'] = time(); // Actualizar el tiempo de última actividad
 }

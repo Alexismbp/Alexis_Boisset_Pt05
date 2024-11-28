@@ -1,25 +1,26 @@
 <?php
-class Router {
+class Router
+{
     private $routes = [];
-    
-    public function get($uri, $controller) {
+
+    public function get($uri, $controller)
+    {
         $this->routes['GET'][$uri] = $controller;
     }
-    
-    public function post($uri, $controller) {
+
+    public function post($uri, $controller)
+    {
         $this->routes['POST'][$uri] = $controller;
     }
-    
-    public function dispatch($uri) {
+
+    public function dispatch($uri)
+    {
         $method = $_SERVER['REQUEST_METHOD'];
-        error_log("Routing $method $uri");
 
         if (isset($this->routes[$method][$uri])) {
-            error_log("Matched route: " . $this->routes[$method][$uri]);
             return $this->routes[$method][$uri];
         }
 
         throw new Exception('Ruta no encontrada');
     }
 }
-?>
