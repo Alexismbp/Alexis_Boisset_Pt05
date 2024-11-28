@@ -75,8 +75,8 @@ label {
 
 /* Botón de envío (Logar-se) */
 .btn-submit {
-    display: block; /* Asegura que el botón ocupe su propia línea */
-    width: 100%; /* Hace que el botón ocupe todo el ancho disponible */
+    display: block !important; /* Forzar visibilidad */
+    width: 100%;
     background-color: #4CAF50;
     color: white;
     padding: 12px 20px;
@@ -87,6 +87,7 @@ label {
     transition: background-color 0.3s ease;
     margin: 20px 0;
     box-sizing: border-box;
+    opacity: 1 !important; /* Forzar opacidad */
 }
 
 .btn-submit:hover {
