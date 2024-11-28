@@ -21,7 +21,7 @@
     <?php include BASE_PATH . 'views/components/matches-per-page.component.php'; ?>
 
     <h2>Llista de partits</h2>
-    <?php include BASE_PATH . 'views/components/matches-list.component.php'; ?>
+    
     <?php include BASE_PATH . 'views/components/pagination.component.php'; ?>
 </body>
 </html>

@@ -9,16 +9,15 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // DEBUG
-/* $_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/forgotpassword";
-$_SERVER['REQUEST_METHOD'] = "POST"; 
-$_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/register";
+/* $_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/forgotpassword"; */
+/* $_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/register";
 $_SERVER['REQUEST_METHOD'] = "POST";
 $_POST['username'] = 'Alexis Marc';
 $_POST['password'] = 'Admin123';
-$_POST['password_confirm'] = 'Admin123';
-$_POST['email'] = 'alexismarcbp@gmail.com';
-$_POST['equip'] = 'Atlético de Madrid';
-$_SERVER['REQUEST_METHOD'] = 'POST'; */
+$_POST['password_confirm'] = 'Admin123';  */
+/* $_POST['email'] = 'a.boisset@sapalomera.cat'; */
+/* $_POST['equip'] = 'Atlético de Madrid';  */
+/* $_SERVER['REQUEST_METHOD'] = 'POST';  */
 
 $router = new Router();
 
@@ -28,9 +27,9 @@ $router->get('/login', 'views/auth/login/login.view.php');
 $router->get('/register', 'views/auth/register/register.view.php');
 $router->get('/create', 'views/crud/create.view.php');
 $router->get('/delete', 'views/crud/delete.view.php');
-$router->get('/forgotpassword', 'views/auth/forgotpassword.view.php');
+$router->get('/forgotpassword', 'views/auth/forgot/forgot-password.view.php');
 $router->get('/changepassword', 'views/auth/changepassword.view.php');
-$router->get('/resetpassword', 'views/auth/resetpassword.view.php');
+$router->get('/resetpassword', 'views/auth/reset-password.view.php');
 
 // Rutas para partidos
 $router->get('/create-match', 'views/crud/create/create-match.view.php');

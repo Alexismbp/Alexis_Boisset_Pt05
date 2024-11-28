@@ -11,9 +11,6 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $conn = Database::connect();
 
-// DEBUG
-$_POST['email'] = 'a.boisset@sapalomera.cat';
-$_SERVER['REQUEST_METHOD'] = 'POST';
 
 if ($conn && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = htmlspecialchars($_POST['email']);
@@ -28,7 +25,7 @@ if ($conn && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $_SESSION['success'] = 'S\'ha enviat un correu amb instruccions per restablir la contrasenya.';
 
-            header('Location: ../view/login.view.php');
+            header('Location: ' . BASE_URL . 'login');
             exit();
         } else {
             $_SESSION['failure'] = 'Algo ha fallat';
@@ -58,7 +55,7 @@ function sendRecoveryEmail($email, $token)
         $mail->Password = 'zpfh ujxj brmh mqdm';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = '587';
-
+        $mail->CharSet = 'UTF-8'; // Configurar la codificación
 
         $mail->SMTPOptions = array(
             'ssl' => array(
@@ -69,32 +66,12 @@ function sendRecoveryEmail($email, $token)
         );
 
         // Remitente y destinatario
-        $mail->setFrom('a.boisset@sapalomera.cat', 'Alexis Boisset');
+        $mail->setFrom('a.boisset@sapalomera.cat', 'Password Recovery');
         $mail->addAddress($email);
 
-        // HTML Template
-        $html = '
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <style>
-                body { font-family: Arial, sans-serif; line-height: 1.6; }
-                .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                .button { background: #007bff; color: white; padding: 10px 20px; 
-                         text-decoration: none; border-radius: 5px; }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <h2>Recuperació de Contrasenya</h2>
-                <p>Heu sol·licitat recuperar la vostra contrasenya.</p>
-                <p>Feu clic al següent enllaç per restablir-la:</p>
-                <p><a class="button" href="' . BASE_URL . 'resetpassword?token=' . $token . '">
-                    Restablir Contrasenya</a></p>
-                <p>Aquest enllaç caducarà en 2 hores.</p>
-            </div>
-        </body>
-        </html>';
+        // Cargar plantilla HTML
+        $html = file_get_contents(BASE_PATH . 'templates/recovery_email_template.html');
+        $html = str_replace(['{{BASE_URL}}', '{{token}}'], [BASE_URL, $token], $html);
 
         $mail->isHTML(true);
         $mail->Subject = 'Recuperació de Contrasenya';

@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .button { background: #007bff; color: white; padding: 10px 20px; 
+                 text-decoration: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Recuperació de Contrasenya</h2>
+        <p>Heu sol·licitat recuperar la vostra contrasenya.</p>
+        <p>Feu clic al següent enllaç per restablir-la:</p>
+        <p><a class="button" href="{{BASE_URL}}resetpassword?token={{token}}">
+            Restablir Contrasenya</a></p>
+        <p>Aquest enllaç caducarà en 2 hores.</p>
+    </div>
+</body>
+</html>
