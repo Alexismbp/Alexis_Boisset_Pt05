@@ -1,7 +1,11 @@
 <?php
 //Alexis Boisset
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once BASE_PATH . 'controllers/utils/form.controller.php';
+require_once BASE_PATH . 'controllers/utils/SessionHelper.php';
+require_once BASE_PATH . 'controllers/utils/ReCaptchaController.php';
 
 // Netejar camps
 if (isset($_GET['netejar']) && $_GET['netejar'] == true) {
@@ -21,7 +25,7 @@ if (isset($_GET['netejar']) && $_GET['netejar'] == true) {
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
-<body onload="actualitzarEquips('registrar', '<?php echo $_SESSION['equip'] ?>')">
+<body onload="actualitzarEquips('registrar', '<?php echo isset($_SESSION['equip']) ? $_SESSION['equip'] : '' ?>')">
     <div class="container">
         <h1>Enregistrar-se</h1>
 
@@ -33,15 +37,15 @@ if (isset($_GET['netejar']) && $_GET['netejar'] == true) {
             <input type="text" id="username" name="username" class="input-field" value="<?php echo SessionHelper::getFormValue('username'); ?>" required>
 
             <label for="email">E-mail:</label>
-            <input type="email" id="email" name="email" class="input-field" value="<?php echo $_SESSION['email'] ?>" required>
+            <input type="email" id="email" name="email" class="input-field" value="<?php echo isset($_SESSION['email']) ? $_SESSION['email'] : '' ?>" required>
 
             <!-- Select per la Lliga -->
             <label for="lliga">Lliga on juga el teu equip favorit:</label>
-            <select id="lliga" name="lliga" class="input-field" onchange="actualitzarEquips('registrar', '<?php echo $_SESSION['equip'] ?>', '<?php echo $_SESSION['lliga'] ?>')" onload="actualitzarEquips('registrar', '<?php echo $_SESSION['equip'] ?>', '<?php echo $_SESSION['lliga'] ?>')" required>
+            <select id="lliga" name="lliga" class="input-field" onchange="actualitzarEquips('registrar', '<?php echo isset($_SESSION['equip']) ? $_SESSION['equip'] : '' ?>', '<?php echo isset($_SESSION['lliga']) ? $_SESSION['lliga'] : '' ?>')" onload="actualitzarEquips('registrar', '<?php echo isset($_SESSION['equip']) ? $_SESSION['equip'] : '' ?>', '<?php echo isset($_SESSION['lliga']) ? $_SESSION['lliga'] : '' ?>')" required>
                 <option value="">-- Selecciona la teva lliga --</option>
-                <option value="LaLiga" <?php if ($_SESSION['lliga'] == 'LaLiga') echo 'selected'; ?>>LaLiga</option>
-                <option value="Premier League" <?php if ($_SESSION['lliga'] == 'Premier League') echo 'selected'; ?>>Premier League</option>
-                <option value="Ligue 1" <?php if ($_SESSION['lliga'] == 'Ligue 1') echo 'selected'; ?>>Ligue 1</option>
+                <option value="LaLiga" <?php if (isset($_SESSION['lliga']) && $_SESSION['lliga'] == 'LaLiga') echo 'selected'; ?>>LaLiga</option>
+                <option value="Premier League" <?php if (isset($_SESSION['lliga']) && $_SESSION['lliga'] == 'Premier League') echo 'selected'; ?>>Premier League</option>
+                <option value="Ligue 1" <?php if (isset($_SESSION['lliga']) && $_SESSION['lliga'] == 'Ligue 1') echo 'selected'; ?>>Ligue 1</option>
             </select>
 
             <!-- Select per l'Equip favorit -->

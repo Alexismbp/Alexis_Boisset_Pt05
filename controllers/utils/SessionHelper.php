@@ -1,4 +1,3 @@
-
 <?php
 class SessionHelper {
     public static function incrementLoginAttempts() {

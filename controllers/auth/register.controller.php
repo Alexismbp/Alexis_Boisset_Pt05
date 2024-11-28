@@ -1,11 +1,11 @@
 <?php
-session_start();
-
-require_once __DIR__ . '/../../models/database/database.model.php';
-require_once __DIR__ . '/../../models/user/user.model.php';
-require_once __DIR__ . '/../utils/validation.controller.php';
-require_once __DIR__ . '/../../models/env.php';
-require_once __DIR__ . '/../utils/recaptcha.controller.php';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require_once BASE_PATH . 'models/user/user.model.php';
+require_once BASE_PATH . 'controllers/utils/validation.controller.php';
+require_once BASE_PATH . 'controllers/utils/ReCaptchaController.php';
+require_once BASE_PATH . 'controllers/utils/SessionHelper.php';
 
 try {
 

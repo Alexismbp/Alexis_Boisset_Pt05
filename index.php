@@ -10,8 +10,15 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // DEBUG
 /* $_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/forgotpassword";
-$_SERVER['REQUEST_METHOD'] = "POST"; */
-
+$_SERVER['REQUEST_METHOD'] = "POST"; 
+$_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/register";
+$_SERVER['REQUEST_METHOD'] = "POST";
+$_POST['username'] = 'Alexis Marc';
+$_POST['password'] = 'Admin123';
+$_POST['password_confirm'] = 'Admin123';
+$_POST['email'] = 'alexismarcbp@gmail.com';
+$_POST['equip'] = 'Atlético de Madrid';
+$_SERVER['REQUEST_METHOD'] = 'POST'; */
 
 $router = new Router();
 
@@ -61,4 +68,3 @@ try {
     http_response_code(404);
     include BASE_PATH . 'views/errors/404.view.php';
 }
-?>
