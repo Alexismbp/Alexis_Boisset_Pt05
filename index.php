@@ -9,9 +9,9 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // DEBUG
-/* $_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/login";
-$_SERVER['REQUEST_METHOD'] = "GET";
-$_SESSION['login_attempts'] = 3; */
+/* $_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/forgotpassword";
+$_SERVER['REQUEST_METHOD'] = "POST"; */
+
 
 $router = new Router();
 
@@ -22,6 +22,8 @@ $router->get('/register', 'views/auth/register/register.view.php');
 $router->get('/create', 'views/crud/create.view.php');
 $router->get('/delete', 'views/crud/delete.view.php');
 $router->get('/forgotpassword', 'views/auth/forgotpassword.view.php');
+$router->get('/changepassword', 'views/auth/changepassword.view.php');
+$router->get('/resetpassword', 'views/auth/resetpassword.view.php');
 
 // Rutas para partidos
 $router->get('/create-match', 'views/crud/create/create-match.view.php');
@@ -34,7 +36,9 @@ $router->post('/login', 'controllers/auth/login.controller.php');
 $router->post('/register', 'controllers/auth/register.controller.php');
 $router->post('/create', 'controllers/crud/create.controller.php');
 $router->post('/delete', 'controllers/crud/delete.controller.php');
-$router->post('/forgotpassword', 'controllers/auth/forgotpassword.controller.php');
+$router->post('/forgotpassword', 'controllers/auth/password-recover.controller.php');
+$router->post('/changepassword', 'controllers/auth/change-password.controller.php');
+$router->post('/resetpassword', 'controllers/auth/resetpassword.controller.php');
 $router->get('/logout', 'controllers/auth/logout.controller.php');
 $router->post('/save-match', 'controllers/crud/save-match.controller.php');
 $router->post('/delete-match', 'controllers/crud/delete-match.controller.php');

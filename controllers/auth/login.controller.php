@@ -49,11 +49,13 @@ try {
             exit();
         } else {
             SessionHelper::incrementLoginAttempts();
-            $_SESSION['failure'] = "Credencials incorrectes";
+            throw new Exception("Credencials incorrectes", 1);
+        
         }
     }
 } catch (Exception $e) {
     $_SESSION['failure'] = "Error: " . $e->getMessage();
+    SessionHelper::saveFormData(['email' => $email]);
 } finally {
     header("Location: " . BASE_URL . "login");
     exit();

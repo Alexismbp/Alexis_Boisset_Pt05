@@ -136,3 +136,48 @@ function storeToken(string $email, string $token, PDO $conn): bool
         return false;
     }
 }
+
+/**
+ * Verifica la contraseña actual del usuario
+ * @param string $email
+ * @param string $password
+ * @param PDO $conn
+ * @return bool
+ */
+function verifyCurrentPassword(string $email, string $password, PDO $conn): bool {
+    $query = $conn->prepare("SELECT password FROM usuaris WHERE correu_electronic = :email");
+    $query->bindParam(':email', $email);
+    $query->execute();
+    
+    $hash = $query->fetchColumn();
+    return password_verify($password, $hash);
+}
+
+/**
+ * Actualiza la contraseña del usuario
+ * @param string $email
+ * @param string $hashedPassword
+ * @param PDO $conn
+ * @return bool
+ */
+function updatePassword(string $email, string $hashedPassword, PDO $conn): bool {
+    $query = $conn->prepare("UPDATE usuaris SET password = :password WHERE correu_electronic = :email");
+    $query->bindParam(':password', $hashedPassword);
+    $query->bindParam(':email', $email);
+    return $query->execute();
+}
+
+/**
+ * Verifica el token de recuperación de contraseña
+ * @param string $token
+ * @param PDO $conn
+ * @return string|null
+ */
+function verifyToken(string $token, PDO $conn): ?string {
+    $query = $conn->prepare("SELECT correu_electronic FROM usuaris 
+                           WHERE reset_token_hash = :token 
+                           AND reset_token_expires_at > NOW()");
+    $query->bindParam(':token', $token);
+    $query->execute();
+    return $query->fetchColumn();
+}
