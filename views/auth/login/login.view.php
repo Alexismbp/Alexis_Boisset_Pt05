@@ -40,9 +40,9 @@ require_once BASE_PATH . '/controllers/utils/ReCaptchaController.php';
                 </div>
             <?php endif; ?>
 
-            <div class="form-group">
-                <input type="submit" class="btn-submit" value="Logar-se">
-            </div>
+            
+            <input type="submit" class="btn-submit" value="Logar-se">
+            
         </form>
         <a href="<?php echo BASE_URL; ?>forgotpassword" class="btn-back">Has oblidat la contrasenya?</a>
         <br>
