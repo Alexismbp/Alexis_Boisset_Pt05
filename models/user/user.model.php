@@ -161,7 +161,7 @@ function verifyCurrentPassword(string $email, string $password, PDO $conn): bool
  * @return bool
  */
 function updatePassword(string $email, string $hashedPassword, PDO $conn): bool {
-    $query = $conn->prepare("UPDATE usuaris SET password = :password WHERE correu_electronic = :email");
+    $query = $conn->prepare("UPDATE usuaris SET contrasenya = :password WHERE correu_electronic = :email");
     $query->bindParam(':password', $hashedPassword);
     $query->bindParam(':email', $email);
     return $query->execute();

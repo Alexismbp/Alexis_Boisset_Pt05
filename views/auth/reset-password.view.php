@@ -26,7 +26,7 @@ $token = $_GET['token'] ?? '';
 <body>
     <div class="container">
         <h1>Restablir Contrasenya</h1>
-        <form action="<?php echo BASE_URL; ?>controllers/auth/reset-password.controller.php" method="POST">
+        <form action="<?php echo BASE_URL; ?>resetpassword" method="POST">
             <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
             <label for="new_password">Nova Contrasenya:</label>
             <input type="password" id="new_password" name="new_password" class="input-field" required>

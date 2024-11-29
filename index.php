@@ -9,15 +9,19 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // DEBUG
-/* $_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/forgotpassword"; */
-/* $_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/register";
+/* $_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/resetpassword";
 $_SERVER['REQUEST_METHOD'] = "POST";
-$_POST['username'] = 'Alexis Marc';
-$_POST['password'] = 'Admin123';
-$_POST['password_confirm'] = 'Admin123';  */
-/* $_POST['email'] = 'a.boisset@sapalomera.cat'; */
-/* $_POST['equip'] = 'Atlético de Madrid';  */
-/* $_SERVER['REQUEST_METHOD'] = 'POST';  */
+$_POST['token'] = "23cf3a7243b73ebab9052f42127ca6b3f23f73b6d6a60821da830b79c7a345d1";
+$_POST['new_password'] = 'Admin123!';
+$_POST['confirm_password'] = 'Admin123!'; */
+
+
+/* $_POST['username'] = 'Alexis Marc';
+$_POST['email'] = 'a.boisset@sapalomera.cat';
+$_POST['equip'] = 'Atlético de Madrid';
+$_SERVER['REQUEST_METHOD'] = 'POST'; */
+
+
 
 $router = new Router();
 
@@ -42,9 +46,9 @@ $router->post('/login', 'controllers/auth/login.controller.php');
 $router->post('/register', 'controllers/auth/register.controller.php');
 $router->post('/create', 'controllers/crud/create.controller.php');
 $router->post('/delete', 'controllers/crud/delete.controller.php');
-$router->post('/forgotpassword', 'controllers/auth/password-recover.controller.php');
+$router->post('/forgotpassword', 'controllers/auth/email-password.controller.php');
 $router->post('/changepassword', 'controllers/auth/change-password.controller.php');
-$router->post('/resetpassword', 'controllers/auth/resetpassword.controller.php');
+$router->post('/resetpassword', 'controllers/auth/reset-password.controller.php');
 $router->get('/logout', 'controllers/auth/logout.controller.php');
 $router->post('/save-match', 'controllers/crud/save-match.controller.php');
 $router->post('/delete-match', 'controllers/crud/delete-match.controller.php');
