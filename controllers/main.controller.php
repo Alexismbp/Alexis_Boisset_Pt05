@@ -31,12 +31,24 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $partitsPerPage;
 
+// Mapeo de valores de ordenación a columnas de la base de datos
+$orderMappings = [
+    'date_asc' => ['column' => 'p.data', 'direction' => 'ASC'],
+    'date_desc' => ['column' => 'p.data', 'direction' => 'DESC'],
+    'name_asc' => ['column' => 'e_local.nom', 'direction' => 'ASC'],
+    'name_desc' => ['column' => 'e_local.nom', 'direction' => 'DESC']
+];
+
+// Obtener orden seleccionado o valor por defecto
+$orderBy = $_GET['orderBy'] ?? 'date_desc';
+$orderConfig = $orderMappings[$orderBy] ?? ['column' => 'p.data', 'direction' => 'DESC'];
+
 // Obtenir partits de la lliga seleccionada
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
     $equipFavorit = $_SESSION['equip'];
-    $partits = getPartits($lligaSeleccionada, $partitsPerPage, $offset, $equipFavorit);
+    $partits = getPartits($conn, $lligaSeleccionada, $partitsPerPage, $offset, $equipFavorit, $orderConfig['column'], $orderConfig['direction']);
 } else {
-    $partits = getPartits($lligaSeleccionada, $partitsPerPage, $offset);
+    $partits = getPartits($conn, $lligaSeleccionada, $partitsPerPage, $offset, null, $orderConfig['column'], $orderConfig['direction']);
 }
 
 // Calcular total de partits per la paginació

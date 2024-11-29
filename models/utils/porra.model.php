@@ -33,7 +33,7 @@ function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fech
     $stmt->bindParam(':equipo_visitante_id', $equipo_visitante_id);
     $stmt->bindParam(':fecha', $fecha);
     $stmt->bindParam(':goles_local', $goles_local);
-    $stmt->bindParam(':goles_visitante', $goles_visitante);
+    $stmt->bindParam(':goles_visitant', $goles_visitante);
     $stmt->bindParam(':jugado', $jugado);
 
     return $stmt; // Retorna el statement per executar-lo després
@@ -125,32 +125,36 @@ function getLeagueName($equipLocal, $conn)
     return $nomLliga; // Return del nom de la lliga exclusivament
 }
 
-function getPartits($lliga, $limit, $offset, $equipFavorit = null) {
-    global $conn;
+function getPartits($conn, $lliga, $limit, $offset, $equipFavorit = null, $orderColumn = 'p.data', $orderDirection = 'DESC') {
+   
     if ($equipFavorit) {
-        $sql = "SELECT p.id, p.data, e_local.nom AS equip_local, e_visitant.nom AS equip_visitant, p.gols_local, p.gols_visitant, p.jugat, l.nom AS lliga
+        $sql = "SELECT p.id, p.data, e_local.nom AS equip_local, e_visitant.nom AS equip_visitant, 
+                       p.gols_local, p.gols_visitant, p.jugat, l.nom AS lliga
                 FROM partits p
                 JOIN equips e_local ON p.equip_local_id = e_local.id
                 JOIN equips e_visitant ON p.equip_visitant_id = e_visitant.id
                 JOIN lligues l ON p.liga_id = l.id
                 WHERE (e_local.nom = :equip OR e_visitant.nom = :equip)
                 AND l.nom = :lliga
+                ORDER BY " . $orderColumn . " " . $orderDirection . "
                 LIMIT :limit OFFSET :offset";
         $stmt = $conn->prepare($sql);
-        $stmt->bindValue(':equip', $equipFavorit, PDO::PARAM_STR);
+        $stmt->bindParam(':equip', $equipFavorit, PDO::PARAM_STR);
     } else {
-        $sql = "SELECT p.id, p.data, e_local.nom AS equip_local, e_visitant.nom AS equip_visitant, p.gols_local, p.gols_visitant, p.jugat, l.nom AS lliga
+        $sql = "SELECT p.id, p.data, e_local.nom AS equip_local, e_visitant.nom AS equip_visitant, 
+                       p.gols_local, p.gols_visitant, p.jugat, l.nom AS lliga
                 FROM partits p
                 JOIN equips e_local ON p.equip_local_id = e_local.id
                 JOIN equips e_visitant ON p.equip_visitant_id = e_visitant.id
                 JOIN lligues l ON p.liga_id = l.id
                 WHERE l.nom = :lliga
+                ORDER BY " . $orderColumn . " " . $orderDirection . "
                 LIMIT :limit OFFSET :offset";
         $stmt = $conn->prepare($sql);
     }
-    $stmt->bindValue(':lliga', $lliga, PDO::PARAM_STR);
-    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmt->bindParam(':lliga', $lliga, PDO::PARAM_STR);
+    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
     $partits = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $stmt->closeCursor();
