@@ -9,7 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$conn = Database::connect();
+$conn = Database::getInstance();
 
 
 if ($conn && $_SERVER['REQUEST_METHOD'] === 'POST') {

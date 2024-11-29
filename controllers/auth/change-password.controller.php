@@ -2,7 +2,10 @@
 require_once __DIR__ . '/../../models/user/user.model.php';
 require_once __DIR__ . '/../../controllers/utils/validation.controller.php';
 
-session_start();
+if(session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 
 if (!isset($_SESSION['loggedin']) || $_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ' . BASE_URL);
@@ -19,7 +22,7 @@ try {
         throw new Exception($errors);
     }
     
-    $conn = Database::connect();
+    $conn = Database::getInstance();
     if (verifyCurrentPassword($_SESSION['email'], $currentPassword, $conn)) {
         if (updatePassword($_SESSION['email'], password_hash($newPassword, PASSWORD_DEFAULT), $conn)) {
             $_SESSION['success'] = "Contrasenya actualitzada correctament";

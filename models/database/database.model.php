@@ -10,10 +10,20 @@ class Database
     private static $username = DB_USER;  // Nom d'usuari MySQL
     private static $password = DB_PASS;  // Contrasenya MySQL
     private static $charset = DB_CHARSET;  // Joc de caràcters
+    private static $conn = null;  // Connexió a la base de dades
     private static $logfile = 'database.log'; // Archivo de logs
 
     // Constructor vacío
     public function __construct() {}
+
+    public static function getInstance ()
+    {
+        if (self::$conn == null) {
+            self::$conn = self::getInstance();
+        }
+
+        return self::$conn;
+    }
 
     // Función para registrar errores
     private static function logError($message)
@@ -44,4 +54,4 @@ class Database
     }
 }
 
-$conn = Database::connect(); // Connexió a la base de dades
+$conn = Database::getInstance(); // Connexió a la base de dades

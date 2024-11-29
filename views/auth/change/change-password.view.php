@@ -19,7 +19,7 @@ if (!isset($_SESSION['loggedin'])) {
             <div class="alert alert-danger"><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></div>
         <?php endif; ?>
         
-        <form action="<?php echo BASE_URL; ?>changepassword" method="post">
+        <form action="<?php echo BASE_URL; ?>changepassword" method="POST">
             <div class="form-group">
                 <label for="current_password">Contrasenya Actual:</label>
                 <input type="password" name="current_password" required>

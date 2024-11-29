@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    $conn = Database::connect();
+    $conn = Database::getInstance();
     $email = verifyToken($token, $conn);
 
     if ($email) {

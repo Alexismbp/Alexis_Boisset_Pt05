@@ -4,14 +4,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if (isset($_SESSION['success'])) {
-    echo '<div class="message success">' . $_SESSION['success'] . '</div>';
-    unset($_SESSION['success']);
-} elseif (isset($_SESSION['failure'])) {
-    echo '<div class="message error">' . $_SESSION['failure'] . '</div>';
-    unset($_SESSION['failure']);
-}
-
 $token = $_GET['token'] ?? '';
 ?>
 
@@ -27,6 +19,9 @@ $token = $_GET['token'] ?? '';
     <div class="container">
         <h1>Restablir Contrasenya</h1>
         <form action="<?php echo BASE_URL; ?>resetpassword" method="POST">
+
+            <?php include BASE_PATH . 'views/layouts/feedback.view.php'; ?>
+
             <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
             <label for="new_password">Nova Contrasenya:</label>
             <input type="password" id="new_password" name="new_password" class="input-field" required>

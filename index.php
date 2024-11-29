@@ -9,11 +9,12 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // DEBUG
-/* $_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/resetpassword";
+$_SESSION['loggedin'] = true;
+$_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/changepassword";
 $_SERVER['REQUEST_METHOD'] = "POST";
-$_POST['token'] = "23cf3a7243b73ebab9052f42127ca6b3f23f73b6d6a60821da830b79c7a345d1";
+$_POST['current_password'] = 'Admin123';
 $_POST['new_password'] = 'Admin123!';
-$_POST['confirm_password'] = 'Admin123!'; */
+$_POST['confirm_password'] = 'Admin123!';
 
 
 /* $_POST['username'] = 'Alexis Marc';
@@ -32,8 +33,8 @@ $router->get('/register', 'views/auth/register/register.view.php');
 $router->get('/create', 'views/crud/create.view.php');
 $router->get('/delete', 'views/crud/delete.view.php');
 $router->get('/forgotpassword', 'views/auth/forgot/forgot-password.view.php');
-$router->get('/changepassword', 'views/auth/changepassword.view.php');
-$router->get('/resetpassword', 'views/auth/reset-password.view.php');
+$router->get('/changepassword', 'views/auth/change/change-password.view.php');
+$router->get('/resetpassword', 'views/auth/reset/reset-password.view.php');
 
 // Rutas para partidos
 $router->get('/create-match', 'views/crud/create/create-match.view.php');
