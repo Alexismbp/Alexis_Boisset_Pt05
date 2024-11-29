@@ -145,7 +145,7 @@ function storeToken(string $email, string $token, PDO $conn): bool
  * @return bool
  */
 function verifyCurrentPassword(string $email, string $password, PDO $conn): bool {
-    $query = $conn->prepare("SELECT password FROM usuaris WHERE correu_electronic = :email");
+    $query = $conn->prepare("SELECT contrasenya FROM usuaris WHERE correu_electronic = :email");
     $query->bindParam(':email', $email);
     $query->execute();
     

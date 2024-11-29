@@ -9,17 +9,17 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // DEBUG
-$_SESSION['loggedin'] = true;
+/* $_SESSION['loggedin'] = true;
 $_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/changepassword";
 $_SERVER['REQUEST_METHOD'] = "POST";
 $_POST['current_password'] = 'Admin123';
 $_POST['new_password'] = 'Admin123!';
-$_POST['confirm_password'] = 'Admin123!';
+$_POST['confirm_password'] = 'Admin123!'; */
 
 
-/* $_POST['username'] = 'Alexis Marc';
-$_POST['email'] = 'a.boisset@sapalomera.cat';
-$_POST['equip'] = 'Atlético de Madrid';
+/*  $_POST['username'] = 'Alexis Marc'; */
+/* $_SESSION['email'] = 'a.boisset@sapalomera.cat'; */
+/* $_POST['equip'] = 'Atlético de Madrid';
 $_SERVER['REQUEST_METHOD'] = 'POST'; */
 
 

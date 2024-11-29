@@ -16,10 +16,17 @@ class Database
     // Constructor vacío
     public function __construct() {}
 
-    public static function getInstance ()
+    public static function getInstance()
     {
         if (self::$conn == null) {
-            self::$conn = self::getInstance();
+            try {
+                $dsn = "mysql:host=" . self::$servername . ";dbname=" . self::$dbname . ";charset=" . self::$charset;
+                self::$conn = new PDO($dsn, self::$username, self::$password);
+                self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (PDOException $e) {
+                self::logError($e->getMessage());
+                throw new Exception("Connection failed: " . $e->getMessage());
+            }
         }
 
         return self::$conn;
@@ -28,29 +35,7 @@ class Database
     // Función para registrar errores
     private static function logError($message)
     {
-        error_log($message . "\n", 3, self::$logfile);
-    }
-
-    public static function connect()
-    {
-        try {
-            // Convertir el nom de la base de dades a minúscula per evitar problemes
-            self::$dbname = strtolower(self::$dbname);
-
-            // Generar el DSN->(Data Source Name)
-            $dsn = "mysql:host=" . self::$servername . ";dbname=" . self::$dbname . ";charset=" . self::$charset;
-
-            // Creem una nova connexió PDO
-            $conn = new PDO($dsn, self::$username, self::$password);
-
-            // Configurem PDO perquè llanci excepcions en cas d'error
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-            return $conn;
-        } catch (PDOException $e) {
-            self::logError("Error de connexió: " . $e->getMessage());
-            die("Error de connexió: " . $e->getMessage());
-        }
+        file_put_contents(self::$logfile, date('Y-m-d H:i:s') . " - " . $message . "\n", FILE_APPEND);
     }
 }
 

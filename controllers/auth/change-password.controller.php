@@ -34,6 +34,9 @@ try {
     }
 } catch (Exception $e) {
     $_SESSION['error'] = $e->getMessage();
+    SessionHelper::setSessionData([
+        'error' => $_SESSION['error']
+    ]);
     header('Location: ' . BASE_URL . 'changepassword');
     exit;
 }

@@ -21,5 +21,11 @@ class SessionHelper {
     public static function getFormValue($key) {
         return $_SESSION[$key] ?? '';
     }
+
+    public static function setSessionData($data) {
+        foreach ($data as $key => $value) {
+            $_SESSION[$key] = $value;
+        }
+    }
 }
 ?>

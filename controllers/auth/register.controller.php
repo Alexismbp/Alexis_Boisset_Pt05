@@ -58,12 +58,15 @@ try {
 
         // Registrar usuario
         if (registerUser($nomUsuari, $email, $contrasenyaHashed, $equipFavorit, $conn)) {
-            $_SESSION['loggedin'] = true;
-            $_SESSION['username'] = $nomUsuari;
-            $_SESSION['equip'] = $equipFavorit;
-            $_SESSION['lliga'] = getLeagueName($equipFavorit, $conn);
-            $_SESSION['success'] = "Usuari registrat correctament";
-
+            SessionHelper::setSessionData([
+                'email' => $email,
+                'LAST_ACTIVITY' => time(),
+                'loggedin' => true,
+                'username' => $nomUsuari,
+                'equip' => $equipFavorit,
+                'lliga' => getLeagueName($equipFavorit, $conn),
+                'success' => "Usuari registrat correctament"
+            ]);
             header("Location: " . BASE_URL);
             exit();
         } else {
@@ -73,11 +76,13 @@ try {
     }
 } catch (Throwable $th) {
     $_SESSION['failure'] = empty($th->getMessage()) ? null : "Hi ha hagut un error: " . $th->getMessage();
-    $_SESSION['errors'] = $missatgesError;
-    $_SESSION['username'] = $nomUsuari ?? '';
-    $_SESSION['email'] = $email ?? '';
-    $_SESSION['lliga'] = isset($equipFavorit) ? getLeagueName($equipFavorit, $conn) : '';
-    $_SESSION['equip'] = $equipFavorit ?? '';
+    SessionHelper::setSessionData([
+        'errors' => $missatgesError,
+        'username' => $nomUsuari ?? '',
+        'email' => $email ?? '',
+        'lliga' => isset($equipFavorit) ? getLeagueName($equipFavorit, $conn) : '',
+        'equip' => $equipFavorit ?? ''
+    ]);
 } finally {
     header("Location: " . BASE_URL . "register");
     exit();

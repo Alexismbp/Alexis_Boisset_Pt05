@@ -37,14 +37,15 @@ try {
 
         if ($userData && password_verify($password, $userData['contrasenya'])) {
             SessionHelper::resetLoginAttempts();
-            unset($_SESSION['email']);
-            $_SESSION['LAST_ACTIVITY'] = time();
-            $_SESSION['loggedin'] = true;
-            $_SESSION['userid'] = $userData['id'];
-            $_SESSION['username'] = $userData['nom_usuari'];
-            $_SESSION['equip'] = $userData['equip_favorit'];
-            $_SESSION['lliga'] = getLeagueName($userData['equip_favorit'], $conn);
-
+            SessionHelper::setSessionData([
+                'email' => $email,
+                'LAST_ACTIVITY' => time(),
+                'loggedin' => true,
+                'userid' => $userData['id'],
+                'username' => $userData['nom_usuari'],
+                'equip' => $userData['equip_favorit'],
+                'lliga' => getLeagueName($userData['equip_favorit'], $conn)
+            ]);
             header("Location: " . BASE_URL);
             exit();
         } else {

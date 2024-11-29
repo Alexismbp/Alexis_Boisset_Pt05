@@ -70,13 +70,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
 
     // Si hi ha errors, redirigeix amb errors
     if ($error) {
-        $_SESSION["equip_local"] = $equip_local;
-        $_SESSION["equip_visitant"] = $equip_visitant;
-        $_SESSION["data"] = $data;
-        $_SESSION["gols_local"] = $gols_local;
-        $_SESSION["gols_visitant"] = $gols_visitant;
-        $_SESSION['errors'] = $missatgesError;
-
+        SessionHelper::setSessionData([
+            'equip_local' => $equip_local,
+            'equip_visitant' => $equip_visitant,
+            'data' => $data,
+            'gols_local' => $gols_local,
+            'gols_visitant' => $gols_visitant,
+            'errors' => $missatgesError
+        ]);
         header("Location: ../view/crear_partit.php");
         exit();
     }
@@ -103,9 +104,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
     } catch (Throwable $th) {
         $_SESSION['failure'] = "Hi ha hagut un error: " . $th->getMessage();
     } finally {
-        $_SESSION["data"] = $data;
-        $_SESSION["gols_local"] = $gols_local;
-        $_SESSION["gols_visitant"] = $gols_visitant;
+        SessionHelper::setSessionData([
+            'data' => $data,
+            'gols_local' => $gols_local,
+            'gols_visitant' => $gols_visitant
+        ]);
         header("Location: ../view/crear_partit.php");
         exit();
     }
@@ -127,7 +130,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
             exit();
         } else {
             $missatgesError[] = "Aquest partit no existeix";
+            $error = true;
         }
+    }
+
+    if ($error) {
+        SessionHelper::setSessionData([
+            'equip_local' => $equip_local,
+            'equip_visitant' => $equip_visitant,
+            'data' => $data,
+            'gols_local' => $gols_local,
+            'gols_visitant' => $gols_visitant,
+            'errors' => $missatgesError
+        ]);
+        header("Location: ../view/crear_partit.php");
+        exit();
     }
 
     $_SESSION['errors'] = $missatgesError;

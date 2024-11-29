@@ -1,4 +1,3 @@
-
 <?php
 require_once BASE_PATH . 'models/user/user.model.php';
 require_once BASE_PATH . 'controllers/utils/validation.controller.php';
@@ -15,6 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors = Validation::validateResetPassword($newPassword, $confirmPassword);
     if (!empty($errors)) {
         $_SESSION['failure'] = implode('<br>', $errors);
+        SessionHelper::setSessionData([
+            'failure' => $_SESSION['failure']
+        ]);
         header('Location: ' . BASE_URL . 'resetpassword?token=' . $token);
         exit();
     }
@@ -34,6 +36,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $_SESSION['failure'] = 'Token invàlid o caducat.';
     }
+
+    SessionHelper::setSessionData([
+        'failure' => $_SESSION['failure']
+    ]);
 
     header('Location: ' . BASE_URL . 'resetpassword?token=' . $token);
     exit();
