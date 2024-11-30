@@ -1,4 +1,3 @@
-
 <?php
 if (!isset($_SESSION['needs_preferences'])) {
     header('Location: ' . BASE_URL);
@@ -40,6 +39,7 @@ if (!isset($_SESSION['needs_preferences'])) {
 
             <input type="submit" class="btn-submit" value="Guardar Preferències">
         </form>
+        <a href="<?php echo BASE_URL; ?>" class="btn-cancel">Cancel·lar</a>
     </div>
 </body>
 </html>
