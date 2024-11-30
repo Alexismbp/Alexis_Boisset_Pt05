@@ -59,7 +59,15 @@ class OAuthController {
             // Verificar si el usuario existe
             if (!userExists($email, $conn)) {
                 // Registrar nuevo usuario con valores temporales
-                registerUser($name, $email, null, 'pendiente', $conn, true, "google");
+                registerUser(
+                    $name, 
+                    $email, 
+                    null, 
+                    'pendiente', 
+                    $conn, 
+                    'google', // Ahora va antes de isOAuth
+                    true
+                );
             }
 
             // Establecer sesión

@@ -26,11 +26,19 @@ function userExists(string $email, PDO $conn): bool
  * @param string|null $password
  * @param string|null $equipFavorit
  * @param PDO $conn
+ * @param string $oauthProvider
  * @param bool $isOAuth
  * @return bool
  */
-function registerUser(string $username, string $email, ?string $password, ?string $equipFavorit, PDO $conn, bool $isOAuth = false, string $oauthProvider): bool
-{
+function registerUser(
+    string $username, 
+    string $email, 
+    ?string $password, 
+    ?string $equipFavorit, 
+    PDO $conn, 
+    string $oauthProvider = '', // Mover parámetro requerido antes del opcional
+    bool $isOAuth = false
+): bool {
     if (userExists($email, $conn)) {
         return false;
     }

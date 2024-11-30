@@ -10,9 +10,9 @@ if (isset($_GET['partitsPerPage'])) {
     $partitsPerPage = 5; // Valor por defecto
 }
 
-// Selección de liga
+// Asegurar valores por defecto
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
-    $lligaSeleccionada = $_SESSION['lliga'];
+    $lligaSeleccionada = $_SESSION['lliga'] ?? 'LaLiga';
 } elseif (isset($_GET['lliga'])) {
     $lligaSeleccionada = $_GET['lliga'];
     setcookie('lliga', $lligaSeleccionada, time() + (86400 * 30), "/");
@@ -20,6 +20,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
     $lligaSeleccionada = $_COOKIE['lliga'];
 } else {
     $lligaSeleccionada = 'LaLiga';
+    setcookie('lliga', $lligaSeleccionada, time() + (86400 * 30), "/");
 }
 
 // Selección de orden

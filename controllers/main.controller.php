@@ -25,7 +25,11 @@ $orderConfig = $orderMappings[$orderBy] ?? ['column' => 'p.data', 'direction' =>
 
 // Obtenir partits de la lliga seleccionada
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
-    $equipFavorit = $_SESSION['equip'];
+    $equipFavorit = $_SESSION['equip'] ?? null;
+    if ($equipFavorit === 'pendiente' || $equipFavorit === null) {
+        header('Location: ' . BASE_URL . 'preferences');
+        exit;
+    }
     $partits = getPartits($conn, $lligaSeleccionada, $partitsPerPage, $offset, $equipFavorit, $orderConfig['column'], $orderConfig['direction']);
 } else {
     $partits = getPartits($conn, $lligaSeleccionada, $partitsPerPage, $offset, null, $orderConfig['column'], $orderConfig['direction']);
