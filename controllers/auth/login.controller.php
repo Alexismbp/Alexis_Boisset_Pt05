@@ -37,6 +37,31 @@ try {
 
         if ($userData && password_verify($password, $userData['contrasenya'])) {
             SessionHelper::resetLoginAttempts();
+            
+            // Handle remember me
+            if (isset($_POST['remember_me'])) {
+                $token = bin2hex(random_bytes(32));
+                $expiry = time() + (30 * 24 * 60 * 60); // 30 days
+                
+                // Store token in database
+                storeRememberToken($userData['id'], $token, $expiry, $conn);
+                
+                // Set remember me cookie
+                setcookie(
+                    'remember_token',
+                    $token,
+                    [
+                        'expires' => $expiry,
+                        'path' => '/',
+                        'httponly' => true,
+                        'samesite' => 'Strict'
+                    ]
+                );
+            } else {
+                // Remove remember me cookie
+                setcookie('remember_token', '', time() - 3600, '/');
+            }
+
             SessionHelper::setSessionData([
                 'email' => $email,
                 'LAST_ACTIVITY' => time(),

@@ -110,7 +110,7 @@ function getLigaID($conn, $equipo_id)
 }
 
 
-function getLeagueName($equipLocal, $conn)
+function getLeagueNameByTeam($equipLocal, $conn)
 {
     global $conn;
     // Obtener el nom de la lliga del equip favorit

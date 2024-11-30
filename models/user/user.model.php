@@ -181,3 +181,87 @@ function verifyToken(string $token, PDO $conn): ?string {
     $query->execute();
     return $query->fetchColumn();
 }
+
+/**
+ * Almacena el token de "recordarme"
+ * @param int $userId
+ * @param string $token
+ * @param int $expiry
+ * @param PDO $conn
+ * @return bool
+ */
+function storeRememberToken(int $userId, string $token, int $expiry, PDO $conn): bool {
+    try {
+        $sql = "UPDATE usuaris 
+                SET remember_token = :token,
+                    remember_token_expires = :expiry
+                WHERE id = :user_id";
+        
+        $stmt = $conn->prepare($sql);
+        return $stmt->execute([
+            ':token' => $token,
+            ':expiry' => date('Y-m-d H:i:s', $expiry),
+            ':user_id' => $userId
+        ]);
+    } catch (PDOException $e) {
+        error_log("Error storing remember token: " . $e->getMessage());
+        return false;
+    }
+}
+
+/**
+ * Obtiene un usuario por su token de "recordarme"
+ * @param string $token
+ * @param PDO $conn
+ * @return array|false
+ */
+function getUserByRememberToken(string $token, PDO $conn) {
+    try {
+        $sql = "SELECT * FROM usuaris 
+                WHERE remember_token = :token 
+                AND remember_token_expires > NOW()";
+        
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([':token' => $token]);
+        
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Error getting user by remember token: " . $e->getMessage());
+        return false;
+    }
+}
+
+/**
+ * Cleans up expired tokens in the 'usuaris' table.
+ *
+ * This function sets the 'remember_token' and 'remember_token_expires' fields to NULL
+ * for all records where 'remember_token_expires' is less than the current date and time.
+ * It also sets the 'reset_token_hash' and 'reset_token_expires_at' fields to NULL
+ * for the same records.
+ *
+ * @param PDO $conn The PDO connection object to the database.
+ * @return bool Returns true if the operation was successful, false otherwise.
+ */
+function cleanupExpiredTokens(PDO $conn): bool {
+    try {
+        $sql = "UPDATE usuaris 
+                SET remember_token = NULL,
+                    remember_token_expires = NULL 
+                WHERE remember_token_expires < NOW()";
+        
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        $sql = "UPDATE usuaris 
+                SET reset_token_hash = NULL,
+                    reset_token_expires_at = NULL 
+                WHERE remember_token_expires < NOW()";
+        
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return true;
+    } catch (PDOException $e) {
+        error_log("Error limpiando tokens: " . $e->getMessage());
+        return false;
+    }
+}

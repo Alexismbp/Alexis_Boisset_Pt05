@@ -17,21 +17,24 @@ require_once BASE_PATH . '/controllers/utils/ReCaptchaController.php';
 <body>
     <div class="container">
         <h1>Logar-se</h1>
-        <?php if (isset($_SESSION['session_ended']) && $_SESSION['session_ended'] == true): ?>
-            <h3>Sessió expirada</h3>
-        <?php endif; ?>
 
         <form action="<?php echo BASE_URL; ?>login" method="POST">
             <?php include BASE_PATH . 'views/layouts/feedback.view.php'; ?>
 
             <div class="form-group">
                 <label for="email">Correu electrònic:</label>
-                <input type="email" id="email" name="email" class="input-field" value="<?php echo SessionHelper::getFormValue('email'); ?>" required>
+                <input type="email" id="email" name="email" class="input-field" value="<?php echo isset($_SESSION['remembered_email']) ? $_SESSION['remembered_email'] : SessionHelper::getFormValue('email'); ?>" required> 
             </div>
 
             <div class="form-group">
                 <label for="password">Contrasenya:</label>
                 <input type="password" id="password" name="password" class="input-field" required>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="remember_me" id="remember_me"> Recorda'm
+                </label>
             </div>
 
             <?php if (SessionHelper::needsCaptcha()): ?>

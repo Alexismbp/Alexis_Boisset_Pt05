@@ -3,16 +3,17 @@ require_once __DIR__ . "/models/env.php";
 require_once __DIR__ . "/models/database/database.model.php";
 require_once __DIR__ . "/controllers/session/session.controller.php";
 require_once __DIR__ . "/core/Router.php";
+require_once __DIR__ . '/controllers/middleware/AuthMiddleware.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
 // DEBUG
-/* $_SESSION['loggedin'] = true;
-$_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/changepassword";
-$_SERVER['REQUEST_METHOD'] = "POST";
-$_POST['current_password'] = 'Admin123';
+/* $_SESSION['loggedin'] = true; */
+$_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/";
+$_SERVER['REQUEST_METHOD'] = "GET"; 
+/* $_POST['current_password'] = 'Admin123';
 $_POST['new_password'] = 'Admin123!';
 $_POST['confirm_password'] = 'Admin123!'; */
 
@@ -21,10 +22,14 @@ $_POST['confirm_password'] = 'Admin123!'; */
 /* $_SESSION['email'] = 'a.boisset@sapalomera.cat'; */
 /* $_POST['equip'] = 'Atlético de Madrid';
 $_SERVER['REQUEST_METHOD'] = 'POST'; */
+/* $_COOKIE['remember_token'] = '412fb53ea4c764e0f7ecd392554abf1959b9644978ba366321ebf21e0af5f741'; */
 
 
 
 $router = new Router();
+
+// Ejecutar middleware de autenticación
+AuthMiddleware::handleRememberToken();
 
 // Definir rutas GET
 $router->get('/', 'controllers/main.controller.php');

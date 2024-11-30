@@ -6,7 +6,7 @@
 if (!session_id()) {
     session_start();
 }
-
+// 2400 segundos = 40 minutos
 if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 2400) && (isset($_SESSION['loggedin']) && $_SESSION['loggedin'])) {
     // Si han pasado más de 40 minutos
     session_unset();
@@ -14,7 +14,7 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 
     session_start(); // Vuelvo a abrir la session para tener feedback de sesion expirada
     $_SESSION['failure'] = "Sessió expirada";
 
-    header("Location: " . BASE_URL . "/views/auth/login/login.view.php"); // Redirigir al login
+    header("Location: " . BASE_URL . "login"); // Redirigir al login
     exit();
 } elseif (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     $_SESSION['LAST_ACTIVITY'] = time(); // Actualizar el tiempo de última actividad

@@ -1,31 +1,11 @@
 <?php
-require_once __DIR__ . '/../models/utils/porra.model.php';
+require_once BASE_PATH . 'models/utils/porra.model.php';
 
 // Definir ligas disponibles
 $lligues = ['LaLiga', 'Premier League', 'Ligue 1'];
 
-// Definir número de partidos por página
-$partidosPerPageOptions = [5, 10, 15, 20];
-if (isset($_GET['partitsPerPage'])) {
-    $partitsPerPage = (int)$_GET['partitsPerPage'];
-    setcookie('partitsPerPage', $partitsPerPage, time() + (86400 * 30), "/");
-} elseif (isset($_COOKIE['partitsPerPage'])) {
-    $partitsPerPage = (int)$_COOKIE['partitsPerPage'];
-} else {
-    $partitsPerPage = 5; // Valor por defecto
-}
-
-// Selección de liga
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
-    $lligaSeleccionada = $_SESSION['lliga'];
-} elseif (isset($_GET['lliga'])) {
-    $lligaSeleccionada = $_GET['lliga'];
-    setcookie('lliga', $lligaSeleccionada, time() + (86400 * 30), "/");
-} elseif (isset($_COOKIE['lliga'])) {
-    $lligaSeleccionada = $_COOKIE['lliga'];
-} else {
-    $lligaSeleccionada = 'LaLiga';
-}
+// Gestio de cookies
+require_once BASE_PATH . 'controllers/utils/cookie.controller.php';
 
 // Determinar la página actual
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
