@@ -23,6 +23,10 @@ class ComposerStaticInit2185d2f99bcd56787481d9357a5972d3
         array (
             'League\\OAuth2\\Client\\' => 21,
         ),
+        'H' => 
+        array (
+            'Hybridauth\\' => 11,
+        ),
         'G' => 
         array (
             'GuzzleHttp\\Psr7\\' => 16,
@@ -49,6 +53,10 @@ class ComposerStaticInit2185d2f99bcd56787481d9357a5972d3
         array (
             0 => __DIR__ . '/..' . '/league/oauth2-client/src',
             1 => __DIR__ . '/..' . '/league/oauth2-google/src',
+        ),
+        'Hybridauth\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hybridauth/hybridauth/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (

@@ -53,6 +53,10 @@ require_once BASE_PATH . '/controllers/utils/ReCaptchaController.php';
                 <img src="<?php echo BASE_URL; ?>assets/img/google-icon.png" alt="Google Icon">
                 Iniciar sesión con Google
             </a>
+            <a href="<?php echo BASE_URL; ?>oauth/github" class="btn-github">
+                <img src="<?php echo BASE_URL; ?>assets/img/github-icon.png" alt="GitHub Icon">
+                Iniciar sesión con GitHub
+            </a>
         </div>
 
         <a href="<?php echo BASE_URL; ?>forgotpassword" class="btn-back">Has oblidat la contrasenya?</a>

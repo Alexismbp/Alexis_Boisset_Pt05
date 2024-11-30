@@ -54,14 +54,16 @@ $router->post('/save-match', 'controllers/crud/save-match.controller.php');
 $router->post('/update-match', 'controllers/crud/update-match.controller.php');
 
 // Rutas OAuth
-$router->get('/oauth/google', function() {
-    $oauth = new OAuthController();
-    $oauth->redirectToProvider();
+$router->get('/oauth/{provider}', function() use ($router) {
+    $provider = $router->getParam('provider');
+    $auth = new SocialAuthController($provider);
+    $auth->redirectToProvider();
 });
 
-$router->get('/oauth/callback', function() {
-    $oauth = new OAuthController();
-    $oauth->handleCallback();
+$router->get('/oauth/{provider}/callback', function() use ($router) {
+    $provider = $router->getParam('provider');
+    $auth = new SocialAuthController($provider);
+    $auth->handleCallback();
 });
 
 // Definir rutas POST
