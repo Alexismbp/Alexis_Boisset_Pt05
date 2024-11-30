@@ -19,8 +19,8 @@ $orderMappings = [
     'name_desc' => ['column' => 'e_local.nom', 'direction' => 'DESC']
 ];
 
-// Obtener orden seleccionado o valor por defecto
-$orderBy = $_GET['orderBy'] ?? 'date_desc';
+// Obtener orden seleccionado o valor de la cookie o valor por defecto
+/* $orderBy = $_GET['orderBy'] ?? $_COOKIE['orderBy'] ?? 'date_desc'; */
 $orderConfig = $orderMappings[$orderBy] ?? ['column' => 'p.data', 'direction' => 'DESC'];
 
 // Obtenir partits de la lliga seleccionada

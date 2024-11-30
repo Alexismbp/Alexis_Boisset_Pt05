@@ -22,13 +22,13 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
     $lligaSeleccionada = 'LaLiga';
 }
 
-// Selección de liga
-if (isset($_GET['orderby'])) {
-    $partitsOrderBy = $_GET['orderby'];
-    setcookie('partitsOrderBy', $partitsOrderBy, time() + (86400 * 30), "/");
-} elseif (isset($_COOKIE['parttitsOrderBy'])) {
-    $lligaSeleccionada = $_COOKIE['partitsOrderBy'];
+// Selección de orden
+if (isset($_GET['orderBy'])) {
+    $orderBy = $_GET['orderBy'];
+    setcookie('orderBy', $orderBy, time() + (86400 * 30), "/");
+} elseif (isset($_COOKIE['orderBy'])) {
+    $orderBy = $_COOKIE['orderBy'];
 } else {
-    $lligaSeleccionada = 'date_desc';
+    $orderBy = 'date_desc';
 }
 ?>

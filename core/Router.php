@@ -3,14 +3,14 @@ class Router
 {
     private $routes = [];
 
-    public function get($uri, $controller)
+    public function get($path, $handler)
     {
-        $this->routes['GET'][$uri] = $controller;
+        $this->routes['GET'][$path] = $handler;
     }
 
-    public function post($uri, $controller)
+    public function post($path, $handler)
     {
-        $this->routes['POST'][$uri] = $controller;
+        $this->routes['POST'][$path] = $handler;
     }
 
     public function dispatch($uri)
@@ -18,9 +18,15 @@ class Router
         $method = $_SERVER['REQUEST_METHOD'];
 
         if (isset($this->routes[$method][$uri])) {
-            return $this->routes[$method][$uri];
+            $handler = $this->routes[$method][$uri];
+
+            if ($handler instanceof Closure) {
+                return $handler();
+            }
+
+            return $handler;
         }
 
-        throw new Exception('Ruta no encontrada');
+        throw new Exception('Route not found');
     }
 }

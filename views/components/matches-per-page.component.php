@@ -15,10 +15,10 @@
 
         <label for="orderBy">Ordenar per:</label>
         <select name="orderBy" id="orderBy" onchange="this.form.submit()">
-            <option value="date_asc" <?php echo (isset($_GET['orderBy']) && $_GET['orderBy'] == 'date_asc') ? 'selected' : ''; ?>>Data ↑</option>
-            <option value="date_desc" <?php echo (isset($_GET['orderBy']) && $_GET['orderBy'] == 'date_desc') ? 'selected' : ''; ?>>Data ↓</option>
-            <option value="name_asc" <?php echo (isset($_GET['orderBy']) && $_GET['orderBy'] == 'name_asc') ? 'selected' : ''; ?>>Equip Local A-Z</option>
-            <option value="name_desc" <?php echo (isset($_GET['orderBy']) && $_GET['orderBy'] == 'name_desc') ? 'selected' : ''; ?>>Equip Local Z-A</option>
+            <option value="date_desc" <?php echo ($orderBy == 'date_desc') ? 'selected' : ''; ?>>Data (més recent)</option>
+            <option value="date_asc" <?php echo ($orderBy == 'date_asc') ? 'selected' : ''; ?>>Data (més antiga)</option>
+            <option value="name_asc" <?php echo ($orderBy == 'name_asc') ? 'selected' : ''; ?>>Nom (A-Z)</option>
+            <option value="name_desc" <?php echo ($orderBy == 'name_desc') ? 'selected' : ''; ?>>Nom (Z-A)</option>
         </select>
     </form>
 </div>

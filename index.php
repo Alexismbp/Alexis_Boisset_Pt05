@@ -1,9 +1,15 @@
 <?php
+require_once __DIR__ . '/vendor/autoload.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once __DIR__ . "/models/env.php";
 require_once __DIR__ . "/models/database/database.model.php";
 require_once __DIR__ . "/controllers/session/session.controller.php";
 require_once __DIR__ . "/core/Router.php";
 require_once __DIR__ . '/controllers/middleware/AuthMiddleware.php';
+require_once __DIR__ . '/controllers/auth/oauth.controller.php'; // Añadir esta línea
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -11,8 +17,8 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // DEBUG
 /* $_SESSION['loggedin'] = true; */
-$_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/";
-$_SERVER['REQUEST_METHOD'] = "GET"; 
+/* $_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/";
+$_SERVER['REQUEST_METHOD'] = "GET";  */
 /* $_POST['current_password'] = 'Admin123';
 $_POST['new_password'] = 'Admin123!';
 $_POST['confirm_password'] = 'Admin123!'; */
@@ -47,6 +53,17 @@ $router->get('/edit-match/{id}', 'views/crud/edit/edit-match.view.php');
 $router->post('/save-match', 'controllers/crud/save-match.controller.php');
 $router->post('/update-match', 'controllers/crud/update-match.controller.php');
 
+// Rutas OAuth
+$router->get('/oauth/google', function() {
+    $oauth = new OAuthController();
+    $oauth->redirectToProvider();
+});
+
+$router->get('/oauth/callback', function() {
+    $oauth = new OAuthController();
+    $oauth->handleCallback();
+});
+
 // Definir rutas POST
 $router->post('/login', 'controllers/auth/login.controller.php');
 $router->post('/register', 'controllers/auth/register.controller.php');
@@ -71,8 +88,13 @@ $basePath = rtrim(parse_url(BASE_URL, PHP_URL_PATH), '/');
 $uri = "/" . ltrim(substr($uri, strlen($basePath)), '/');
 
 try {
-    $controller = $router->dispatch($uri);
-    include BASE_PATH . $controller;
+    $result = $router->dispatch($uri);
+    
+    if ($result instanceof Closure) {
+        $result();
+    } else {
+        include BASE_PATH . $result;
+    }
 } catch (Exception $e) {
     http_response_code(404);
     include BASE_PATH . 'views/errors/404.view.php';

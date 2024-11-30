@@ -47,6 +47,14 @@ require_once BASE_PATH . '/controllers/utils/ReCaptchaController.php';
             <input type="submit" class="btn-submit" value="Logar-se">
             
         </form>
+        
+        <div class="oauth-buttons">
+            <a href="<?php echo BASE_URL; ?>oauth/google" class="btn-google">
+                <img src="<?php echo BASE_URL; ?>assets/img/google-icon.png" alt="Google Icon">
+                Iniciar sesión con Google
+            </a>
+        </div>
+
         <a href="<?php echo BASE_URL; ?>forgotpassword" class="btn-back">Has oblidat la contrasenya?</a>
         <br>
         <a href="<?php echo BASE_URL; ?>" class="btn-back">Tornar enrere</a>
