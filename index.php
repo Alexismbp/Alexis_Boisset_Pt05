@@ -82,6 +82,10 @@ $router->get('/edit-article/{id}', 'views/crud/edit/edit-article.view.php');
 $router->post('/update-article', 'controllers/crud/update-article.controller.php');
 $router->post('/delete-article', 'controllers/crud/delete-article.controller.php');
 
+// Añadir nuevas rutas
+$router->get('/preferences', 'views/auth/preferences/preferences.view.php');
+$router->post('/save-preferences', 'controllers/auth/save-preferences.controller.php');
+
 // Obtener y procesar la URI
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $basePath = rtrim(parse_url(BASE_URL, PHP_URL_PATH), '/');

@@ -29,7 +29,7 @@ function userExists(string $email, PDO $conn): bool
  * @param bool $isOAuth
  * @return bool
  */
-function registerUser(string $username, string $email, ?string $password, ?string $equipFavorit, PDO $conn, bool $isOAuth = false): bool
+function registerUser(string $username, string $email, ?string $password, ?string $equipFavorit, PDO $conn, bool $isOAuth = false, string $oauthProvider): bool
 {
     if (userExists($email, $conn)) {
         return false;
@@ -37,8 +37,8 @@ function registerUser(string $username, string $email, ?string $password, ?strin
 
     $nextId = ultimaIdDisponible($conn); // Cambiado de getNextId a ultimaIdDisponible
     
-    $query = $conn->prepare("INSERT INTO usuaris (id, nom_usuari, correu_electronic, contrasenya, equip_favorit, is_oauth_user) 
-                            VALUES (:id, :username, :email, :password, :equip, :oauth)");
+    $query = $conn->prepare("INSERT INTO usuaris (id, nom_usuari, correu_electronic, contrasenya, equip_favorit, is_oauth_user, oauth_provider) 
+                            VALUES (:id, :username, :email, :password, :equip, :oauth, :oauthProvider)");
     
     $params = [
         ':id' => $nextId,
@@ -46,7 +46,8 @@ function registerUser(string $username, string $email, ?string $password, ?strin
         ':email' => $email,
         ':password' => $isOAuth ? null : $password,
         ':equip' => $equipFavorit ?? 'No especificado', // Valor por defecto ya que equip_favorit no permite NULL
-        ':oauth' => $isOAuth ? 1 : 0
+        ':oauth' => $isOAuth ? 1 : 0,
+        ':oauthProvider' => $oauthProvider
     ];
     
     return $query->execute($params);
@@ -271,4 +272,20 @@ function cleanupExpiredTokens(PDO $conn): bool {
         error_log("Error limpiando tokens: " . $e->getMessage());
         return false;
     }
+}
+
+/**
+ * Actualiza las preferencias del usuario
+ * @param string $email
+ * @param string $equip
+ * @param PDO $conn
+ * @return bool
+ */
+function updateUserPreferences(string $email, string $equip, PDO $conn): bool {
+    $sql = "UPDATE usuaris SET equip_favorit = :equip WHERE correu_electronic = :email";
+    $stmt = $conn->prepare($sql);
+    return $stmt->execute([
+        ':equip' => $equip,
+        ':email' => $email
+    ]);
 }

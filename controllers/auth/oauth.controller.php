@@ -15,7 +15,7 @@ class OAuthController {
         $this->provider = new Google([
             'clientId' => GOOGLE_CLIENT_ID,
             'clientSecret' => GOOGLE_CLIENT_SECRET,
-            'redirectUri' => GOOGLE_REDIRECT_URI, // Usar la constante directamente
+            'redirectUri' => GOOGLE_REDIRECT_URI, 
         ]);
     }
 
@@ -58,8 +58,8 @@ class OAuthController {
             
             // Verificar si el usuario existe
             if (!userExists($email, $conn)) {
-                // Registrar nuevo usuario
-                registerUser($name, $email, null, null, $conn, true);
+                // Registrar nuevo usuario con valores temporales
+                registerUser($name, $email, null, 'pendiente', $conn, true, "google");
             }
 
             // Establecer sesión
@@ -67,10 +67,12 @@ class OAuthController {
                 'email' => $email,
                 'username' => $name,
                 'loggedin' => true,
-                'oauth_user' => true
+                'oauth_user' => true,
+                'needs_preferences' => true // Nueva bandera
             ]);
 
-            header('Location: ' . BASE_URL);
+            // Redirigir a la página de preferencias si es necesario
+            header('Location: ' . BASE_URL . 'preferences');
             exit;
 
         } catch (Exception $e) {
