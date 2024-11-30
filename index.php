@@ -9,7 +9,7 @@ require_once __DIR__ . "/models/database/database.model.php";
 require_once __DIR__ . "/controllers/session/session.controller.php";
 require_once __DIR__ . "/core/Router.php";
 require_once __DIR__ . '/controllers/middleware/AuthMiddleware.php';
-require_once __DIR__ . '/controllers/auth/oauth.controller.php'; // Añadir esta línea
+require_once __DIR__ . '/controllers/auth/SocialAuthController.php'; // Cambiar nombre del archivo
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
