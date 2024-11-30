@@ -88,6 +88,10 @@ $router->post('/delete-article', 'controllers/crud/delete-article.controller.php
 $router->get('/preferences', 'views/auth/preferences/preferences.view.php');
 $router->post('/save-preferences', 'controllers/auth/save-preferences.controller.php');
 
+// Añadir rutas para la fusión de cuentas
+$router->get('/merge-accounts', 'views/auth/merge/merge-accounts.view.php');
+$router->post('/merge-accounts', 'controllers/auth/merge-accounts.controller.php');
+
 // Obtener y procesar la URI
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $basePath = rtrim(parse_url(BASE_URL, PHP_URL_PATH), '/');

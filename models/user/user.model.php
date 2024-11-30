@@ -297,3 +297,31 @@ function updateUserPreferences(string $email, string $equip, PDO $conn): bool {
         ':email' => $email
     ]);
 }
+
+/**
+ * Merge accounts by updating the OAuth provider information.
+ * @param string $email
+ * @param string $provider
+ * @param PDO $conn
+ * @return bool
+ */
+function mergeAccounts(string $email, string $provider, PDO $conn): bool {
+    try {
+        $sql = "UPDATE usuaris 
+                SET is_oauth_user = 1,
+                    oauth_provider = CASE 
+                        WHEN oauth_provider IS NULL THEN :provider
+                        ELSE CONCAT(oauth_provider, ',', :provider)
+                    END
+                WHERE correu_electronic = :email";
+                
+        $stmt = $conn->prepare($sql);
+        return $stmt->execute([
+            ':email' => $email,
+            ':provider' => $provider
+        ]);
+    } catch (PDOException $e) {
+        error_log("Error merging accounts: " . $e->getMessage());
+        return false;
+    }
+}

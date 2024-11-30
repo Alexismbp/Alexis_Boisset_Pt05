@@ -1,4 +1,3 @@
-
 <?php
 require_once __DIR__ . '/../../models/database/database.model.php';
 require_once __DIR__ . '/../../models/user/user.model.php';
@@ -97,6 +96,16 @@ class SocialAuthController {
             $needsPreferences = true;
         } else {
             $userData = getUserData($email, $conn);
+            
+            // Si la cuenta existe pero no es OAuth, preguntar por fusión
+            if (!$userData['is_oauth_user']) {
+                $_SESSION['temp_email'] = $email;
+                $_SESSION['temp_name'] = $name;
+                $_SESSION['temp_provider'] = $provider;
+                header('Location: ' . BASE_URL . 'merge-accounts');
+                exit;
+            }
+            
             $needsPreferences = ($userData['equip_favorit'] === 'pendiente');
         }
 
