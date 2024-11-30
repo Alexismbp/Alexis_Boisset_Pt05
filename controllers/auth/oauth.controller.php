@@ -15,7 +15,7 @@ class OAuthController {
         $this->provider = new Google([
             'clientId' => GOOGLE_CLIENT_ID,
             'clientSecret' => GOOGLE_CLIENT_SECRET,
-            'redirectUri' => BASE_URL . 'oauth/callback',
+            'redirectUri' => GOOGLE_REDIRECT_URI, // Usar la constante directamente
         ]);
     }
 

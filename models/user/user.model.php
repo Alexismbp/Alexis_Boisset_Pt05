@@ -23,28 +23,33 @@ function userExists(string $email, PDO $conn): bool
  * Registra un nuevo usuario en el sistema
  * @param string $username
  * @param string $email
- * @param string $password
- * @param string $equipFavorit
+ * @param string|null $password
+ * @param string|null $equipFavorit
  * @param PDO $conn
+ * @param bool $isOAuth
  * @return bool
  */
-function registerUser(string $username, string $email, string $password, string $equipFavorit, PDO $conn): bool
+function registerUser(string $username, string $email, ?string $password, ?string $equipFavorit, PDO $conn, bool $isOAuth = false): bool
 {
     if (userExists($email, $conn)) {
         return false;
     }
 
-    $insertQuery = $conn->prepare("INSERT INTO usuaris (id, nom_usuari, correu_electronic, contrasenya, equip_favorit) 
-                                 VALUES (:id, :username, :email, :password, :team)");
+    $nextId = ultimaIdDisponible($conn); // Cambiado de getNextId a ultimaIdDisponible
     
-    $id = ultimaIdDisponible($conn);
-    $insertQuery->bindParam(':id', $id);
-    $insertQuery->bindParam(':username', $username);
-    $insertQuery->bindParam(':email', $email);
-    $insertQuery->bindParam(':password', $password);
-    $insertQuery->bindParam(':team', $equipFavorit);
-
-    return $insertQuery->execute();
+    $query = $conn->prepare("INSERT INTO usuaris (id, nom_usuari, correu_electronic, contrasenya, equip_favorit, is_oauth_user) 
+                            VALUES (:id, :username, :email, :password, :equip, :oauth)");
+    
+    $params = [
+        ':id' => $nextId,
+        ':username' => $username,
+        ':email' => $email,
+        ':password' => $isOAuth ? null : $password,
+        ':equip' => $equipFavorit ?? 'No especificado', // Valor por defecto ya que equip_favorit no permite NULL
+        ':oauth' => $isOAuth ? 1 : 0
+    ];
+    
+    return $query->execute($params);
 }
 
 /**
@@ -244,6 +249,7 @@ function getUserByRememberToken(string $token, PDO $conn) {
  */
 function cleanupExpiredTokens(PDO $conn): bool {
     try {
+        // Primera consulta para tokens de remember me
         $sql = "UPDATE usuaris 
                 SET remember_token = NULL,
                     remember_token_expires = NULL 
@@ -252,10 +258,11 @@ function cleanupExpiredTokens(PDO $conn): bool {
         $stmt = $conn->prepare($sql);
         $stmt->execute();
 
+        // Segunda consulta para tokens de reset password
         $sql = "UPDATE usuaris 
                 SET reset_token_hash = NULL,
                     reset_token_expires_at = NULL 
-                WHERE remember_token_expires < NOW()";
+                WHERE reset_token_expires_at < NOW()";
         
         $stmt = $conn->prepare($sql);
         $stmt->execute();

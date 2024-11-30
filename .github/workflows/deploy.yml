@@ -35,4 +35,6 @@ jobs:
           package-lock.json 
           LICENSE
           README.md
+          .htaccess
+          env.php
           

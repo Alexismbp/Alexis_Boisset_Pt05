@@ -2,15 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost
--- Tiempo de generación: 28-11-2024 a las 03:21:50
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.2.4
-
-DROP DATABASE IF EXISTS `Pt05_Alexis_Boisset`;
-
-CREATE DATABASE IF NOT EXISTS `Pt05_Alexis_Boisset`;
-USE `Pt05_Alexis_Boisset`;
+-- Servidor: proxysql-01.dd.scip.local
+-- Tiempo de generación: 30-11-2024 a las 18:22:29
+-- Versión del servidor: 10.10.2-MariaDB-1:10.10.2+maria~deb11
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -23,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `Pt05_Alexis_Boisset`
+-- Base de datos: `ddb237139`
 --
 
 -- --------------------------------------------------------
@@ -231,23 +226,27 @@ CREATE TABLE `usuaris` (
   `id` int(11) NOT NULL,
   `nom_usuari` varchar(50) NOT NULL,
   `correu_electronic` varchar(100) NOT NULL,
-  `contrasenya` varchar(255) NOT NULL,
+  `contrasenya` varchar(255) DEFAULT NULL,
   `equip_favorit` varchar(100) NOT NULL,
   `reset_token_hash` varchar(64) DEFAULT NULL,
-  `reset_token_expires_at` datetime DEFAULT NULL
+  `reset_token_expires_at` datetime DEFAULT NULL,
+  `remember_token` varchar(64) DEFAULT NULL,
+  `remember_token_expires` datetime DEFAULT NULL,
+  `is_oauth_user` tinyint(1) DEFAULT 0,
+  `oauth_provider` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuaris`
 --
 
-INSERT INTO `usuaris` (`id`, `nom_usuari`, `correu_electronic`, `contrasenya`, `equip_favorit`, `reset_token_hash`, `reset_token_expires_at`) VALUES
-(1, 'Alexis', 'alexis@gmail.com', '$2y$10$5jOplzI9.lewF548D4UBwe.4Q/9QKm5EvfMdZX1V9e.K5U/ydH3pe', 'OGC Nice', NULL, NULL),
-(2, 'Xavi', 'xavi@gmail.com', '$2y$10$CyjHCsfj9nNgrvf4BvUaIO9.mgEb4wrn3u7uWqQYZl43CfsO1Ueyi', 'Girona FC', NULL, NULL),
-(3, 'Josep', 'jpedrerol@gmail.com', '$2y$10$UzJrOph0LT2CCR8.w2qBVOKnk1gArl8UonbTGn3UYtLykVuDcY.z.', 'Crystal Palace', NULL, NULL),
-(4, 'Hola', 'opa@gmail.com', '$2y$10$QeSzE/JyMrw0g/mfk0YTEeCxwxIXZCqaaBsMEyE4jMEZNi68XhlAK', 'Tottenham', NULL, NULL),
-(5, 'Alexis Marc', 'alexismarcbp@gmail.com', '$2y$10$jgLpgzo8RsjUOuDtfnXmpOnWMwfNfrSqzNw3v6Luz7gkIsRr/hrNK', 'Atlético de Madrid', '716b01f8c3ff5353933bf0dc6a244994339a6bdcf03f5ca9eeff0e6edda260d9', '2024-11-28 05:05:51'),
-(6, 'SaPAlexis', 'a.boisset@sapalomera.cat', '$2y$10$TgQgrb9ULitNQwV00gdpu.FnEpE8gUwQJbdwVkmIvxKnSFAp4Ayge', 'AS Monaco', '22518f1e433b9a1f6b7e17fec1e97be78a6e56c0f669562f4875400ebe929975', '2024-11-28 05:16:33');
+INSERT INTO `usuaris` (`id`, `nom_usuari`, `correu_electronic`, `contrasenya`, `equip_favorit`, `reset_token_hash`, `reset_token_expires_at`, `remember_token`, `remember_token_expires`, `is_oauth_user`, `oauth_provider`) VALUES
+(1, 'Alexis', 'alexis@gmail.com', '$2y$10$5jOplzI9.lewF548D4UBwe.4Q/9QKm5EvfMdZX1V9e.K5U/ydH3pe', 'OGC Nice', NULL, NULL, NULL, NULL, 0, NULL),
+(2, 'Xavi', 'xavi@gmail.com', '$2y$10$CyjHCsfj9nNgrvf4BvUaIO9.mgEb4wrn3u7uWqQYZl43CfsO1Ueyi', 'Girona FC', NULL, NULL, NULL, NULL, 0, NULL),
+(3, 'Josep', 'jpedrerol@gmail.com', '$2y$10$UzJrOph0LT2CCR8.w2qBVOKnk1gArl8UonbTGn3UYtLykVuDcY.z.', 'Crystal Palace', NULL, NULL, NULL, NULL, 0, NULL),
+(4, 'Hola', 'opa@gmail.com', '$2y$10$QeSzE/JyMrw0g/mfk0YTEeCxwxIXZCqaaBsMEyE4jMEZNi68XhlAK', 'Tottenham', NULL, NULL, NULL, NULL, 0, NULL),
+(5, 'Alexis Marc', 'alexismarcbp@gmail.com', '$2y$10$jgLpgzo8RsjUOuDtfnXmpOnWMwfNfrSqzNw3v6Luz7gkIsRr/hrNK', 'Atlético de Madrid', '716b01f8c3ff5353933bf0dc6a244994339a6bdcf03f5ca9eeff0e6edda260d9', '2024-11-28 05:05:51', NULL, NULL, 0, NULL),
+(6, 'SaPAlexis', 'a.boisset@sapalomera.cat', '$2y$10$JDfTh.uTTpK.MGZ/KWXA4O1w9VoYuKHOQxPtLYZNcnLSMANmOlnWK', 'AS Monaco', '1d9d154f80e1538626e728482bfc1ee244e1fb053b30ccecf04c6d66646648e7', '2024-11-29 17:05:59', 'de84e6757418a0f1f8ba8d1acd024623834c954f159968eaddf9da0cc1c46b6d', '2024-12-30 08:38:29', 0, NULL);
 
 --
 -- Índices para tablas volcadas
