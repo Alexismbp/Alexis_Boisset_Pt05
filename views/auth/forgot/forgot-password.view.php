@@ -1,13 +1,9 @@
 <?php
-session_start();
-
-if (isset($_SESSION['success'])) {
-    echo '<div class="message success">' . $_SESSION['success'] . '</div>';
-    unset($_SESSION['success']);
-} elseif (isset($_SESSION['failure'])) {
-    echo '<div class="message error">' . $_SESSION['failure'] . '</div>';
-    unset($_SESSION['failure']);
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
+
+include_once BASE_PATH . 'views/layouts/feedback.view.php';
 
 ?>
 <!DOCTYPE html>
