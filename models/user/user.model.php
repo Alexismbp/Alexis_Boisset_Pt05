@@ -73,7 +73,7 @@ function getUserData(string $email, PDO $conn)
         return false;
     }
 
-    $sql = $conn->prepare("SELECT id, nom_usuari, equip_favorit, contrasenya 
+    $sql = $conn->prepare("SELECT id, nom_usuari, equip_favorit, contrasenya, is_oauth_user, oauth_provider 
                           FROM usuaris 
                           WHERE correu_electronic = :email");
     $sql->bindParam(':email', $email);

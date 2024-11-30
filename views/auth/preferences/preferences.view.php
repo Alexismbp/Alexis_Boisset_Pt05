@@ -1,5 +1,10 @@
 <?php
-if (!isset($_SESSION['needs_preferences'])) {
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Verificar si el usuario necesita establecer preferencias
+if (!isset($_SESSION['needs_preferences']) || $_SESSION['needs_preferences'] !== true) {
     header('Location: ' . BASE_URL);
     exit;
 }
@@ -39,7 +44,7 @@ if (!isset($_SESSION['needs_preferences'])) {
 
             <input type="submit" class="btn-submit" value="Guardar Preferències">
         </form>
-        <a href="<?php echo BASE_URL; ?>logout" class="btn-cancel">Cancel·lar</a>
+        <a href="<?php echo BASE_URL; ?>logout" class="btn-cancel">Tancar sessió</a>
     </div>
 </body>
 </html>

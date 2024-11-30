@@ -56,19 +56,18 @@ class OAuthController {
 
             $conn = Database::getInstance();
             
-            // Verificar si el usuario existe
+            // Obtener datos del usuario existente o registrar uno nuevo
             if (!userExists($email, $conn)) {
-                // Registrar nuevo usuario con valores temporales
-                registerUser(
-                    $name, 
-                    $email, 
-                    null, 
-                    'pendiente', 
-                    $conn, 
-                    'google', // Ahora va antes de isOAuth
-                    true
-                );
+                registerUser($name, $email, null, 'pendiente', $conn, 'google', true);
+                $needsPreferences = true;
+            } else {
+                // Verificar si el usuario ya tiene preferencias establecidas
+                $userData = getUserData($email, $conn);
+                $needsPreferences = ($userData['equip_favorit'] === 'pendiente');
             }
+
+            // Obtener la liga del equipo favorito si existe
+            $lliga = !$needsPreferences ? getLeagueName($userData['equip_favorit'], $conn) : null;
 
             // Establecer sesión
             SessionHelper::setSessionData([
@@ -76,11 +75,13 @@ class OAuthController {
                 'username' => $name,
                 'loggedin' => true,
                 'oauth_user' => true,
-                'needs_preferences' => true // Nueva bandera
+                'needs_preferences' => $needsPreferences,
+                'equip' => $needsPreferences ? null : $userData['equip_favorit'],
+                'lliga' => $needsPreferences ? null : $lliga
             ]);
 
-            // Redirigir a la página de preferencias si es necesario
-            header('Location: ' . BASE_URL . 'preferences');
+            // Redirigir según si necesita establecer preferencias o no
+            header('Location: ' . BASE_URL . ($needsPreferences ? 'preferences' : ''));
             exit;
 
         } catch (Exception $e) {
