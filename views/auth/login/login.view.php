@@ -51,11 +51,9 @@ require_once BASE_PATH . '/controllers/utils/ReCaptchaController.php';
         <div class="oauth-buttons">
             <a href="<?php echo BASE_URL; ?>oauth/google" class="btn-google">
                 <img src="<?php echo BASE_URL; ?>assets/img/google-icon.webp" alt="Google Icon">
-                Iniciar sesión con Google
             </a>
             <a href="<?php echo BASE_URL; ?>oauth/github" class="btn-github">
                 <img src="<?php echo BASE_URL; ?>assets/img/github-icon.webp" alt="GitHub Icon">
-                Iniciar sesión con GitHub
             </a>
         </div>
 

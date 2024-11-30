@@ -1,4 +1,3 @@
-
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -13,7 +12,7 @@ $token = $_GET['token'] ?? '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restablir Contrasenya</title>
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>views/auth/styles_reset_password.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>views/auth/reset/styles_reset.css">
 </head>
 <body>
     <div class="container">

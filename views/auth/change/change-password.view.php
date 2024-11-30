@@ -9,8 +9,9 @@ if (!isset($_SESSION['loggedin'])) {
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canviar Contrasenya</title>
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>views/auth/styles/auth.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>views/auth/change/styles_change.css">
 </head>
 <body>
     <div class="container">

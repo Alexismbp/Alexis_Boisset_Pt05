@@ -12,17 +12,21 @@
 
 <body>
     <?php include BASE_PATH . 'views/components/header.component.php'; ?>
-    <?php include BASE_PATH . 'views/layouts/feedback.view.php'; ?>
+    
+    <div class="main-content-wrapper">
+        <?php include BASE_PATH . 'views/layouts/feedback.view.php'; ?>
 
-    <h1> Gestor de Partits </h1>
+        <h1> Gestor de Partits </h1>
 
-    <?php include BASE_PATH . 'views/components/league-selector.component.php'; ?>
-    <?php include BASE_PATH . 'views/components/matches-per-page.component.php'; ?>
+        <?php include BASE_PATH . 'views/components/league-selector.component.php'; ?>
+        <?php include BASE_PATH . 'views/components/matches-per-page.component.php'; ?>
 
-    <h2> Llista de partits </h2>
+        <h2> Llista de partits </h2>
 
-    <?php include BASE_PATH . 'views/components/matches-list.component.php'; ?>
-    <?php include BASE_PATH . 'views/components/pagination.component.php'; ?>
+        <?php include BASE_PATH . 'views/components/matches-list.component.php'; ?>
+        <?php include BASE_PATH . 'views/components/pagination.component.php'; ?>
+    </div>
+    
     <?php include BASE_PATH . 'views/components/footer.component.php'; ?>
 </body>
 

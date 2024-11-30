@@ -1,0 +1,93 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1a472a, #2d5a3f);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 320px;
+    text-align: center;
+    border: 2px solid #ffd700;
+}
+
+/* Alexis Boisset */
+
+/* ...existing code... */
+
+.form-group {
+    margin-bottom: 15px;
+    width: 90%;
+}
+
+.form-group input {
+    padding: 10px;
+    font-size: 14px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+button[type="submit"] {
+    background-color: #1a472a;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 90%;
+    transition: background-color 0.3s ease;
+    margin: 15px 0;
+}
+
+button[type="submit"]:hover {
+    background-color: #28a745;
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 90%;
+    text-align: center;
+}
+
+.alert-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    button[type="submit"] {
+        font-size: 14px;
+        padding: 8px;
+    }
+    
+    .form-group input {
+        font-size: 14px;
+    }
+}

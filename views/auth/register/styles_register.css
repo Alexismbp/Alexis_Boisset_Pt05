@@ -3,7 +3,7 @@
 /* Estilos generales */
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #a8edea, #fed6e3); /* Fondo degradado */
+    background: linear-gradient(135deg, #1a472a, #2d5a3f);
     margin: 0;
     padding: 0;
     display: flex;
@@ -28,12 +28,13 @@ html, body {
 
 /* Contenedor principal del formulario */
 .container {
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 25px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 400px;
+    width: 400px; /* Cambiado de 320px a 400px */
     text-align: center;
+    border: 2px solid #ffd700;
 }
 
 /* Estilos del encabezado */
@@ -48,6 +49,13 @@ h1 {
 form {
     display: flex;
     flex-direction: column;
+    align-items: center;
+}
+
+.form-group {
+    margin-bottom: 10px;
+    width: 90%;
+    text-align: left;
 }
 
 label {
@@ -76,7 +84,7 @@ label {
 select.input-field {
     background-color: #fff;
     appearance: none;
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCAxMCIgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIj48cGF0aCBkPSJNNSAxMGwtNS01Ljc3IDEuNDQtMS40NEw1IDYuMTggOS4zNiAyLjc5TDEwIDMuOWwtNSA1eiIgZmlsbD0iIzAwN2JmZiIvPjwvc3ZnPg==');
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCAxMCIgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIj48cGF0aCBkPSJNNSAxMGwtNS01Ljc3IDEuNDQtMS40NEw1IDYuMTggOS4zNiAyLjc5TDEwIDMuOWwtNSA1eiIgZmlsbD0iIzFhNDcyYSIvPjwvc3ZnPg==');
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 12px;
@@ -92,7 +100,8 @@ select::-ms-expand {
 
 /* Botón de envío (Registro) */
 .btn-submit {
-    background-color: #4CAF50;
+    background-color: #1a472a;
+    width: 90%;
     color: white;
     padding: 10px 15px;
     font-size: 16px;
@@ -104,12 +113,12 @@ select::-ms-expand {
 }
 
 .btn-submit:hover {
-    background-color: #45a049;
+    background-color: #28a745;
 }
 
 /* Botón de "Tornar" */
 .btn-back {
-    color: #007bff;
+    color: #1a472a;
     text-decoration: none;
     font-size: 14px;
     margin-top: 20px;
@@ -118,7 +127,7 @@ select::-ms-expand {
 }
 
 .btn-back:hover {
-    color: #0056b3;
+    color: #28a745;
 }
 
 /* Mensajes de éxito y error */
@@ -168,7 +177,7 @@ input[readonly] {
 /* Responsividad */
 @media (max-width: 768px) {
     .container {
-        width: 90%;
+        width: 95%; /* Ajustado para mantener la proporción en móviles */
     }
 
     h1 {

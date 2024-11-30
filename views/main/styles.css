@@ -6,41 +6,80 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
     color: #333;
+    min-width: 100%;
+    max-width: none;
 }
 
 header {
     background-color: #1a472a; /* Verde de campo de futbol */
-    padding: 15px;
+    padding: 15px 0;
     text-align: center;
     color: #ffd700; /* Amarillo */
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 0;
+    margin-bottom: 30px;
+    width: 100%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
 }
 
 footer {
     background-color: #1a472a; /* Verde de campo de futbol */
-    padding: 15px;
+    padding: 20px;
     text-align: center;
     color: #ffd700; /* Amarillo */
+    margin: 40px 0 0 0;
+    border-radius: 0;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
 }
 
 h1 {
     font-size: 2.5em;
     margin: 20px 0;
+    padding: 0 20px;
+    text-align: center;
+    color: #1a472a;
 }
 
 h2 {
     font-size: 2em;
     margin: 20px 0;
+    padding: 0 20px;
+    color: #1a472a;
+    border-bottom: 2px solid #ffd700;
+    display: inline-block;
 }
 
 h3 {
     font-size: 1.5em;
     margin: 10px 0;
+}
+
+select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 14px;
+    width: auto;
+    min-width: 200px;
+    cursor: pointer;
+    appearance: none;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCAxMCIgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIj48cGF0aCBkPSJNNSAxMGwtNS01Ljc3IDEuNDQtMS40NEw1IDYuMTggOS4zNiAyLjc5TDEwIDMuOWwtNSA1eiIgZmlsbD0iIzMzMyIvPjwvc3ZnPg==');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    transition: border-color 0.3s ease;
 }
 
 /* Estilos de los botones */
@@ -98,11 +137,24 @@ h3 {
 /* Estilos para el formulario */
 .form-partits-per-page {
     margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
 }
 
 label {
     font-weight: bold;
     margin-right: 10px;
+}
+
+.form-partits-per-page select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
 }
 
 /* Estilos para la paginación */
@@ -152,17 +204,17 @@ label {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* Tres columnas en pantallas grandes */
     gap: 20px;
-    padding: 0 15px;
+    padding: 20px;
 }
 
 .match-card {
     background: linear-gradient(145deg, #1a472a, #2d5a3f); /* Verde de campo de futbol */
     border-radius: 10px;
-    padding: 20px;
+    padding: 25px;
     color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s;
-    margin: 10px; /* Añadir margen para respetar los márgenes */
+    margin: 15px 10px; /* Añadir margen para respetar los márgenes */
 }
 
 .match-card:hover {
@@ -202,7 +254,7 @@ label {
 }
 
 .dropdown {
-    position: relative; /* Cambiado de right a relative */
+    position: relative;
     display: inline-block;
     justify-content: flex-end;
     margin-right: 35px;
@@ -262,6 +314,22 @@ label {
     background-color: #218838;
 }
 
+/* Contenedor principal de contenido */
+.main-content {
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+}
+
+/* Contenedor principal para el contenido */
+.main-content-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .user-menu {
@@ -272,5 +340,32 @@ label {
     .dropdown-content {
         position: static;
         width: 100%;
+    }
+
+    body {
+        padding: 0 10px;
+    }
+
+    .matches-container {
+        grid-template-columns: 1fr;
+        padding: 10px;
+    }
+
+    .form-partits-per-page {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    h1, h2 {
+        padding: 0 10px;
+        font-size: 1.8em;
+    }
+
+    header {
+        padding: 10px 15px;
+    }
+
+    .main-content-wrapper {
+        padding: 0 10px;
     }
 }

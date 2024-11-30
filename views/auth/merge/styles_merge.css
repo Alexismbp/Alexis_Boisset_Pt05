@@ -1,0 +1,79 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1a472a, #2d5a3f);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 320px;
+    text-align: center;
+    border: 2px solid #ffd700;
+}
+
+/* Alexis Boisset */
+
+/* ...existing code... */
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+p {
+    color: #666;
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.btn-merge {
+    background-color: #1a472a;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 90%;
+    transition: background-color 0.3s ease;
+}
+
+.btn-merge:hover {
+    background-color: #28a745;
+}
+
+.btn-cancel {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 90%;
+    transition: background-color 0.3s ease;
+}
+
+.btn-cancel:hover {
+    background-color: #c82333;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .btn-merge, .btn-cancel {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
