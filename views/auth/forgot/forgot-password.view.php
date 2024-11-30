@@ -25,6 +25,8 @@ include_once BASE_PATH . 'views/layouts/feedback.view.php';
             <br>
             <input type="submit" value="Enviar">
         </form>
+
+        <a href="<?php echo BASE_URL; ?>login" class="btn-back">Tornar enrere</a>
     </div>
 </body>
 </html>
