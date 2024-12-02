@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (updateUserProfile($email, $username, $equip, $avatarName, $conn)) {
             $_SESSION['username'] = $username;
             $_SESSION['equip'] = $equip;
-            setcookie('lliga', getLeagueNameByTeam($equip, $conn), time() + (86400 * 30), "/");
+            // setcookie('lliga', getLeagueNameByTeam($equip, $conn), time() + (86400 * 30), "/");
             $_SESSION['success'] = 'Perfil actualitzat correctament';
         } else {
             throw new Exception('Error al actualitzar el perfil');
