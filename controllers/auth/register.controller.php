@@ -60,11 +60,13 @@ try {
         if (registerUser($nomUsuari, $email, $contrasenyaHashed, $equipFavorit, $conn)) {
             SessionHelper::setSessionData([
                 'email' => $email,
+                'avatar' => $userData['avatar'],
                 'LAST_ACTIVITY' => time(),
                 'loggedin' => true,
-                'username' => $nomUsuari,
-                'equip' => $equipFavorit,
-                'lliga' => getLeagueName($equipFavorit, $conn),
+                'userid' => $userData['id'],
+                'username' => $userData['nom_usuari'],
+                'equip' => $userData['equip_favorit'],
+                'lliga' => getLeagueName($userData['equip_favorit'], $conn),
                 'success' => "Usuari registrat correctament"
             ]);
             header("Location: " . BASE_URL);

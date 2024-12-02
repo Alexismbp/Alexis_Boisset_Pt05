@@ -64,6 +64,7 @@ try {
 
             SessionHelper::setSessionData([
                 'email' => $email,
+                'avatar' => $userData['avatar'],
                 'LAST_ACTIVITY' => time(),
                 'loggedin' => true,
                 'userid' => $userData['id'],
