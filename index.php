@@ -28,7 +28,7 @@ $_POST['confirm_password'] = 'Admin123!'; */
 
 
 /*  $_POST['username'] = 'Alexis Marc'; */
-$_SESSION['email'] = 'a.boisset@sapalomera.cat';
+/* $_SESSION['email'] = 'a.boisset@sapalomera.cat'; */
 /* $_POST['equip'] = 'Atlético de Madrid';
 $_SERVER['REQUEST_METHOD'] = 'POST'; */
 /* $_COOKIE['remember_token'] = '412fb53ea4c764e0f7ecd392554abf1959b9644978ba366321ebf21e0af5f741'; */

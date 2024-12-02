@@ -44,9 +44,9 @@ SessionHelper::checkLogin();
                 <label for="lliga">Lliga on juga el teu equip favorit:</label>
                 <select id="lliga" name="lliga" class="input-field" onchange="actualitzarEquips('registrar', '<?php echo isset($_SESSION['equip']) ? $_SESSION['equip'] : '' ?>', '<?php echo isset($_SESSION['lliga']) ? $_SESSION['lliga'] : '' ?>')" required>
                     <option value="">-- Selecciona la teva lliga --</option>
-                    <option value="LaLiga" <?php if (isset($_SESSION['lliga']) && $_SESSION['lliga'] == 'LaLiga') echo 'selected'; ?>>LaLiga</option>
-                    <option value="Premier League" <?php if (isset($_SESSION['lliga']) && $_SESSION['lliga'] == 'Premier League') echo 'selected'; ?>>Premier League</option>
-                    <option value="Ligue 1" <?php if (isset($_SESSION['lliga']) && $_SESSION['lliga'] == 'Ligue 1') echo 'selected'; ?>>Ligue 1</option>
+                    <option value="LaLiga">LaLiga</option>
+                    <option value="Premier League">Premier League</option>
+                    <option value="Ligue 1">Ligue 1</option>
                 </select>
             </div>
 
