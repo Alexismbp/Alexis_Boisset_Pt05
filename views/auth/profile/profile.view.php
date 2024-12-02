@@ -41,7 +41,7 @@ SessionHelper::checkLogin();
             </div>
 
             <div class="form-group">
-                <label for="lliga">Lliga on juga el teu equip favorit:</label>
+                <label for="lliga">La teva lliga actual és la <?php echo $_SESSION['lliga']?>, vols canviar-la?</label>
                 <select id="lliga" name="lliga" class="input-field" onchange="actualitzarEquips('registrar', '<?php echo isset($_SESSION['equip']) ? $_SESSION['equip'] : '' ?>', '<?php echo isset($_SESSION['lliga']) ? $_SESSION['lliga'] : '' ?>')" required>
                     <option value="">-- Selecciona la teva lliga --</option>
                     <option value="LaLiga">LaLiga</option>
@@ -51,7 +51,7 @@ SessionHelper::checkLogin();
             </div>
 
             <div class="form-group">
-                <label for="equip">Equip favorit:</label>
+                <label for="equip">El teu equip favorit és <?php echo $_SESSION['equip']?>, vols canviar?</label>
                 <select id="equip" name="equip" class="input-field" required>
                     <option value="">-- Selecciona el teu equip favorit --</option>
                     <!-- Opcions d'equips seran afegides dinàmicament amb JavaScript -->

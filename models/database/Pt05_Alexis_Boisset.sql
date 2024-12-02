@@ -237,9 +237,10 @@ CREATE TABLE `usuaris` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Añadir columna avatar a la tabla usuaris
+-- Añadir columna avatar a la tabla usuaris si no existe
+--
 ALTER TABLE usuaris
-ADD COLUMN avatar VARCHAR(255) DEFAULT NULL;
+ADD COLUMN IF NOT EXISTS avatar VARCHAR(255) DEFAULT NULL;
 
 --
 -- Volcado de datos para la tabla `usuaris`
