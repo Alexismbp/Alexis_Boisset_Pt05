@@ -77,7 +77,34 @@ function actualitzarEquips(vista, equipEscollit) {
                 equipVisitant.appendChild(optionVisitant);
             });
         }
+    } else if (vista == "profile") {
+        // Mantener el equipo actual y añadir nuevas opciones
+        const currentEquip = equipSelect.value;
+        equipSelect.innerHTML = '<option value="">-- Selecciona el teu equip favorit --</option>';
+
+        if (ligaSeleccionada && equipsPerLiga[ligaSeleccionada]) {
+            equipsPerLiga[ligaSeleccionada].forEach(function (equip) {
+                const option = document.createElement("option");
+                option.value = equip;
+                option.text = equip;
+                
+                // Mantener seleccionado el equipo actual
+                if (equip === currentEquip) {
+                    option.selected = true;
+                }
+                
+                equipSelect.appendChild(option);
+            });
+        }
     }
 }
+
+// Ejecutar actualitzarEquips al cargar la página para mostrar los equipos de la liga actual
+document.addEventListener('DOMContentLoaded', function() {
+    const ligaSelect = document.getElementById("lliga");
+    if (ligaSelect && ligaSelect.value) {
+        actualitzarEquips('registrar', document.getElementById("equip").value);
+    }
+});
 
 

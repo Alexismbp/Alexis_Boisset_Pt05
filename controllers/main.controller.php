@@ -37,7 +37,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
 
 // Calcular total de partits per la paginació
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
-    $totalPartits = getTotalPartits($lligaSeleccionada, $equipFavorit);
+    $totalPartits = getTotalPartits($conn, $lligaSeleccionada, $equipFavorit);
 } else {
     $totalPartits = getTotalPartits($conn, $lligaSeleccionada);
 }
