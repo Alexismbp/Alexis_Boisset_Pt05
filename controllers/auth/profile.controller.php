@@ -28,18 +28,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 throw new Exception('La imagen no cumple con los requisitos');
             }
 
-            // Crear directorio de uploads si no existe
-            $uploadDir = BASE_PATH . 'uploads/avatars';
-            if (!file_exists($uploadDir)) {
-                if (!mkdir($uploadDir, 0755, true)) {
-                    throw new Exception('No se pudo crear el directorio de uploads');
-                }
-            }
-
             // Asegurarse que el directorio tiene permisos correctos
             chmod($uploadDir, 0755);
 
-            $avatarName = uniqid("pfp", true) . $avatar['name'];
+            $avatarName = uniqid("pfp", true);
             $uploadPath = $uploadDir . '/' . $avatarName;
 
             if (!move_uploaded_file($avatar['tmp_name'], $uploadPath)) {
