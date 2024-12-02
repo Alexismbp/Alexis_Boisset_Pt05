@@ -78,17 +78,18 @@ function actualitzarEquips(vista, equipEscollit) {
             });
         }
     } else if (vista == "profile") {
-        // Mantener el equipo actual y añadir nuevas opciones
-        const currentEquip = equipSelect.value;
+        // Guardar el equipo actual antes de limpiar el select
+        const currentEquip = equipEscollit; // Usamos el equipo pasado como parámetro
         equipSelect.innerHTML = '<option value="">-- Selecciona el teu equip favorit --</option>';
 
+        // Agregar equipos según liga seleccionada
         if (ligaSeleccionada && equipsPerLiga[ligaSeleccionada]) {
             equipsPerLiga[ligaSeleccionada].forEach(function (equip) {
                 const option = document.createElement("option");
                 option.value = equip;
                 option.text = equip;
                 
-                // Mantener seleccionado el equipo actual
+                // Marcar como seleccionado si es el equipo actual
                 if (equip === currentEquip) {
                     option.selected = true;
                 }
@@ -103,7 +104,7 @@ function actualitzarEquips(vista, equipEscollit) {
 document.addEventListener('DOMContentLoaded', function() {
     const ligaSelect = document.getElementById("lliga");
     if (ligaSelect && ligaSelect.value) {
-        actualitzarEquips('registrar', document.getElementById("equip").value);
+        actualitzarEquips('profile', document.getElementById("equip").value);
     }
 });
 
