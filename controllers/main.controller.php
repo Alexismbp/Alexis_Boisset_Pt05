@@ -39,7 +39,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
     $totalPartits = getTotalPartits($lligaSeleccionada, $equipFavorit);
 } else {
-    $totalPartits = getTotalPartits($lligaSeleccionada);
+    $totalPartits = getTotalPartits($conn, $lligaSeleccionada);
 }
 
 $totalPages = ceil($totalPartits / $partitsPerPage);

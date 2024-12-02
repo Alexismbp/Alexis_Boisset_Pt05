@@ -3,7 +3,6 @@
 
 function insertPartido($conn, $equipo_local_id, $equipo_visitante_id, $liga_id, $fecha, $goles_local, $goles_visitante)
 {
-    global $conn;
     $jugado = (!is_null($goles_local) && !is_null($goles_visitante)) ? 1 : 0;
     $sql = "INSERT INTO partits (equip_local_id, equip_visitant_id, liga_id, data, gols_local, gols_visitant, jugat) 
             VALUES (:equipo_local_id, :equipo_visitante_id, :liga_id, :fecha, :goles_local, :goles_visitante, :jugado)";
@@ -21,7 +20,6 @@ function insertPartido($conn, $equipo_local_id, $equipo_visitante_id, $liga_id, 
 
 function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fecha, $goles_local, $goles_visitante)
 {
-    global $conn;
     $jugado = (!is_null($goles_local) && !is_null($goles_visitante)) ? 1 : 0;
     $sql = "UPDATE partits 
             SET equip_local_id = :equipo_local_id, equip_visitant_id = :equipo_visitante_id, data = :fecha, 
@@ -42,7 +40,6 @@ function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fech
 // Agafar dades dels partits
 function consultarPartido($conn, $id)
 {
-    global $conn;
     $sql = "SELECT * FROM partits WHERE id = :id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':id', $id);
@@ -54,7 +51,6 @@ function consultarPartido($conn, $id)
 // Delete per esborrar partits
 function deletePartit($conn, $partit_id)
 {
-    global $conn;
     $sql = "DELETE FROM partits WHERE id = :partit_id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':partit_id', $partit_id, PDO::PARAM_INT);
@@ -64,7 +60,6 @@ function deletePartit($conn, $partit_id)
 // Funció per guardar la predicció en la base de dades (WORK IN PROGRESS)
 function guardarPrediccio($conn, $partit_id, $usuari_id, $gols_local, $gols_visitant)
 {
-    global $conn;
     $stmt = $conn->prepare("INSERT INTO prediccions (partit_id, usuari_id, gols_local, gols_visitant) VALUES (:partit_id, :usuari_id, :gols_local, :gols_visitant)");
 
     // Vincular params
@@ -80,7 +75,6 @@ function guardarPrediccio($conn, $partit_id, $usuari_id, $gols_local, $gols_visi
 // Funció per obtenir el nom d'un equip
 function getTeamName($conn, $id)
 {
-    global $conn;
     $stmt = $conn->prepare("SELECT nom FROM equips WHERE id = :id");
     $stmt->bindParam(':id', $id);
     $stmt->execute();
@@ -90,7 +84,6 @@ function getTeamName($conn, $id)
 // Funció per obtenir l'ID d'un equip per fer-ho DATA BASE READABLE (no sé si existeix el terme)
 function getTeamID($conn, $nom)
 {
-    global $conn;
     $stmt = $conn->prepare("SELECT id FROM equips WHERE nom = :nom");
     $stmt->bindParam(':nom', $nom);
     $stmt->execute();
@@ -100,7 +93,6 @@ function getTeamID($conn, $nom)
 // Funció per obtenir l'ID d'una lliga per fer-la DATA BASE READABLE (sona bé)
 function getLigaID($conn, $equipo_id)
 {
-    global $conn;
     $sql = "SELECT lliga_id FROM equips WHERE id = :equipo_id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':equipo_id', $equipo_id);
@@ -112,7 +104,6 @@ function getLigaID($conn, $equipo_id)
 
 function getLeagueNameByTeam($equipLocal, $conn)
 {
-    global $conn;
     // Obtener el nom de la lliga del equip favorit
     $query = $conn->prepare("SELECT lligues.nom AS lliga FROM equips 
     JOIN lligues ON equips.lliga_id = lligues.id 
@@ -161,8 +152,7 @@ function getPartits($conn, $lliga, $limit, $offset, $equipFavorit = null, $order
     return $partits;
 }
 
-function getTotalPartits($lliga, $equipFavorit = null) {
-    global $conn;
+function getTotalPartits($conn, $lliga, $equipFavorit = null) {
     if ($equipFavorit) {
         $sql = "SELECT COUNT(*) 
                 FROM partits p

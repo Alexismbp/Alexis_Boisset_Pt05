@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!Validation::validateImage($avatar)) {
                 throw new Exception('La imagen no cumple con los requisitos');
             }
-            
+
             // Crear directorio de uploads si no existe
             $uploadDir = BASE_PATH . 'uploads/avatars';
             if (!file_exists($uploadDir)) {
@@ -35,18 +35,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     throw new Exception('No se pudo crear el directorio de uploads');
                 }
             }
-            
+
             // Generar nombre seguro para el archivo
             $fileExtension = strtolower(pathinfo($avatar['name'], PATHINFO_EXTENSION));
             $fileExtension = preg_replace('/[^a-zA-Z0-9]/', '', $fileExtension);
             $randomString = bin2hex(random_bytes(5)); // 10 caracteres hexadecimales
             $avatarName = 'avatar_' . $randomString . '.' . $fileExtension;
             $uploadPath = $uploadDir . '/' . $avatarName;
-            
+
             if (!move_uploaded_file($avatar['tmp_name'], $uploadPath)) {
                 throw new Exception('Error al subir la imagen. Verifica los permisos del directorio');
             }
-            
+
             // Si hay un avatar anterior, eliminarlo
             if (isset($_SESSION['avatar']) && $_SESSION['avatar'] !== null) {
                 $oldAvatar = $uploadDir . '/' . $_SESSION['avatar'];
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     unlink($oldAvatar);
                 }
             }
-            
+
             $_SESSION['avatar'] = $avatarName;
         } else {
             $avatarName = isset($_SESSION['avatar']) ? $_SESSION['avatar'] : null;
@@ -63,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (updateUserProfile($email, $username, $equip, $avatarName, $conn)) {
             $_SESSION['username'] = $username;
             $_SESSION['equip'] = $equip;
+            setcookie('lliga', getLeagueNameByTeam($equip, $conn), time() + (86400 * 30), "/");
             $_SESSION['success'] = 'Perfil actualitzat correctament';
         } else {
             throw new Exception('Error al actualitzar el perfil');
