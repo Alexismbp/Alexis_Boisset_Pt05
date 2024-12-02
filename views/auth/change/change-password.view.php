@@ -38,6 +38,7 @@ if (!isset($_SESSION['loggedin'])) {
             
             <button type="submit">Canviar Contrasenya</button>
         </form>
+        <a href="<?php echo BASE_URL; ?>" class="btn-tornar">Tornar enrere</a>
     </div>
 </body>
 </html>

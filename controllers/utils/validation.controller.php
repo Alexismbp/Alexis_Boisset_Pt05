@@ -69,4 +69,25 @@ class Validation {
 
         return $errors;
     }
+
+    /**
+     * Valida una imagen
+     * @param array $file Archivo de imagen $_FILES['input_name']
+     * @return bool True si la imagen es válida
+     * @throws Exception Si la imagen no es válida
+     */
+    public static function validateImage(array $file): bool {
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        $maxSize = 5 * 1024 * 1024; // 5MB
+        
+        if (!in_array($file['type'], $allowedTypes)) {
+            throw new Exception('Format d\'imatge no vàlid. Formats permesos: JPG, PNG, GIF');
+        }
+        
+        if ($file['size'] > $maxSize) {
+            throw new Exception('La imatge és massa gran. Mida màxima: 5MB');
+        }
+        
+        return true;
+    }
 }

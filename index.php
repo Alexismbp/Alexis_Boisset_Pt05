@@ -17,15 +17,18 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // DEBUG
 /* $_SESSION['loggedin'] = true; */
-/* $_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/";
-$_SERVER['REQUEST_METHOD'] = "GET";  */
+/* $_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/save-profile";
+$_SERVER['REQUEST_METHOD'] = "POST"; 
+$_SESSION['loggedin'] = true;
+$_POST['username'] = 'Marc Pérez';
+$_POST['equip'] = 'Real Madrid'; */
 /* $_POST['current_password'] = 'Admin123';
 $_POST['new_password'] = 'Admin123!';
 $_POST['confirm_password'] = 'Admin123!'; */
 
 
 /*  $_POST['username'] = 'Alexis Marc'; */
-/* $_SESSION['email'] = 'a.boisset@sapalomera.cat'; */
+$_SESSION['email'] = 'a.boisset@sapalomera.cat';
 /* $_POST['equip'] = 'Atlético de Madrid';
 $_SERVER['REQUEST_METHOD'] = 'POST'; */
 /* $_COOKIE['remember_token'] = '412fb53ea4c764e0f7ecd392554abf1959b9644978ba366321ebf21e0af5f741'; */
@@ -46,12 +49,14 @@ $router->get('/delete', 'views/crud/delete.view.php');
 $router->get('/forgotpassword', 'views/auth/forgot/forgot-password.view.php');
 $router->get('/changepassword', 'views/auth/change/change-password.view.php');
 $router->get('/resetpassword', 'views/auth/reset/reset-password.view.php');
+$router->get('/profile', 'views/auth/profile/profile.view.php');
 
 // Rutas para partidos
 $router->get('/create-match', 'views/crud/create/create-match.view.php');
 $router->get('/edit-match/{id}', 'views/crud/edit/edit-match.view.php');
-$router->post('/save-match', 'controllers/crud/save-match.controller.php');
 $router->post('/update-match', 'controllers/crud/update-match.controller.php');
+$router->post('/save-match', 'controllers/crud/save-match.controller.php');
+$router->post('/delete-match', 'controllers/crud/delete-match.controller.php');
 
 // Rutas OAuth
 $router->get('/oauth/{provider}', function() use ($router) {
@@ -74,11 +79,12 @@ $router->post('/delete', 'controllers/crud/delete.controller.php');
 $router->post('/forgotpassword', 'controllers/auth/email-password.controller.php');
 $router->post('/changepassword', 'controllers/auth/change-password.controller.php');
 $router->post('/resetpassword', 'controllers/auth/reset-password.controller.php');
+$router->post('/save-profile', 'controllers/auth/profile.controller.php');
 $router->get('/logout', 'controllers/auth/logout.controller.php');
-$router->post('/save-match', 'controllers/crud/save-match.controller.php');
-$router->post('/delete-match', 'controllers/crud/delete-match.controller.php');
 
-// Rutas para artículos
+
+
+// Rutas para artículos DEPRACATED
 $router->post('/save-article', 'controllers/crud/save-article.controller.php');
 $router->get('/edit-article/{id}', 'views/crud/edit/edit-article.view.php');
 $router->post('/update-article', 'controllers/crud/update-article.controller.php');

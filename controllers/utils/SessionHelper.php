@@ -27,5 +27,16 @@ class SessionHelper {
             $_SESSION[$key] = $value;
         }
     }
+
+    /**
+     * Verifica si el usuario está logueado, si no, redirige al login
+     */
+    public static function checkLogin(): void {
+        if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+            $_SESSION['failure'] = "Has d'iniciar sessió per accedir a aquesta pàgina";
+            header('Location: ' . BASE_URL . 'login');
+            exit();
+        }
+    }
 }
 ?>

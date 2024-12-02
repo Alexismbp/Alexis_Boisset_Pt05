@@ -325,3 +325,59 @@ function mergeAccounts(string $email, string $provider, PDO $conn): bool {
         return false;
     }
 }
+
+/**
+ * Actualiza el perfil del usuario
+ * @param string $email
+ * @param string $username
+ * @param string $equip
+ * @param string|null $avatar
+ * @param PDO $conn
+ * @return bool
+ */
+function updateUserProfile(string $email, string $username, string $equip, ?string $avatar, PDO $conn): bool {
+    try {
+        $sql = "UPDATE usuaris SET 
+                nom_usuari = :username,
+                equip_favorit = :equip";
+        
+        if ($avatar !== null) {
+            $sql .= ", avatar = :avatar";
+        }
+        
+        $sql .= " WHERE correu_electronic = :email";
+        
+        $stmt = $conn->prepare($sql);
+        $params = [
+            ':username' => $username,
+            ':equip' => $equip,
+            ':email' => $email
+        ];
+        
+        if ($avatar !== null) {
+            $params[':avatar'] = $avatar;
+        }
+        
+        return $stmt->execute($params);
+    } catch (PDOException $e) {
+        error_log("Error en updateUserProfile: " . $e->getMessage());
+        return false;
+    }
+}
+
+/**
+ * Obtiene todos los equipos de la base de datos
+ * @param PDO $conn
+ * @return array Array con todos los equipos
+ */
+function getAllTeams(PDO $conn): array {
+    try {
+        $sql = "SELECT nom FROM equips ORDER BY nom ASC";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Error obteniendo equipos: " . $e->getMessage());
+        return [];
+    }
+}
