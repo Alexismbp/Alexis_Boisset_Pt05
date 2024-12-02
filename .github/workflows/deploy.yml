@@ -8,34 +8,29 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Deploy to FTP server
-      uses: SamKirkland/FTP-Deploy-Action@4.3.0
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      
+    - name: Deploy to FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server: ftp.alexisboisset.cat
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
+        protocol: ftp
+        port: 21
+        dangerous-clean-slate: false
+        timeout: 60000
         local-dir: ./
         server-dir: /
         exclude: |
-          .git*
-          .git/
-          .github/
-          .gitignore
-          .DS_Store
-          node_modules/
-          *.log
-          *.tmp
-          *.bak
-          *.swp
-          package-lock.json 
-          LICENSE
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/.DS_Store
+          **/env.php
           README.md
           .htaccess
-          altres/
-          altres/*
-          env.php
+          altres/**
