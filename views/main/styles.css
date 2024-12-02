@@ -243,14 +243,17 @@ label {
 .user-menu {
     display: flex;
     align-items: center;
-    gap: 20px;
     justify-content: space-between;
-    width: 100%;
+    width: calc(100% - 40px);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 .user-menu p {
     margin: 0;
-    padding-left: 20px;
+    color: #ffd700;
+    font-weight: bold;
 }
 
 .dropdown {
@@ -330,11 +333,64 @@ label {
     padding: 0 20px;
 }
 
+/* Estilos para el avatar y menú de administración */
+.admin-profile {
+    position: relative;
+    margin-left: auto;
+}
+
+.header-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #ffd700;
+    transition: transform 0.2s ease;
+    object-fit: cover;
+}
+
+.header-avatar:hover {
+    transform: scale(1.1);
+}
+
+.admin-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 1000;
+    min-width: 200px;
+    padding: 5px 0;
+}
+
+.admin-dropdown a {
+    display: block;
+    padding: 10px 15px;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    border-bottom: 1px solid #eee;
+}
+
+.admin-dropdown a:last-child {
+    border-bottom: none;
+}
+
+.admin-dropdown a:hover {
+    background-color: #1a472a;
+    color: #ffd700;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .user-menu {
-        flex-direction: column;
-        gap: 10px;
+        flex-direction: row;
+        padding: 0 10px;
+        width: calc(100% - 20px);
     }
     
     .dropdown-content {
@@ -367,5 +423,10 @@ label {
 
     .main-content-wrapper {
         padding: 0 10px;
+    }
+
+    .admin-dropdown {
+        right: -10px;
+        width: 200px;
     }
 }

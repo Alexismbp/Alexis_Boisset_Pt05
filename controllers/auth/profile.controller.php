@@ -28,12 +28,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 throw new Exception('La imagen no cumple con los requisitos');
             }
             
-            $avatarName = uniqid() . '_' . $avatar['name'];
-            $uploadPath = __DIR__ . '/../../uploads/avatars/' . $avatarName;
+            // Crear directorio de uploads si no existe
+            $uploadDir = BASE_PATH . 'uploads/avatars';
+            if (!file_exists($uploadDir)) {
+                if (!mkdir($uploadDir, 0755, true)) {
+                    throw new Exception('No se pudo crear el directorio de uploads');
+                }
+            }
+            
+            // Asegurarse que el directorio tiene permisos correctos
+            chmod($uploadDir, 0755);
+            
+            $avatarName = uniqid() . '_' . basename($avatar['name']);
+            $uploadPath = $uploadDir . '/' . $avatarName;
             
             if (!move_uploaded_file($avatar['tmp_name'], $uploadPath)) {
-                throw new Exception('Error al subir la imagen');
+                throw new Exception('Error al subir la imagen. Verifica los permisos del directorio');
             }
+            
+            // Si hay un avatar anterior, eliminarlo
+            if (isset($_SESSION['avatar']) && $_SESSION['avatar'] !== null) {
+                $oldAvatar = $uploadDir . '/' . $_SESSION['avatar'];
+                if (file_exists($oldAvatar)) {
+                    unlink($oldAvatar);
+                }
+            }
+            
+            $_SESSION['avatar'] = $avatarName;
         } else {
             $avatarName = null;
         }
