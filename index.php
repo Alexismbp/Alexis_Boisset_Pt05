@@ -97,7 +97,7 @@ $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $basePath = rtrim(parse_url(BASE_URL, PHP_URL_PATH), '/');
 $uri = "/" . ltrim(substr($uri, strlen($basePath)), '/');
 
-try {
+// try {
     $result = $router->dispatch($uri);
     
     if ($result instanceof Closure) {
@@ -105,7 +105,7 @@ try {
     } else {
         include BASE_PATH . $result;
     }
-} catch (Exception $e) {
-    http_response_code(404);
-    include BASE_PATH . 'views/errors/404.view.php';
-}
+// } catch (Exception $e) {
+//    http_response_code(404);
+//    include BASE_PATH . 'views/errors/404.view.php';
+// }
