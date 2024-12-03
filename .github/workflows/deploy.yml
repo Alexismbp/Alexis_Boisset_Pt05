@@ -22,7 +22,7 @@ jobs:
         protocol: ftps
         port: 21
         dangerous-clean-slate: false
-        timeout: 300000  # Incrementar el tiempo de espera a 5 minutos
+        timeout: 350000  # Incrementar el tiempo de espera a 5 minutos
         state-name: .ftp-deploy-sync-state.json
         dry-run: false
         log-level: verbose
@@ -30,6 +30,7 @@ jobs:
         local-dir: ./
         server-dir: /
         exclude: |
+          **/vendor/**
           **/.git*
           **/.git*/**
           **/node_modules/**

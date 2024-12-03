@@ -17,9 +17,9 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // DEBUG
 /* $_SESSION['loggedin'] = true; */
-$_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/profile";
+/* $_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/profile";
 $_SERVER['REQUEST_METHOD'] = "GET"; 
-$_SESSION['loggedin'] = true;
+$_SESSION['loggedin'] = true; */
 /* $_POST['username'] = 'Marc Pérez';
 $_POST['equip'] = 'Real Madrid'; */
 /* $_POST['current_password'] = 'Admin123';
