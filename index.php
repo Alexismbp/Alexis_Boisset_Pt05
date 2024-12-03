@@ -56,7 +56,7 @@ AuthMiddleware::handleRememberToken();
 
 // Añadir la ruta para búsquedas
 $router->get('/search', function() {
-    require_once __DIR__ . '/controllers/utils/search.controller.php'; // Asegurar la ruta correcta
+    require_once BASE_PATH . 'controllers/utils/search.controller.php'; // Asegurar la ruta correcta
     $conn = Database::getInstance();
     $searchController = new SearchController($conn);
     $term = $_GET['term'] ?? '';

@@ -3,7 +3,7 @@
 
 - [**Porra de Futbol - Gestió de Resultats**](#porra-de-futbol---gestió-de-resultats)
   - [0. Índex](#0-índex)
-  - [1. Explicació del Projecte](#1-explicació-del-projecte)
+  - [1. Explicació del Projecte (Depracated)](#1-explicació-del-projecte-depracated)
   - [2. Estructura del Projecte](#2-estructura-del-projecte)
   - [3. Funcionalitats Principals](#3-funcionalitats-principals)
   - [4. Base de Dades](#4-base-de-dades)
@@ -22,25 +22,23 @@
     - [database.model.php](#databasemodelphp)
     - [form.controller.php](#formcontrollerphp)
     - [match.controller.php](#matchcontrollerphp)
-    - [prediction.controller.php](#predictioncontrollerphp)
     - [lligaequip.js](#lligaequipjs)
-    - [prediction.js](#predictionjs)
-    - [main.css](#maincss)
-    - [auth.css](#authcss)
-    - [match.css](#matchcss)
+    - [styles.css](#stylescss)
     - [index.php](#indexphp)
     - [.gitignore](#gitignore)
 
-## 1. Explicació del Projecte
+## 1. Explicació del Projecte (Depracated)
 
 Aquest projecte és una aplicació de **porra de futbol** que permet als usuaris predir els resultats dels partits de futbol de diverses lligues (LaLiga, Premier League, Ligue 1). Inclou funcionalitats d'autenticació d'usuaris, gestió de partits i un sistema de feedback visual per veure si l'usuari ha encertat la seva predicció.
+
+També inclou una interfície d'usuari per afegir, editar i eliminar articles sobre partits i donar la seva opinió sobre els resultats. Els administradors poden gestionar els partits i les prediccions dels usuaris des de l'aplicació.
 
 ## 2. Estructura del Projecte
 
 ```plaintext
 ALEXIS_BOISSET_PT05/
 ├── controllers
-│   ├── main.controller.php              # Controlador principal de l'aplicació.
+│   ├── styles.controller.php              # Controlador principal de l'aplicació.
 │   ├── auth
 │   │   ├── login.controller.php         # Processa el login d'usuaris.
 │   │   ├── logout.controller.php        # Gestiona el logout i tanca la sessió.
@@ -77,33 +75,32 @@ ALEXIS_BOISSET_PT05/
 ├── views
 │   ├── admin
 │   │   ├── manage-users.view.php         # Pàgina per gestionar els usuaris.
-│   │   ├── styles_manage-users.css       # Estils per a la pàgina de gestió d'usuaris.
+│   │   └── styles_manage-users.css       # Estils per a la pàgina de gestió d'usuaris.
 │   ├── auth
 │   │   ├── change
 │   │   │   ├── change-password.view.php   # Formulari per canviar la contrasenya.
-│   │   │   ├── styles_change.css          # Estils per a la pàgina de canvi de contrasenya.
+│   │   │   └──styles_change.css          # Estils per a la pàgina de canvi de contrasenya.
 │   │   ├── forgot
 │   │   │   ├── forgot-password.view.php   # Formulari per restablir la contrasenya.
-│   │   │   ├── styles_forgot.css          # Estils per a la pàgina de restabliment de contrasenya.
+│   │   │   └──styles_forgot.css          # Estils per a la pàgina de restabliment de contrasenya.
 │   │   ├── login
 │   │   │   ├── login.view.php             # Formulari de login.
-│   │   │   ├── styles_login.css           # Estils per a la pàgina de login.
+│   │   │   └── styles_login.css           # Estils per a la pàgina de login.
 │   │   ├── merge
 │   │   │   ├── merge-accounts.view.php    # Pàgina per fusionar comptes d'usuari.
-│   │   │   ├── styles_merge.css           # Estils per a la pàgina de fusió de comptes.
+│   │   │   └── styles_merge.css           # Estils per a la pàgina de fusió de comptes.
 │   │   ├── preferences
 │   │   │   ├── preferences.view.php       # Formulari per configurar preferències.
-│   │   │   ├── styles_preferences.css     # Estils per a la pàgina de preferències.
+│   │   │   └── styles_preferences.css     # Estils per a la pàgina de preferències.
 │   │   ├── profile
 │   │   │   ├── profile.view.php           # Pàgina de perfil de l'usuari.
-│   │   │   ├── styles_profile.css         # Estils per a la pàgina de perfil.
+│   │   │   └── styles_profile.css         # Estils per a la pàgina de perfil.
 │   │   ├── register
 │   │   │   ├── register.view.php          # Formulari de registre.
-│   │   │   ├── styles_register.css        # Estils per a la pàgina de registre.
-│   │   ├── reset
-│   │   │   ├── reset-password.view.php    # Formulari per restablir la contrasenya.
-│   │   │   ├── styles_reset.css           # Estils per a la pàgina de restabliment de contrasenya.
-│   │
+│   │   │   └── styles_register.css        # Estils per a la pàgina de registre.
+│   │   └── reset
+│   │       ├── reset-password.view.php    # Formulari per restablir la contrasenya.
+│   │       └──styles_reset.css           # Estils per a la pàgina de restabliment de contrasenya.
 │   ├── components
 │   │   ├── admin-actions.component.php           # Accions d'administrador.
 │   │   ├── footer.component.php                  # Peu de pàgina comú de l'aplicació.
@@ -112,7 +109,7 @@ ALEXIS_BOISSET_PT05/
 │   │   ├── match-actions.component.php           # Accions relacionades amb els partits.
 │   │   ├── matches-list.component.php            # Llista de partits.
 │   │   ├── matches-per-page.component.php        # Selector de nombre de partits per pàgina.
-│   │   ├── pagination.component.php              # Paginació de llistes.
+│   │   └── pagination.component.php              # Paginació de llistes.
 │   ├── crud
 │   │   ├── create
 │   │   │   ├── admin-create.view.php             # Formulari per crear nous administradors.
@@ -123,16 +120,16 @@ ALEXIS_BOISSET_PT05/
 │   │   │   ├── styles_eliminar.css               # Estils per a la pàgina d'eliminació.
 │   │   ├── edit
 │   │   │   ├── match-edit.view.php               # Formulari per editar partits existents.
-│   │   ├── view
-│   │   │   ├── match-view.view.php               # Vista detallada d'un partit.
-│   │   │   ├── styles_match-view.css             # Estils per a la pàgina de vista de partits.
+│   │   └── view
+│   │       ├── match-view.view.php               # Vista detallada d'un partit.
+│   │       └── styles_match-view.css             # Estils per a la pàgina de vista de partits.
 │   ├── errors/
 │   │   ├── 404.view.php                        # Pàgina d'error 404.
 │   ├── layouts/
 │   │   ├── feedback.view.php                    # Missatges de feedback per a l'usuari.
-│   ├── main/
+│   └── styles/
 │       ├── index.view.php                       # Pàgina principal de l'aplicació.
-│       ├── styles.css                           # Estils per a la pàgina principal.
+│       └──styles.css                           # Estils per a la pàgina principal.
 │
 │
 ├── .gitignore                           # Arxius i carpetes a ignorar en Git.
@@ -145,7 +142,7 @@ ALEXIS_BOISSET_PT05/
 - **Predicció de partits**: Els usuaris poden fer prediccions de resultats i comprovar si han encertat.
 - **Selecció dinàmica d'equips**: Durant el registre, l'usuari selecciona la seva lliga i equip favorit.
 - **Gestió de partits**: Administradors poden afegir, editar i eliminar partits des de l'aplicació.
-- **Control de sessió i preferències**: Les sessions tenen una durada limitada i es guarden preferències com el nombre de partits per pàgina.
+- **Control de sessió i preferències**: Les sessions tenen una durada limitada i es guarden preferències de l'usuari.
 - **Feedback visual**: Es mostra si l'usuari ha encertat la predicció amb indicadors visuals.
 
 ## 4. Base de Dades
@@ -180,11 +177,10 @@ A continuació es mostren els usuaris predefinits:
 
 1. **Registrar-se**: Accedeix a `register.view.php` per crear un nou compte.
 2. **Iniciar Sessió**: Utilitza `login.view.php` per iniciar sessió amb les teves credencials.
-3. **Configurar Preferències**: Selecciona la teva lliga i equip favorit després d'iniciar sessió.
-4. **Fer Prediccions**: A `index.view.php`, selecciona un partit i introdueix la teva predicció.
-5. **Consultar Resultats**: Comprova els partits jugats i veu si has encertat.
-6. **Modificar Perfil**: Accedeix a `profile.view.php` per actualitzar les teves dades.
-7. **Tancar Sessió**: Fes logout per assegurar la confidencialitat de la teva sessió.
+3. **Configurar Preferències**: Selecciona la teva lliga i equip favorit després d'iniciar sessió (Si loguejas per Oauth).
+4. **Crear article**: A `index.view.php`, ves al header, clica a la teva icona i podrás insertar articles sobre partits del teu equip favorit juntament amb el resultat del partit.
+5. **Modificar Perfil**: Accedeix a `profile.view.php` per actualitzar les teves dades.
+6. **Tancar Sessió**: Fes logout per assegurar la confidencialitat de la teva sessió.
 
 ## 8. Instal·lació
 
@@ -232,7 +228,7 @@ El fitxer `SessionHelper.php` conté funcions auxiliars per a la gestió de sess
 
 ### database.model.php
 
-El fitxer `database.model.php` gestiona la connexió a la base de dades mitjançant PDO. Proporciona una connexió segura i reutilitzable a la base de dades MySQL, permetent l'execució de consultes SQL de manera eficient i segura.
+El fitxer `database.model.php` gestiona la connexió a la base de dades mitjançant PDO. Proporciona una connexió segura i reutilitzable a la base de dades MySQL, permetent l'execució de consultes SQL de manera eficient i segura. S'utilitza el patró singleton.
 
 ### form.controller.php
 
@@ -242,29 +238,13 @@ El fitxer `form.controller.php` s'encarrega de la validació i processament de f
 
 El fitxer `match.controller.php` controla les operacions relacionades amb els partits. Permet als administradors afegir, editar i eliminar partits, així com gestionar les prediccions dels usuaris. També inclou funcions per obtenir dades dels partits i mostrar-les a la interfície d'usuari.
 
-### prediction.controller.php
-
-El fitxer `prediction.controller.php` gestiona les prediccions dels usuaris. Permet als usuaris fer prediccions de resultats de partits i comprovar si han encertat. També inclou funcions per calcular els punts obtinguts per cada predicció i mostrar un rànquing dels usuaris.
-
 ### lligaequip.js
 
 El fitxer `lligaequip.js` és un script que mostra els equips disponibles segons la lliga seleccionada per l'usuari. Actualitza dinàmicament la llista d'equips en el formulari de registre i preferències, millorant l'experiència d'usuari.
 
-### prediction.js
+### styles.css
 
-El fitxer `prediction.js` és un script que gestiona les prediccions en temps real. Permet als usuaris introduir les seves prediccions de manera interactiva i veure els resultats immediatament. També inclou funcions per validar les prediccions abans d'enviar-les al servidor.
-
-### main.css
-
-El fitxer `main.css` conté els estils generals de l'aplicació. Defineix l'aparença i el disseny de les pàgines, incloent colors, tipografies i disposició dels elements.
-
-### auth.css
-
-El fitxer `auth.css` conté els estils específics per a les pàgines d'autenticació. Defineix l'aparença dels formularis de login, registre i preferències, assegurant una experiència d'usuari consistent i atractiva.
-
-### match.css
-
-El fitxer `match.css` conté els estils específics per a les pàgines de partits. Defineix l'aparença de la llista de partits, els formularis de creació i edició de partits, i els resultats de les prediccions.
+El fitxer `styles.css` conté els estils generals de l'aplicació. Defineix l'aparença i el disseny de les pàgines, incloent colors, tipografies i disposició dels elements. S'utilitza per mantenir una coherència visual en tota l'aplicació.
 
 ### index.php
 

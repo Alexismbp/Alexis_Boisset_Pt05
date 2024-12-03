@@ -30,7 +30,9 @@ class SearchController {
         } catch (PDOException $e) {
             // Registro de error para depuración
             error_log("Error en SearchController: " . $e->getMessage());
-            return [];
+            http_response_code(500);
+            echo json_encode(['error' => 'Error en el servidor.']);
+            exit;
         }
     }
 }

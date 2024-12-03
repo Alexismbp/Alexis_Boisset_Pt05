@@ -33,6 +33,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('Datos recibidos:', data); // Debug
                 searchResults.innerHTML = '';
                 
+                if (data.error) {
+                    searchResults.innerHTML = `<p>${data.error}</p>`;
+                    searchResults.style.display = 'block';
+                    return;
+                }
+
                 if (data.length === 0) {
                     searchResults.style.display = 'none';
                     return;
@@ -55,6 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(error => {
                 console.error('Error en la búsqueda:', error);
+                searchResults.innerHTML = `<p>Error al realizar la búsqueda.</p>`;
+                searchResults.style.display = 'block';
             });
         }, 300);
     });
