@@ -58,7 +58,7 @@ function actualitzarEquips(vista, equipEscollit) {
             })
         }
 
-    // Només per la vista crear_partit.php, funció molt més general, només filtra per Lliga.
+    // Només per la vista match-edit.view.php, funció molt més general, només filtra per Lliga.
     } else if (vista == "crear") {
         // Netejar <option> per introduir els nous valors
         equipLocal.innerHTML = '<option value="">-- Selecciona el teu equip favorit --</option>';

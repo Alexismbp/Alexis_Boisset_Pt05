@@ -1,7 +1,11 @@
-
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once __DIR__ . "/../../../models/env.php";
+require_once BASE_PATH . 'models/database/database.model.php';
+require_once BASE_PATH . 'models/utils/porra.model.php';
 require_once BASE_PATH . '/controllers/session/session.controller.php';
 require_once BASE_PATH . 'controllers/utils/form.controller.php';
 
@@ -10,12 +14,48 @@ if (!isset($_SESSION['loggedin'])) {
     exit();
 }
 
-if (!isset($_GET['id'])) {
+// Obtener el ID del partido desde la URL usando Router
+$id = basename($_SERVER['REQUEST_URI']);
+
+if (!$id || !is_numeric($id)) {
     header("Location: " . BASE_URL);
     exit();
 }
-?>
 
+// Obtener datos del partido
+$conn = Database::getInstance();
+$stmt = consultarPartido($conn, $id);
+$partit = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$partit) {
+    $_SESSION['failure'] = "Partit no trobat";
+    header("Location: " . BASE_URL);
+    exit();
+}
+
+// Guardar datos en sesión para el formulario
+dadesEdicio($conn, $partit, $id);
+
+// Obtenim els noms y dades dels equips y partits per a mostrar-los
+function dadesEdicio($conn, $partit, $id)
+{
+    // Pasar a una dada que sigui HUMAN READABLE (B2 English)
+    $equip_local_name = isset($partit['equip_local_id'])  ? getTeamName($conn, $partit['equip_local_id']) : '';
+    $equip_visitant_name = isset($partit['equip_visitant_id']) ? getTeamName($conn, $partit['equip_visitant_id']) : '';
+
+    $_SESSION['equip_local'] = $equip_local_name;
+    $_SESSION['equip_visitant'] = $equip_visitant_name;
+    $_SESSION['data'] = $partit['data'];
+    $_SESSION['gols_local'] = $partit['gols_local'];
+    $_SESSION['gols_visitant'] = $partit['gols_visitant'];
+    $_SESSION['jugat'] = $partit['jugat'];
+    $_SESSION["id"] = $id;
+    $_SESSION['editant'] = true;
+    $_SESSION['lliga'] = getLeagueNameByTeam($equip_local_name,$conn);
+
+    return true;
+}
+?>
 <!DOCTYPE html>
 <html lang="ca">
 <head>
@@ -27,10 +67,9 @@ if (!isset($_GET['id'])) {
 <body>
     <div class="container">
         <h1>Editar Partit</h1>
-        <form action="<?php echo BASE_URL; ?>controllers/crud/update-match.controller.php" method="POST">
+        <form action="<?php echo BASE_URL; ?>save-match" method="POST">
+            <input type="hidden" name="id" value="<?php echo $id; ?>">
             <?php require_once BASE_PATH . '/views/layouts/feedback.view.php'; ?>
-            
-            <input type="hidden" name="id" value="<?php echo $_GET['id']; ?>">
             
             <div class="form-group">
                 <label for="lliga">Lliga:</label>

@@ -76,8 +76,7 @@ function getUserData(string $email, PDO $conn): array|false
         $query->execute();
         $result = $query->fetch(PDO::FETCH_ASSOC);
 
-        // Debug
-        error_log("getUserData result: " . print_r($result, true));
+        
 
         return $result;
     } catch (PDOException $e) {
@@ -367,9 +366,7 @@ function updateUserProfile(string $email, string $username, string $equip, ?stri
             $params[':avatar'] = $avatar;
         }
 
-        // Debug
-        error_log("SQL Update: " . $sql);
-        error_log("Params: " . print_r($params, true));
+       
 
         return $stmt->execute($params);
     } catch (PDOException $e) {

@@ -16,15 +16,14 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // DEBUG
-/* $_SESSION['loggedin'] = true; */
-/* $_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/profile";
-$_SERVER['REQUEST_METHOD'] = "GET"; 
-$_SESSION['loggedin'] = true;
-$_SESSION['email'] = 'a.boisset@sapalomera.cat';
+/* $_SESSION['loggedin'] = true;
+$_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/edit-match/93";
+$_SERVER['REQUEST_METHOD'] = "GET";  */
+/* $_SESSION['email'] = 'a.boisset@sapalomera.cat'; */
 
-$userData = getUserData($_SESSION['email'], $conn);
+/* $userData = getUserData($_SESSION['email'], $conn); */
 
-SessionHelper::setSessionData([
+/* SessionHelper::setSessionData([
     'email' => $_SESSION['email'],
     'avatar' => $userData['avatar'],
     'LAST_ACTIVITY' => time(),
@@ -66,11 +65,11 @@ $router->get('/resetpassword', 'views/auth/reset/reset-password.view.php');
 $router->get('/profile', 'views/auth/profile/profile.view.php');
 
 // Rutas para partidos
-$router->get('/create-match', 'views/crud/create/create-match.view.php');
-$router->get('/edit-match/{id}', 'views/crud/edit/edit-match.view.php');
-$router->post('/update-match', 'controllers/crud/update-match.controller.php');
+$router->get('/create-match', 'views/crud/create/match-edit.view.php');
+$router->get('/edit-match/{id}', function() use ($router) {
+    include BASE_PATH . 'views/crud/edit/match-edit.view.php';
+});
 $router->post('/save-match', 'controllers/crud/save-match.controller.php');
-$router->post('/delete-match', 'controllers/crud/delete-match.controller.php');
 
 // Rutas OAuth
 $router->get('/oauth/{provider}', function() use ($router) {
@@ -98,11 +97,9 @@ $router->get('/logout', 'controllers/auth/logout.controller.php');
 
 
 
-// Rutas para artículos DEPRACATED
-$router->post('/save-article', 'controllers/crud/save-article.controller.php');
+// Rutas para artículos
 $router->get('/edit-article/{id}', 'views/crud/edit/edit-article.view.php');
-$router->post('/update-article', 'controllers/crud/update-article.controller.php');
-$router->post('/delete-article', 'controllers/crud/delete-article.controller.php');
+$router->post('/save-article', 'controllers/crud/save-article.controller.php');
 
 // Añadir nuevas rutas
 $router->get('/preferences', 'views/auth/preferences/preferences.view.php');

@@ -22,19 +22,24 @@ function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fech
 {
     $jugado = (!is_null($goles_local) && !is_null($goles_visitante)) ? 1 : 0;
     $sql = "UPDATE partits 
-            SET equip_local_id = :equipo_local_id, equip_visitant_id = :equipo_visitante_id, data = :fecha, 
-                gols_local = :goles_local, gols_visitant = :goles_visitante, jugat = :jugado 
+            SET equip_local_id = :equipo_local_id, 
+                equip_visitant_id = :equipo_visitante_id, 
+                data = :fecha, 
+                gols_local = :goles_local, 
+                gols_visitant = :goles_visitante, 
+                jugat = :jugado 
             WHERE id = :id";
+
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':id', $id);
     $stmt->bindParam(':equipo_local_id', $equipo_local_id);
     $stmt->bindParam(':equipo_visitante_id', $equipo_visitante_id);
     $stmt->bindParam(':fecha', $fecha);
-    $stmt->bindParam(':goles_local', $goles_local);
-    $stmt->bindParam(':goles_visitant', $goles_visitante);
-    $stmt->bindParam(':jugado', $jugado);
-
-    return $stmt; // Retorna el statement per executar-lo després
+    $stmt->bindParam(':goles_local', $goles_local, PDO::PARAM_INT);
+    $stmt->bindParam(':goles_visitant', $goles_visitante, PDO::PARAM_INT);
+    $stmt->bindParam(':jugado', $jugado, PDO::PARAM_INT);
+    
+    return $stmt;
 }
 
 // Agafar dades dels partits
@@ -101,7 +106,7 @@ function getLigaID($conn, $equipo_id)
     return $stmt->fetchColumn(); // Retorna la ID de la liga
 }
 
-function getLeagueName($equipName, $conn) {
+/* function getLeagueName($equipName, $conn) {
     $sql = "SELECT l.nom as lliga
             FROM equips e 
             JOIN lligues l ON e.lliga_id = l.id 
@@ -112,7 +117,7 @@ function getLeagueName($equipName, $conn) {
     $stmt->execute();
     
     return $stmt->fetchColumn();
-}
+} */
 
 function getLeagueNameByTeam($equipLocal, $conn)
 {
@@ -129,14 +134,18 @@ function getLeagueNameByTeam($equipLocal, $conn)
 }
 
 function getPartits($conn, $lliga, $limit, $offset, $equipFavorit = null, $orderColumn = 'p.data', $orderDirection = 'DESC') {
-   
+    $baseSelect = "SELECT p.id, p.data, e_local.nom AS equip_local, e_visitant.nom AS equip_visitant, 
+                   p.gols_local, p.gols_visitant, p.jugat, l.nom AS lliga,
+                   a.id as article_id, a.title as article_title, 
+                   a.content as article_content, a.user_id as article_user_id";
+    $baseFrom = "FROM partits p
+                 JOIN equips e_local ON p.equip_local_id = e_local.id
+                 JOIN equips e_visitant ON p.equip_visitant_id = e_visitant.id
+                 JOIN lligues l ON p.liga_id = l.id
+                 LEFT JOIN articles a ON p.id = a.match_id";
+
     if ($equipFavorit) {
-        $sql = "SELECT p.id, p.data, e_local.nom AS equip_local, e_visitant.nom AS equip_visitant, 
-                       p.gols_local, p.gols_visitant, p.jugat, l.nom AS lliga
-                FROM partits p
-                JOIN equips e_local ON p.equip_local_id = e_local.id
-                JOIN equips e_visitant ON p.equip_visitant_id = e_visitant.id
-                JOIN lligues l ON p.liga_id = l.id
+        $sql = "$baseSelect $baseFrom 
                 WHERE (e_local.nom = :equip OR e_visitant.nom = :equip)
                 AND l.nom = :lliga
                 ORDER BY " . $orderColumn . " " . $orderDirection . "

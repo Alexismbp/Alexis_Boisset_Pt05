@@ -23,6 +23,22 @@ $orderMappings = [
 /* $orderBy = $_GET['orderBy'] ?? $_COOKIE['orderBy'] ?? 'date_desc'; */
 $orderConfig = $orderMappings[$orderBy] ?? ['column' => 'p.data', 'direction' => 'DESC'];
 
+// Modificar la consulta SQL para incluir artículos
+$sql = "SELECT p.*, 
+        a.id as article_id, 
+        a.title as article_title, 
+        a.content as article_content,
+        a.user_id as article_user_id
+        FROM partits p 
+        LEFT JOIN articles a ON p.id = a.match_id";
+
+if (isset($_SESSION['loggedin']) && isset($_GET['lliga'])) {
+    $sql .= " WHERE p.liga_id = (SELECT id FROM lligues WHERE nom = :lliga)";
+    if ($_SESSION['loggedin']) {
+        $sql .= " AND (a.user_id = :user_id OR a.user_id IS NULL)";
+    }
+}
+
 // Obtenir partits de la lliga seleccionada
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
     $equipFavorit = $_SESSION['equip'] ?? null;
@@ -40,6 +56,14 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
     $totalPartits = getTotalPartits($conn, $lligaSeleccionada, $equipFavorit);
 } else {
     $totalPartits = getTotalPartits($conn, $lligaSeleccionada);
+}
+
+$stmt = $conn->prepare($sql);
+if (isset($_GET['lliga'])) {
+    $stmt->bindParam(':lliga', $_GET['lliga']);
+    if ($_SESSION['loggedin']) {
+        $stmt->bindParam(':user_id', $_SESSION['userid']);
+    }
 }
 
 $totalPages = ceil($totalPartits / $partitsPerPage);

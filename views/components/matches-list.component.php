@@ -14,8 +14,26 @@
                 </p>
             <?php endif; ?>
 
+            <?php 
+            $hasArticle = isset($partit['article_id']) && !empty($partit['article_id']);
+            if ($hasArticle): ?>
+                <div class="article-preview">
+                    <h3><?php echo htmlspecialchars($partit['article_title']); ?></h3>
+                    <?php if (!isset($_SESSION['loggedin']) || $partit['article_user_id'] == $_SESSION['userid']): ?>
+                        <p><?php echo nl2br(htmlspecialchars($partit['article_content'])); ?></p>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+
             <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-                <?php include BASE_PATH . 'views/components/match-actions.component.php'; ?>
+                <div class="match-actions">
+                    <a href="<?php echo BASE_URL; ?>edit-match/<?php echo $partit['id']; ?>" class="btn-edit">Editar</a>
+                    <?php if (!$hasArticle || $partit['article_user_id'] == $_SESSION['userid']): ?>
+                        <a href="<?php echo BASE_URL; ?>edit-article/<?php echo $partit['id']; ?>" class="btn-article">
+                            <?php echo $hasArticle ? 'Editar Article' : 'Crear Article'; ?>
+                        </a>
+                    <?php endif; ?>
+                </div>
             <?php endif; ?>
         </div>
     <?php endforeach; ?>

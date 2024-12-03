@@ -1,9 +1,11 @@
 <?php
-// Alexis Boisset
-require "../model/db_conn.php";
-require "../model/porra.model.php";
+require_once __DIR__ . "/../../models/env.php";
+require_once BASE_PATH . 'models/database/database.model.php';
+require_once BASE_PATH . 'models/utils/porra.model.php';
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 
 // Connexió a la base de dades
@@ -14,6 +16,7 @@ try {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
+    $id = $_POST['id'] ?? null;
     // Obtenim i netegem les dades del formulari
     /* $id = htmlspecialchars($_POST["id"] ?? null); */
     $equip_local = htmlspecialchars($_POST["equip_local"]);
@@ -60,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
 
         if (dadesEdicio($conn, $partit, $id)) {
 
-            header("Location: ../view/crear_partit.php");
+            header("Location: " . BASE_URL . "views/crud/edit/match-edit.view.php");
             exit();
         } else {
             $missatgesError[] = "Aquest partit no existeix";
@@ -78,38 +81,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
             'gols_visitant' => $gols_visitant,
             'errors' => $missatgesError
         ]);
-        header("Location: ../view/crear_partit.php");
+        header("Location: " . BASE_URL . "views/crud/edit/match-edit.view.php");
         exit();
     }
 
     // Obté valors adaptats a la base de dades
     $equip_local = getTeamID($conn, $equip_local);
     $equip_visitant = getTeamID($conn, $equip_visitant);
-    $liga_id = getLigaID($conn, $equip_local);
-
-
-
-    // Inserció o actualització del partit
-    if (isset($_SESSION['id']) && is_numeric($_SESSION['id']) && $_SESSION['id'] > 0) {
-        $resultat = updatePartido($conn, $_SESSION['id'], $equip_local, $equip_visitant, $data, $gols_local, $gols_visitant);
-    } else {
-        $resultat = insertPartido($conn, $equip_local, $equip_visitant, $liga_id, $data, $gols_local, $gols_visitant);
+    
+    // Validar que los equipos existen
+    if (!$equip_local || !$equip_visitant) {
+        $_SESSION['failure'] = "Els equips seleccionats no són vàlids";
+        header("Location: " . BASE_URL . "views/crud/edit/match-edit.view.php");
+        exit();
     }
 
-    // Executa la consulta
+    // Inserció o actualització del partit
     try {
-        if ($resultat->execute()) {
-            $_SESSION['success'] = "El partit s'ha inserit correctament!";
+        if ($id && is_numeric($id)) {
+            $stmt = updatePartido($conn, $id, $equip_local, $equip_visitant, $data, $gols_local, $gols_visitant);
+            if ($stmt->execute()) {
+                $_SESSION['success'] = "El partit s'ha actualitzat correctament!";
+                // Limpiar variables de sesión de edición
+                unset($_SESSION['id']);
+                unset($_SESSION['editant']);
+            }
+        } else {
+            $liga_id = getLigaID($conn, $equip_local);
+            $stmt = insertPartido($conn, $equip_local, $equip_visitant, $liga_id, $data, $gols_local, $gols_visitant);
+            if ($stmt->execute()) {
+                $_SESSION['success'] = "El partit s'ha inserit correctament!";
+            }
         }
-    } catch (Throwable $th) {
-        $_SESSION['failure'] = "Hi ha hagut un error: " . $th->getMessage();
-    } finally {
-        SessionHelper::setSessionData([
-            'data' => $data,
-            'gols_local' => $gols_local,
-            'gols_visitant' => $gols_visitant
-        ]);
-        header("Location: ../view/crear_partit.php");
+        header("Location: " . BASE_URL);
+        exit();
+    } catch (PDOException $e) {
+        $_SESSION['failure'] = "Error: " . $e->getMessage();
+        header("Location: " . BASE_URL . "views/crud/edit/match-edit.view.php");
         exit();
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id']) && $conn) {
@@ -126,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
 
         if (dadesEdicio($conn, $partit, $id)) {
 
-            header("Location: ../view/crear_partit.php");
+            header("Location: " . BASE_URL . "views/crud/edit/match-edit.view.php");
             exit();
         } else {
             $missatgesError[] = "Aquest partit no existeix";
@@ -143,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
             'gols_visitant' => $gols_visitant,
             'errors' => $missatgesError
         ]);
-        header("Location: ../view/crear_partit.php");
+        header("Location: " . BASE_URL . "views/crud/edit/match-edit.view.php");
         exit();
     }
 
@@ -153,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
     exit();
 } else {
     $_SESSION['failure'] = "Alguna cosa no ha funcionat com s'esperava";
-    header("Location: ../view/crear_partit.php");
+    header("Location: " . BASE_URL . "views/crud/edit/match-edit.view.php");
     exit();
 }
 

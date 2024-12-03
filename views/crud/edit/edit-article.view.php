@@ -1,6 +1,6 @@
-
 <?php
-require_once BASE_URL . '/controllers/session/session.controller.php';
+require_once __DIR__ . "/../../../models/env.php";
+require_once BASE_PATH . '/controllers/session/session.controller.php';
 session_start();
 
 if (!isset($_SESSION['loggedin'])) {
@@ -26,18 +26,26 @@ if ($article['user_id'] != $_SESSION['user_id']) {
 <body>
     <div class="container">
         <h1>Editar Article</h1>
-        <form action="<?php echo BASE_URL; ?>/update-article" method="POST">
-            <input type="hidden" name="article_id" value="<?php echo $article['id']; ?>">
+        <form action="<?php echo BASE_URL; ?>save-article" method="POST">
+            <input type="hidden" name="match_id" value="<?php echo $match['id']; ?>">
+            
             <div class="form-group">
-                <label for="title">Títol:</label>
-                <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($article['title']); ?>" required>
+                <label for="article_title">Títol:</label>
+                <input type="text" id="article_title" name="article_title" required 
+                       value="<?php echo htmlspecialchars($article['title'] ?? ''); ?>">
             </div>
+
             <div class="form-group">
-                <label for="content">Contingut:</label>
-                <textarea id="content" name="content" required><?php echo htmlspecialchars($article['content']); ?></textarea>
+                <label for="article_content">Contingut:</label>
+                <textarea id="article_content" name="article_content" required rows="10"><?php 
+                    echo htmlspecialchars($article['content'] ?? ''); 
+                ?></textarea>
             </div>
-            <button type="submit">Actualitzar</button>
-            <a href="<?php echo BASE_URL; ?>" class="btn-back">Tornar</a>
+
+            <div class="buttons-section">
+                <button type="submit" class="btn-submit">Guardar Article</button>
+                <a href="<?php echo BASE_URL; ?>" class="btn-back">Tornar</a>
+            </div>
         </form>
     </div>
 </body>

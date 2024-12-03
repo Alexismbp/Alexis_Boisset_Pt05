@@ -13,17 +13,17 @@ class AuthMiddleware {
         // Verificar si existe la cookie remember_token
         if (isset($_COOKIE['remember_token'])) {
             $token = $_COOKIE['remember_token'];
-            error_log("Token recibido: " . $token);
+            
             $conn = Database::getInstance();
             
             // Intentar obtener el usuario por el token
             $userData = getUserByRememberToken($token, $conn);
             
             if ($userData) {
-                error_log("Usuario encontrado: " . $userData['correu_electronic']);
+                
                 // Guardar solo el email en la sesión
                 SessionHelper::setSessionData(['remembered_email' => $userData['correu_electronic']]);
-                error_log("Email guardado en la sesión.");
+                
 
                 // Renovar el token
                 $newToken = bin2hex(random_bytes(32));
@@ -41,9 +41,9 @@ class AuthMiddleware {
                         'samesite' => 'Strict'
                     ]
                 );
-                error_log("Token renovado y cookie actualizada.");
+                
             } else {
-                error_log("Token inválido o expirado.");
+                
                 // Si el token no es válido, eliminarlo
                 setcookie('remember_token', '', time() - 3600, '/');
             }

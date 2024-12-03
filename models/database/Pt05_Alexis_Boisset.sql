@@ -20,8 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `ddb237139`
 --
-CREATE DATABASE IF NOT EXISTS `ddb237139` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `ddb237139`;
+CREATE DATABASE IF NOT EXISTS `Pt05_Alexis_Boisset` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `Pt05_Alexis_Boisset`;
 
 -- --------------------------------------------------------
 
@@ -207,6 +207,20 @@ INSERT INTO `partits` (`id`, `equip_local_id`, `equip_visitant_id`, `data`, `gol
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `articles`
+--
+
+CREATE TABLE `articles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `match_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `content` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
 -- Estructura de tabla para la tabla `prediccions`
 --
 
@@ -251,8 +265,10 @@ INSERT INTO `usuaris` (`id`, `nom_usuari`, `correu_electronic`, `contrasenya`, `
 (5, 'Alexis Marc', 'alexismarcbp@gmail.com', '$2y$10$jgLpgzo8RsjUOuDtfnXmpOnWMwfNfrSqzNw3v6Luz7gkIsRr/hrNK', 'Atlético de Madrid', '716b01f8c3ff5353933bf0dc6a244994339a6bdcf03f5ca9eeff0e6edda260d9', '2024-11-28 05:05:51', NULL, NULL, 1, 'github', NULL),
 (6, 'Alexis Marc Boisset Pérez', 'a.boisset@sapalomera.cat', NULL, 'Olympique de Marseille', NULL, NULL, NULL, NULL, 1, 'google', 'avatar_f1519010cd.png');
 
+-- --------------------------------------------------------
+
 --
--- Índices para tablas volcadas
+-- Indices para tablas volcadas
 --
 
 --
@@ -295,6 +311,13 @@ ALTER TABLE `usuaris`
   ADD UNIQUE KEY `nom_usuari` (`nom_usuari`),
   ADD UNIQUE KEY `correu_electronic` (`correu_electronic`),
   ADD UNIQUE KEY `reset_token_hash` (`reset_token_hash`);
+
+--
+-- Indices de la tabla `articles`
+--
+ALTER TABLE `articles`
+  ADD KEY `match_id` (`match_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -354,6 +377,14 @@ ALTER TABLE `partits`
 ALTER TABLE `prediccions`
   ADD CONSTRAINT `prediccions_ibfk_1` FOREIGN KEY (`partit_id`) REFERENCES `partits` (`id`),
   ADD CONSTRAINT `prediccions_ibfk_2` FOREIGN KEY (`usuari_id`) REFERENCES `usuaris` (`id`);
+
+--
+-- Filtros para la tabla `articles`
+--
+ALTER TABLE `articles`
+  ADD CONSTRAINT `articles_ibfk_1` FOREIGN KEY (`match_id`) REFERENCES `partits` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `articles_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `usuaris` (`id`);
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

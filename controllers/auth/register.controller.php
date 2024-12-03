@@ -58,6 +58,8 @@ try {
 
         // Registrar usuario
         if (registerUser($nomUsuari, $email, $contrasenyaHashed, $equipFavorit, $conn)) {
+            // Iniciar sesión
+            $userData = getUserData($email, $conn);
             SessionHelper::setSessionData([
                 'email' => $email,
                 'avatar' => $userData['avatar'],
