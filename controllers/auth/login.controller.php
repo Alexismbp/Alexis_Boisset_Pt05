@@ -64,7 +64,7 @@ try {
 
             SessionHelper::setSessionData([
                 'email' => $email,
-                'avatar' => $userData['avatar'],
+                'avatar' => $userData['avatar'] ?? 'default-avatar.webp',
                 'LAST_ACTIVITY' => time(),
                 'loggedin' => true,
                 'userid' => $userData['id'],
