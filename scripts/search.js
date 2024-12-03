@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('searchBar');
     const searchResults = document.getElementById('searchResults');
-    // const base_url = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+    const base_url = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
     let timeoutId;
 
     searchInput.addEventListener('input', (e) => {

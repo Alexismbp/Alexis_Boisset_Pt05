@@ -30,9 +30,6 @@
         <input type="text" id="searchBar" placeholder="Cercar partits...">
         <div id="searchResults"></div>
     </div>
-    <script>
-        const base_url = "<?php echo BASE_URL; ?>";
-    </script>
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>public/css/search.css">
     <script src="<?php echo BASE_URL; ?>scripts/search.js" defer></script>
 </header>
