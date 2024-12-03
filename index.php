@@ -19,7 +19,22 @@ if (session_status() === PHP_SESSION_NONE) {
 /* $_SESSION['loggedin'] = true; */
 /* $_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/profile";
 $_SERVER['REQUEST_METHOD'] = "GET"; 
-$_SESSION['loggedin'] = true; */
+$_SESSION['loggedin'] = true;
+$_SESSION['email'] = 'a.boisset@sapalomera.cat';
+
+$userData = getUserData($_SESSION['email'], $conn);
+
+SessionHelper::setSessionData([
+    'email' => $_SESSION['email'],
+    'avatar' => $userData['avatar'],
+    'LAST_ACTIVITY' => time(),
+    'loggedin' => true,
+    'userid' => $userData['id'],
+    'username' => $userData['nom_usuari'],
+    'equip' => $userData['equip_favorit'],
+    'lliga' => getLeagueName($userData['equip_favorit'], $conn)
+]); */
+
 /* $_POST['username'] = 'Marc Pérez';
 $_POST['equip'] = 'Real Madrid'; */
 /* $_POST['current_password'] = 'Admin123';
@@ -28,7 +43,6 @@ $_POST['confirm_password'] = 'Admin123!'; */
 
 
 /*  $_POST['username'] = 'Alexis Marc'; */
-/* $_SESSION['email'] = 'a.boisset@sapalomera.cat'; */
 /* $_POST['equip'] = 'Atlético de Madrid';
 $_SERVER['REQUEST_METHOD'] = 'POST'; */
 /* $_COOKIE['remember_token'] = '412fb53ea4c764e0f7ecd392554abf1959b9644978ba366321ebf21e0af5f741'; */
