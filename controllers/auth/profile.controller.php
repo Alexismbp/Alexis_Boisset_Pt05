@@ -63,8 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (updateUserProfile($email, $username, $equip, $avatarName, $conn)) {
             $_SESSION['username'] = $username;
             $_SESSION['equip'] = $equip;
-            $_SESSION['avatar'] = $avatarName ?? $_SESSION['avatar']; // Mantener el avatar actual si no se sube uno nuevo
-            setcookie('lliga', getLeagueName($equip, $conn), time() + (86400 * 30), "/");
+            $_SESSION['avatar'] = $avatarName ?? $_SESSION['avatar'];
+            $_SESSION['lliga'] = getLeagueName($equip, $conn); // Añadir esta línea
+            setcookie('lliga', $_SESSION['lliga'], time() + (86400 * 30), "/");
             $_SESSION['success'] = 'Perfil actualitzat correctament';
         } else {
             throw new Exception('Error al actualitzar el perfil');

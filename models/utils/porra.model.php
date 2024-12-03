@@ -101,6 +101,18 @@ function getLigaID($conn, $equipo_id)
     return $stmt->fetchColumn(); // Retorna la ID de la liga
 }
 
+function getLeagueName($equipName, $conn) {
+    $sql = "SELECT l.nom as lliga
+            FROM equips e 
+            JOIN lligues l ON e.lliga_id = l.id 
+            WHERE e.nom = :equip";
+    
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':equip', $equipName, PDO::PARAM_STR);
+    $stmt->execute();
+    
+    return $stmt->fetchColumn();
+}
 
 function getLeagueNameByTeam($equipLocal, $conn)
 {
