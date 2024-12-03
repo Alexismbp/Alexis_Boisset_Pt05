@@ -141,6 +141,7 @@ class SocialAuthController {
 
         SessionHelper::setSessionData([
             'email' => $email,
+            'userid' => $userData['id'],
             'username' => $userData['nom_usuari'],
             'loggedin' => true,
             'oauth_user' => true,

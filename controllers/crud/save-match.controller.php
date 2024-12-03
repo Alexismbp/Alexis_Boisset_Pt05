@@ -2,187 +2,214 @@
 require_once __DIR__ . "/../../models/env.php";
 require_once BASE_PATH . 'models/database/database.model.php';
 require_once BASE_PATH . 'models/utils/porra.model.php';
+require_once BASE_PATH . '/controllers/utils/SessionHelper.php';
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-
-// Connexió a la base de dades
-try {
-    Database::getInstance();
-} catch (PDOException $e) {
-    die("Error de connexió: " . $e->getMessage());
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
-    $id = $_POST['id'] ?? null;
-    // Obtenim i netegem les dades del formulari
-    /* $id = htmlspecialchars($_POST["id"] ?? null); */
-    $equip_local = htmlspecialchars($_POST["equip_local"]);
-    $equip_visitant = htmlspecialchars($_POST["equip_visitant"]);
-    $data = htmlspecialchars($_POST["data"]);
-    $gols_local = $_POST["gols_local"] ?? null;
-    $gols_visitant = $_POST["gols_visitant"] ?? null;
-    $missatgesError = [];
-    $error = false;
-
-    $gols_local = $gols_local === "" ? null : $gols_local;
-    $gols_visitant = $gols_visitant === "" ? null : $gols_visitant;
-
-
-    // Comprobar correcta inserció de valors als camps
-    if (empty($equip_local)) {
-        $missatgesError[] = 'L\'equip local no pot estar buit';
-        $error = true;
-    }
-
-    if (empty($equip_visitant)) {
-        $missatgesError[] = 'L\'equip visitant no pot estar buit';
-        $error = true;
-    }
-
-    if (empty($data)) {
-        $missatgesError[] = 'La data no pot estar buida';
-        $error = true;
-    }
-
-    if (is_numeric($gols_local) && is_numeric($gols_visitant)) {
-        $missatgesError[] = "Els gols han de ser númerics";
-        $error = true;
-    }
-
-    // Verificació de l'ID
-    if (!empty($id) && !is_numeric($id)) {
-        $missatgesError[] = 'L\'ID ha de ser numèric';
-        $error = true;
-    } elseif (!empty($id)) {
-        // Consulta el partit per editar
-        $resultat = consultarPartido($conn, $id);
-        $partit = $resultat->fetch(PDO::FETCH_ASSOC);
-
-        if (dadesEdicio($conn, $partit, $id)) {
-
-            header("Location: " . BASE_URL . "views/crud/edit/match-edit.view.php");
-            exit();
-        } else {
-            $missatgesError[] = "Aquest partit no existeix";
-            $error = true;
-        }
-    }
-
-    // Si hi ha errors, redirigeix amb errors
-    if ($error) {
-        SessionHelper::setSessionData([
-            'equip_local' => $equip_local,
-            'equip_visitant' => $equip_visitant,
-            'data' => $data,
-            'gols_local' => $gols_local,
-            'gols_visitant' => $gols_visitant,
-            'errors' => $missatgesError
-        ]);
-        header("Location: " . BASE_URL . "views/crud/edit/match-edit.view.php");
-        exit();
-    }
-
-    // Obté valors adaptats a la base de dades
-    $equip_local = getTeamID($conn, $equip_local);
-    $equip_visitant = getTeamID($conn, $equip_visitant);
+class SaveMatchController {
+    private $conn;
+    private $errors = [];
     
-    // Validar que los equipos existen
-    if (!$equip_local || !$equip_visitant) {
-        $_SESSION['failure'] = "Els equips seleccionats no són vàlids";
-        header("Location: " . BASE_URL . "views/crud/edit/match-edit.view.php");
-        exit();
-    }
-
-    // Inserció o actualització del partit
-    try {
-        if ($id && is_numeric($id)) {
-            $stmt = updatePartido($conn, $id, $equip_local, $equip_visitant, $data, $gols_local, $gols_visitant);
-            if ($stmt->execute()) {
-                $_SESSION['success'] = "El partit s'ha actualitzat correctament!";
-                // Limpiar variables de sesión de edición
-                unset($_SESSION['id']);
-                unset($_SESSION['editant']);
-            }
-        } else {
-            $liga_id = getLigaID($conn, $equip_local);
-            $stmt = insertPartido($conn, $equip_local, $equip_visitant, $liga_id, $data, $gols_local, $gols_visitant);
-            if ($stmt->execute()) {
-                $_SESSION['success'] = "El partit s'ha inserit correctament!";
-            }
+    public function __construct() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
         }
-        header("Location: " . BASE_URL);
-        exit();
-    } catch (PDOException $e) {
-        $_SESSION['failure'] = "Error: " . $e->getMessage();
-        header("Location: " . BASE_URL . "views/crud/edit/match-edit.view.php");
-        exit();
+        $this->conn = Database::getInstance();
     }
-} elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id']) && $conn) {
-    // SI LA ID ES REP PER GET (quan cliquem a editar partit desde l'index)
-    $id = $_GET['id'];
 
-    if (!empty($id) && !is_numeric($id)) {
-        $missatgesError[] = 'L\'ID ha de ser numèric';
-        $error = true;
-    } elseif (!empty($id)) {
-        // Consulta el partit per editar
-        $resultat = consultarPartido($conn, $id);
-        $partit = $resultat->fetch(PDO::FETCH_ASSOC);
+    public function handleRequest() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            return $this->handlePost();
+        } elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
+            return $this->handleGet();
+        }
+        return $this->redirectWithError("Método no válido");
+    }
 
-        if (dadesEdicio($conn, $partit, $id)) {
+    private function handlePost() {
+        $data = $this->validateAndSanitizeInput();
+        if (!empty($this->errors)) {
+            return $this->redirectWithErrors($data);
+        }
+
+        try {
+            // Obtenemos IDs de equipos
+            $equip_local_id = $this->getTeamId($data['equip_local']);
+            $equip_visitant_id = $this->getTeamId($data['equip_visitant']);
+            
+            if (!$equip_local_id || !$equip_visitant_id) {
+                return $this->redirectWithError("Els equips seleccionats no són vàlids");
+            }
+
+            // Determinar si el partido está jugado
+            $jugado = $this->isMatchPlayed($data['gols_local'], $data['gols_visitant']);
+
+            // Actualizar partido
+            $stmt = updatePartido(
+                $this->conn, 
+                $data['id'], 
+                $equip_local_id, 
+                $equip_visitant_id, 
+                $data['data'], 
+                $data['gols_local'], 
+                $data['gols_visitant'],
+                $jugado
+            );
+
+            if ($stmt->execute()) {
+                // Manejar artículo si se proporcionan
+                if (!empty($data['article_title']) && !empty($data['article_content'])) {
+                    $existingArticle = getArticleByMatchId($this->conn, $data['id']);
+                    if ($existingArticle) {
+                        // Actualizar artículo existente
+                        updateArticle(
+                            $this->conn, 
+                            $data['id'], 
+                            $data['article_title'], 
+                            $data['article_content'], 
+                            $data['user_id']
+                        );
+                    } else {
+                        // Insertar nuevo artículo
+                        insertArticle(
+                            $this->conn, 
+                            $data['id'], 
+                            $data['article_title'], 
+                            $data['article_content'], 
+                            $data['user_id']
+                        );
+                    }
+                }
+
+                $this->clearEditingSession();
+                $_SESSION['success'] = "El partit s'ha actualitzat correctament!";
+                header("Location: " . BASE_URL);
+                exit();
+            }
+        } catch (PDOException $e) {
+            return $this->redirectWithError("Error: " . $e->getMessage());
+        }
+    }
+
+    private function handleGet() {
+        $id = $_GET['id'];
+        
+        if (!is_numeric($id)) {
+            return $this->redirectWithError('L\'ID ha de ser numèric');
+        }
+
+        try {
+            // Consulta el partido para editar
+            $stmt = consultarPartido($this->conn, $id);
+            $partit = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$partit) {
+                return $this->redirectWithError("Aquest partit no existeix");
+            }
+
+            // Obtener datos del artículo asociado
+            $article = getArticleByMatchId($this->conn, $id);
+
+            // Preparar datos para la vista
+            $equip_local_name = getTeamName($this->conn, $partit['equip_local_id']);
+            $equip_visitant_name = getTeamName($this->conn, $partit['equip_visitant_id']);
+
+            SessionHelper::setSessionData([
+                'equip_local' => $equip_local_name,
+                'equip_visitant' => $equip_visitant_name,
+                'data' => $partit['data'],
+                'gols_local' => $partit['gols_local'],
+                'gols_visitant' => $partit['gols_visitant'],
+                'jugat' => $partit['jugat'],
+                'id' => $id,
+                'editant' => true,
+                'lliga' => getLeagueNameByTeam($equip_local_name, $this->conn),
+                'article_title' => $article['title'] ?? '',
+                'article_content' => $article['content'] ?? ''
+            ]);
 
             header("Location: " . BASE_URL . "views/crud/edit/match-edit.view.php");
             exit();
-        } else {
-            $missatgesError[] = "Aquest partit no existeix";
-            $error = true;
+
+        } catch (PDOException $e) {
+            return $this->redirectWithError("Error: " . $e->getMessage());
         }
     }
 
-    if ($error) {
+    private function validateAndSanitizeInput() {
+        $data = [
+            'id' => filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT),
+            'equip_local' => filter_input(INPUT_POST, 'equip_local', FILTER_SANITIZE_SPECIAL_CHARS),
+            'equip_visitant' => filter_input(INPUT_POST, 'equip_visitant', FILTER_SANITIZE_SPECIAL_CHARS),
+            'data' => filter_input(INPUT_POST, 'data', FILTER_SANITIZE_SPECIAL_CHARS),
+            'gols_local' => $_POST['gols_local'] === "" ? null : filter_input(INPUT_POST, 'gols_local', FILTER_SANITIZE_NUMBER_INT),
+            'gols_visitant' => $_POST['gols_visitant'] === "" ? null : filter_input(INPUT_POST, 'gols_visitant', FILTER_SANITIZE_NUMBER_INT),
+            'article_title' => filter_input(INPUT_POST, 'article_title', FILTER_SANITIZE_SPECIAL_CHARS),
+            'article_content' => filter_input(INPUT_POST, 'article_content', FILTER_SANITIZE_SPECIAL_CHARS),
+            'user_id' => $_SESSION['userid'] // Asumiendo que el ID del usuario está en la sesión
+        ];
+
+        $this->validateInput($data);
+        return $data;
+    }
+
+    private function validateInput($data) {
+        if (empty($data['equip_local'])) {
+            $this->errors[] = 'L\'equip local no pot estar buit';
+        }
+        if (empty($data['equip_visitant'])) {
+            $this->errors[] = 'L\'equip visitant no pot estar buit';
+        }
+        if (empty($data['data'])) {
+            $this->errors[] = 'La data no pot estar buida';
+        }
+        if (!empty($data['id']) && !is_numeric($data['id'])) {
+            $this->errors[] = 'L\'ID ha de ser numèric';
+        }
+        // Opcional: Validar título y contenido del artículo si se proporcionan
+        if (!empty($data['article_title']) && empty($data['article_content'])) {
+            $this->errors[] = 'El contingut de l\'article no pot estar buit si es proporciona el títol.';
+        }
+        if (!empty($data['article_content']) && empty($data['article_title'])) {
+            $this->errors[] = 'El títol de l\'article no pot estar buit si es proporciona el contingut.';
+        }
+    }
+
+    private function isMatchPlayed($gols_local, $gols_visitant) {
+        return (!is_null($gols_local) && !is_null($gols_visitant)) ? 1 : 0;
+    }
+
+    private function getTeamId($teamName) {
+        try {
+            return getTeamID($this->conn, $teamName);
+        } catch (PDOException $e) {
+            $this->errors[] = "Error al obtener el ID del equipo: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    private function clearEditingSession() {
+        unset($_SESSION['id'], $_SESSION['editant']);
+    }
+
+    private function redirectWithErrors($data) {
         SessionHelper::setSessionData([
-            'equip_local' => $equip_local,
-            'equip_visitant' => $equip_visitant,
-            'data' => $data,
-            'gols_local' => $gols_local,
-            'gols_visitant' => $gols_visitant,
-            'errors' => $missatgesError
+            'equip_local' => $data['equip_local'],
+            'equip_visitant' => $data['equip_visitant'],
+            'data' => $data['data'],
+            'gols_local' => $data['gols_local'],
+            'gols_visitant' => $data['gols_visitant'],
+            'errors' => $this->errors
         ]);
         header("Location: " . BASE_URL . "views/crud/edit/match-edit.view.php");
         exit();
     }
 
-    $_SESSION['errors'] = $missatgesError;
-
-    header("Location: ../index.php");
-    exit();
-} else {
-    $_SESSION['failure'] = "Alguna cosa no ha funcionat com s'esperava";
-    header("Location: " . BASE_URL . "views/crud/edit/match-edit.view.php");
-    exit();
+    private function redirectWithError($message) {
+        $_SESSION['failure'] = $message;
+        header("Location: " . BASE_URL . "views/crud/edit/match-edit.view.php");
+        exit();
+    }
 }
 
-
-
-// Obtenim els noms y dades dels equips y partits per a mostrar-los
-function dadesEdicio($conn, $partit, $id)
-{
-    // Pasar a una dada que sigui HUMAN READABLE (B2 English)
-    $equip_local_name = isset($partit['equip_local_id'])  ? getTeamName($conn, $partit['equip_local_id']) : '';
-    $equip_visitant_name = isset($partit['equip_visitant_id']) ? getTeamName($conn, $partit['equip_visitant_id']) : '';
-
-    $_SESSION['equip_local'] = $equip_local_name;
-    $_SESSION['equip_visitant'] = $equip_visitant_name;
-    $_SESSION['data'] = $partit['data'];
-    $_SESSION['gols_local'] = $partit['gols_local'];
-    $_SESSION['gols_visitant'] = $partit['gols_visitant'];
-    $_SESSION['jugat'] = $partit['jugat'];
-    $_SESSION["id"] = $id;
-    $_SESSION['editant'] = true;
-    $_SESSION['lliga'] = getLeagueNameByTeam($equip_local_name,$conn);
-
-    return true;
-}
+// Iniciar el controlador
+$controller = new SaveMatchController();
+$controller->handleRequest();

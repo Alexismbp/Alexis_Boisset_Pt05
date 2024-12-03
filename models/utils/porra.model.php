@@ -18,15 +18,14 @@ function insertPartido($conn, $equipo_local_id, $equipo_visitante_id, $liga_id, 
     return $stmt; // Retorna el statement para ejecutar después
 }
 
-function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fecha, $goles_local, $goles_visitante)
+function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fecha, $goles_local, $goles_visitante, $jugado)
 {
-    $jugado = (!is_null($goles_local) && !is_null($goles_visitante)) ? 1 : 0;
     $sql = "UPDATE partits 
             SET equip_local_id = :equipo_local_id, 
                 equip_visitant_id = :equipo_visitante_id, 
                 data = :fecha, 
                 gols_local = :goles_local, 
-                gols_visitant = :goles_visitante, 
+                gols_visitant = :gols_visitant, 
                 jugat = :jugado 
             WHERE id = :id";
 
@@ -36,8 +35,9 @@ function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fech
     $stmt->bindParam(':equipo_visitante_id', $equipo_visitante_id);
     $stmt->bindParam(':fecha', $fecha);
     $stmt->bindParam(':goles_local', $goles_local, PDO::PARAM_INT);
-    $stmt->bindParam(':goles_visitant', $goles_visitante, PDO::PARAM_INT);
+    $stmt->bindParam(':gols_visitant', $goles_visitante, PDO::PARAM_INT); // Cambiado a :gols_visitant
     $stmt->bindParam(':jugado', $jugado, PDO::PARAM_INT);
+    
     
     return $stmt;
 }
@@ -197,3 +197,40 @@ function getTotalPartits($conn, $lliga, $equipFavorit = null) {
     $stmt->closeCursor();
     return $totalPartits;
 }
+
+function insertArticle($conn, $match_id, $title, $content, $user_id)
+{
+    $sql = "INSERT INTO articles (match_id, user_id, title, content) 
+            VALUES (:match_id, :user_id, :title, :content)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':match_id', $match_id);
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->bindParam(':title', $title);
+    $stmt->bindParam(':content', $content);
+    return $stmt->execute();
+}
+
+function updateArticle($conn, $match_id, $title, $content, $user_id)
+{
+    $sql = "UPDATE articles 
+            SET title = :title, 
+                content = :content, 
+                user_id = :user_id 
+            WHERE match_id = :match_id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':title', $title);
+    $stmt->bindParam(':content', $content);
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->bindParam(':match_id', $match_id, PDO::PARAM_INT);
+    return $stmt->execute();
+}
+
+function getArticleByMatchId($conn, $match_id)
+{
+    $sql = "SELECT * FROM articles WHERE match_id = :match_id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':match_id', $match_id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+?>

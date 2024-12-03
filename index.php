@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
-/* ini_set('display_errors', 1);
+ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL); */
+error_reporting(E_ALL);
 
 require_once __DIR__ . "/models/env.php";
 require_once __DIR__ . "/models/database/database.model.php";
@@ -114,7 +114,7 @@ $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $basePath = rtrim(parse_url(BASE_URL, PHP_URL_PATH), '/');
 $uri = "/" . ltrim(substr($uri, strlen($basePath)), '/');
 
-// try {
+try {
     $result = $router->dispatch($uri);
     
     if ($result instanceof Closure) {
@@ -122,7 +122,15 @@ $uri = "/" . ltrim(substr($uri, strlen($basePath)), '/');
     } else {
         include BASE_PATH . $result;
     }
-// } catch (Exception $e) {
-//    http_response_code(404);
-//    include BASE_PATH . 'views/errors/404.view.php';
-// }
+} catch (Exception $e) {
+    // Si es una ruta de archivo y no se encuentra, devolver 404
+    if (strpos($uri, '/uploads/') === 0 || 
+        strpos($uri, '/assets/') === 0 || 
+        strpos($uri, '/views/') === 0) {
+        http_response_code(404);
+        exit;
+    }
+    
+    http_response_code(404);
+    include BASE_PATH . 'views/errors/404.view.php';
+}

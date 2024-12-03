@@ -16,6 +16,20 @@ class Router
 
     public function dispatch($uri)
     {
+        // Comprobar si es una ruta de archivo estático
+        if (strpos($uri, '/uploads/') === 0 || 
+            strpos($uri, '/assets/') === 0 || 
+            strpos($uri, '/views/') === 0) {
+            $filePath = BASE_PATH . ltrim($uri, '/');
+            if (file_exists($filePath)) {
+                // Establecer el tipo MIME correcto
+                $mime = mime_content_type($filePath);
+                header('Content-Type: ' . $mime);
+                readfile($filePath);
+                exit;
+            }
+        }
+
         $method = $_SERVER['REQUEST_METHOD'];
 
         // Buscar coincidencia exacta primero
