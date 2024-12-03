@@ -30,6 +30,8 @@ jobs:
         local-dir: ./
         server-dir: /
         exclude: |
+          **composer.json
+          **composer.lock
           **/vendor/**
           **/.git*
           **/.git*/**
