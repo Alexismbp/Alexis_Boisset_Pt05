@@ -58,7 +58,9 @@ $router->get('/', 'controllers/main.controller.php');
 $router->get('/login', 'views/auth/login/login.view.php');
 $router->get('/register', 'views/auth/register/register.view.php');
 $router->get('/create', 'views/crud/create.view.php');
-$router->get('/delete', 'views/crud/delete.view.php');
+// Eliminar referencia a delete.view.php si existe
+// Por ejemplo, si hay una ruta GET para eliminación, eliminarla
+// $router->get('/delete', 'views/crud/delete/delete.view.php');
 $router->get('/forgotpassword', 'views/auth/forgot/forgot-password.view.php');
 $router->get('/changepassword', 'views/auth/change/change-password.view.php');
 $router->get('/resetpassword', 'views/auth/reset/reset-password.view.php');
@@ -88,11 +90,13 @@ $router->get('/oauth/{provider}/callback', function() use ($router) {
 $router->post('/login', 'controllers/auth/login.controller.php');
 $router->post('/register', 'controllers/auth/register.controller.php');
 $router->post('/create', 'controllers/crud/create.controller.php');
-$router->post('/delete', 'controllers/crud/delete.controller.php');
+$router->post('/delete-match', 'controllers/crud/delete.controller.php'); // Asegurar esta ruta
 $router->post('/forgotpassword', 'controllers/auth/email-password.controller.php');
 $router->post('/changepassword', 'controllers/auth/change-password.controller.php');
 $router->post('/resetpassword', 'controllers/auth/reset-password.controller.php');
 $router->post('/save-profile', 'controllers/auth/profile.controller.php');
+$router->post('/save-preferences', 'controllers/auth/save-preferences.controller.php');
+$router->post('/merge-accounts', 'controllers/auth/merge-accounts.controller.php');
 $router->get('/logout', 'controllers/auth/logout.controller.php');
 
 

@@ -35,15 +35,10 @@ if (!isset($_SESSION['loggedin'])) {
         ?>
 
         <!-- Formulari -->
-        <form id="deleteForm" action="../../private/controllers/delete.php" method="post">
-            <label for="id">ID del partit a eliminar (numèrica):</label>
-            <input type="text" class="form-control" id="id" name="partit_id" placeholder="Escriu l'ID del partit" value="<?php echo $_GET['id'] ?>" required>
-
-            <div class="d-grid gap-2 mt-4">
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
-                    Eliminar
-                </button>
-            </div>
+        <form id="deleteForm" action="<?php echo BASE_URL; ?>delete-match" method="POST">
+            <label for="partit_id">ID del partit a eliminar (numèrica):</label>
+            <input type="hidden" name="partit_id" value="<?php echo $_GET['id'] ?>" required>
+            <button type="submit" class="btn btn-danger">Eliminar</button>
         </form>
 
         <!-- Modal de confirmació -->

@@ -28,13 +28,20 @@
             <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
                 <div class="match-actions">
                     <a href="<?php echo BASE_URL; ?>edit-match/<?php echo $partit['id']; ?>" class="btn-edit">Editar</a>
-                    <?php if (!$hasArticle || $partit['article_user_id'] == $_SESSION['userid']): ?>
-                        <a href="<?php echo BASE_URL; ?>edit-article/<?php echo $partit['id']; ?>" class="btn-article">
-                            <?php echo $hasArticle ? 'Editar Article' : 'Crear Article'; ?>
-                        </a>
-                    <?php endif; ?>
+                    <form action="<?php echo BASE_URL; ?>delete-match" method="POST" class="delete-form" onsubmit="return confirmDelete(event)">
+                        <input type="hidden" name="partit_id" value="<?php echo $partit['id']; ?>">
+                        <button type="submit" class="btn-delete">Eliminar</button>
+                    </form>
                 </div>
             <?php endif; ?>
         </div>
     <?php endforeach; ?>
 </div>
+
+<script>
+function confirmDelete(event) {
+    if (!confirm('¿Estás seguro de que quieres eliminar este partido?')) {
+        event.preventDefault();
+    }
+}
+</script>
