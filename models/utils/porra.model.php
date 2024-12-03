@@ -6,16 +6,22 @@ function insertPartido($conn, $equipo_local_id, $equipo_visitante_id, $liga_id, 
     $jugado = (!is_null($goles_local) && !is_null($goles_visitante)) ? 1 : 0;
     $sql = "INSERT INTO partits (equip_local_id, equip_visitant_id, liga_id, data, gols_local, gols_visitant, jugat) 
             VALUES (:equipo_local_id, :equipo_visitante_id, :liga_id, :fecha, :goles_local, :goles_visitante, :jugado)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':equipo_local_id', $equipo_local_id);
-    $stmt->bindParam(':equipo_visitante_id', $equipo_visitante_id);
-    $stmt->bindParam(':liga_id', $liga_id); // Añade este parámetro
-    $stmt->bindParam(':fecha', $fecha);
-    $stmt->bindParam(':goles_local', $goles_local);
-    $stmt->bindParam(':goles_visitante', $goles_visitante);
-    $stmt->bindParam(':jugado', $jugado);
-
-    return $stmt; // Retorna el statement para ejecutar después
+    
+    try {
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':equipo_local_id', $equipo_local_id);
+        $stmt->bindParam(':equipo_visitante_id', $equipo_visitante_id);
+        $stmt->bindParam(':liga_id', $liga_id);
+        $stmt->bindParam(':fecha', $fecha);
+        $stmt->bindParam(':goles_local', $goles_local);
+        $stmt->bindParam(':goles_visitante', $goles_visitante);
+        $stmt->bindParam(':jugado', $jugado);
+        
+        $stmt->execute();
+        return $conn->lastInsertId(); // Retorna el ID del partido insertado
+    } catch (PDOException $e) {
+        throw $e;
+    }
 }
 
 function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fecha, $goles_local, $goles_visitante, $jugado)

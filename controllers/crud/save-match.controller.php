@@ -30,6 +30,47 @@ class SaveMatchController {
             return $this->redirectWithErrors($data);
         }
 
+        if (empty($data['id'])) {
+            // Crear nuevo partido
+            try {
+                $equip_local_id = $this->getTeamId($data['equip_local']);
+                $equip_visitant_id = $this->getTeamId($data['equip_visitant']);
+                $liga_id = getLigaID($this->conn, $equip_local_id);
+                
+                if (!$equip_local_id || !$equip_visitant_id) {
+                    return $this->redirectWithError("Els equips seleccionats no són vàlids");
+                }
+
+                // Insertar partido y obtener su ID
+                $partit_id = insertPartido(
+                    $this->conn,
+                    $equip_local_id,
+                    $equip_visitant_id,
+                    $liga_id,
+                    $data['data'],
+                    $data['gols_local'],
+                    $data['gols_visitant']
+                );
+
+                // Manejar artículo si se proporcionan título y contenido
+                if (!empty($data['article_title']) && !empty($data['article_content'])) {
+                    insertArticle(
+                        $this->conn,
+                        $partit_id,
+                        $data['article_title'],
+                        $data['article_content'],
+                        $data['user_id']
+                    );
+                }
+
+                $_SESSION['success'] = "Partit creat correctament!";
+                header("Location: " . BASE_URL);
+                exit();
+            } catch (PDOException $e) {
+                return $this->redirectWithError("Error: " . $e->getMessage());
+            }
+        }
+
         try {
             // Obtenemos IDs de equipos
             $equip_local_id = $this->getTeamId($data['equip_local']);

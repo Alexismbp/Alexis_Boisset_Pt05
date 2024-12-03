@@ -115,13 +115,13 @@ function dadesEdicio($conn, $partit, $article, $id)
             <div class="form-group">
                 <label for="gols_local">Gols Local:</label>
                 <input type="number" id="gols_local" name="gols_local" class="input-field"
-                    value="<?php echo htmlspecialchars($_SESSION['gols_local']); ?>">
+                    value="<?php echo htmlspecialchars($_SESSION['gols_local']); ?>" min="0">
             </div>
 
             <div class="form-group">
                 <label for="gols_visitant">Gols Visitant:</label>
                 <input type="number" id="gols_visitant" name="gols_visitant" class="input-field"
-                    value="<?php echo htmlspecialchars($_SESSION['gols_visitant']); ?>">
+                    value="<?php echo htmlspecialchars($_SESSION['gols_visitant']); ?>" min="0">
             </div>
 
             <div class="article-section">

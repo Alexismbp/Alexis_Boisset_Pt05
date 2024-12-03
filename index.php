@@ -65,7 +65,7 @@ $router->get('/resetpassword', 'views/auth/reset/reset-password.view.php');
 $router->get('/profile', 'views/auth/profile/profile.view.php');
 
 // Rutas para partidos
-$router->get('/create-match', 'views/crud/create/match-edit.view.php');
+$router->get('/create-match', 'views/crud/create/match-create.view.php');
 $router->get('/edit-match/{id}', function() use ($router) {
     include BASE_PATH . 'views/crud/edit/match-edit.view.php';
 });

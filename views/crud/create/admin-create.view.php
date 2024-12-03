@@ -1,8 +1,13 @@
 <?php
-session_start();
 require_once __DIR__ . "/../../../models/env.php";
+require_once BASE_PATH . 'models/database/database.model.php';
+require_once BASE_PATH . 'models/utils/porra.model.php';
 require_once BASE_PATH . '/controllers/session/session.controller.php';
 require_once BASE_PATH . 'controllers/utils/form.controller.php';
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 if (!isset($_SESSION['loggedin'])) {
     header("Location: " . BASE_URL);
@@ -26,7 +31,7 @@ if (isset($_GET['netejar'])) {
 <body>
     <div class="container">
         <h1>Crear Nou Partit</h1>
-        <form action="<?php echo BASE_URL; ?>controllers/crud/save-match.controller.php" method="POST">
+        <form action="<?php echo BASE_URL; ?>save-match" method="POST">
             <?php require_once BASE_PATH . '/views/layouts/feedback.view.php'; ?>
             
             <div class="form-group">
@@ -60,13 +65,15 @@ if (isset($_GET['netejar'])) {
 
             <div class="form-group">
                 <label for="gols_local">Gols Local (Opcional):</label>
-                <input type="number" id="gols_local" name="gols_local" class="input-field">
+                <input type="number" id="gols_local" name="gols_local" class="input-field" min="0">
             </div>
 
             <div class="form-group">
                 <label for="gols_visitant">Gols Visitant (Opcional):</label>
-                <input type="number" id="gols_visitant" name="gols_visitant" class="input-field">
+                <input type="number" id="gols_visitant" name="gols_visitant" class="input-field" min="0">
             </div>
+
+            <input type="hidden" name="user_id" value="<?php echo $_SESSION['userid']; ?>">
 
             <div class="article-section">
                 <div class="form-group">
@@ -81,7 +88,6 @@ if (isset($_GET['netejar'])) {
 
             <div class="buttons-section">
                 <button type="submit" class="btn-submit">Crear Partit</button>
-                <a href="<?php echo FormController::getClearFormUrl(); ?>" class="btn-back">Netejar</a>
                 <a href="<?php echo BASE_URL; ?>" class="btn-back">Tornar enrere</a>
             </div>
         </form>

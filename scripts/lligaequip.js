@@ -36,7 +36,7 @@ function actualitzarEquips(vista, equipEscollit) {
     if (vista == "registrar") {
 
         // Netejar <option> per introduir els nous valors
-        equipSelect.innerHTML = '<option value="">-- Selecciona el teu equip favorit --</option>';
+        equipSelect.innerHTML = '<option value="">-- Selecciona l\'equip --</option>';
 
         // Agregar equips segons lliga
         if (ligaSeleccionada && equipsPerLiga[ligaSeleccionada]) {
@@ -61,8 +61,8 @@ function actualitzarEquips(vista, equipEscollit) {
     // Només per la vista match-edit.view.php, funció molt més general, només filtra per Lliga.
     } else if (vista == "crear") {
         // Netejar <option> per introduir els nous valors
-        equipLocal.innerHTML = '<option value="">-- Selecciona el teu equip favorit --</option>';
-        equipVisitant.innerHTML = '<option value="">-- Selecciona el teu equip favorit --</option>';
+        equipLocal.innerHTML = '<option value="">-- Selecciona l\'equip local --</option>';
+        equipVisitant.innerHTML = '<option value="">-- Selecciona l\'equip visitant --</option>';
 
         // Agregar equips segons lliga
         if (ligaSeleccionada && equipsPerLiga[ligaSeleccionada]) {
@@ -80,7 +80,7 @@ function actualitzarEquips(vista, equipEscollit) {
     } else if (vista == "profile") {
         // Guardar el equipo actual antes de limpiar el select
         const currentEquip = equipEscollit; // Usamos el equipo pasado como parámetro
-        equipSelect.innerHTML = '<option value="">-- Selecciona el teu equip favorit --</option>';
+        equipSelect.innerHTML = '<option value="">-- Selecciona l\'equip --</option>';
 
         // Agregar equipos según liga seleccionada
         if (ligaSeleccionada && equipsPerLiga[ligaSeleccionada]) {
@@ -105,6 +105,30 @@ document.addEventListener('DOMContentLoaded', function() {
     const ligaSelect = document.getElementById("lliga");
     if (ligaSelect && ligaSelect.value) {
         actualitzarEquips('profile', document.getElementById("equip").value);
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const ligaSelect = document.getElementById("lliga");
+    const equipVisitant = document.getElementById("equip_visitant");
+    const equipLocal = document.getElementById("equip_local");
+
+    // Si estamos en la página de crear partido y tenemos la liga del usuario
+    if (equipVisitant && equipLocal && equipLocal.value) {
+        const ligaValue = document.getElementById("lliga").value;
+        const equipLocalValue = equipLocal.value;
+
+        // Llenar el select de equipos visitantes con los equipos de la liga
+        if (ligaValue && equipsPerLiga[ligaValue]) {
+            equipsPerLiga[ligaValue].forEach(function(equip) {
+                if (equip !== equipLocalValue) { // Excluir el equipo local
+                    const option = document.createElement("option");
+                    option.value = equip;
+                    option.text = equip;
+                    equipVisitant.appendChild(option);
+                }
+            });
+        }
     }
 });
 
