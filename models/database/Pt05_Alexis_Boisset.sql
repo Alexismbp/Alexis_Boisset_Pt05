@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: proxysql-01.dd.scip.local
--- Tiempo de generación: 03-12-2024 a las 00:27:03
--- Versión del servidor: 10.10.2-MariaDB-1:10.10.2+maria~deb11
--- Versión de PHP: 8.2.12
+-- Servidor: localhost
+-- Tiempo de generación: 03-12-2024 a las 07:37:51
+-- Versión del servidor: 10.4.28-MariaDB
+-- Versión de PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,10 +18,32 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `ddb237139`
+-- Base de datos: `Pt05_Alexis_Boisset`
 --
-CREATE DATABASE IF NOT EXISTS `Pt05_Alexis_Boisset` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `Pt05_Alexis_Boisset`;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `articles`
+--
+
+CREATE TABLE `articles` (
+  `id` int(11) NOT NULL,
+  `match_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `content` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `articles`
+--
+
+INSERT INTO `articles` (`id`, `match_id`, `user_id`, `title`, `content`, `created_at`) VALUES
+(1, 93, 5, 'O James', 'Que habilidad', '2024-12-03 03:20:26'),
+(2, 91, 5, 'Ansu Fati', 'Butanero', '2024-12-03 03:20:53'),
+(4, 95, 2, 'SAD', 'ASD', '2024-12-03 04:31:40');
 
 -- --------------------------------------------------------
 
@@ -202,23 +224,10 @@ INSERT INTO `partits` (`id`, `equip_local_id`, `equip_visitant_id`, `data`, `gol
 (89, 57, 59, '2024-11-19', 2, 2, 1, 3),
 (90, 60, 60, '2024-11-20', NULL, NULL, 0, 3),
 (91, 46, 45, '2024-10-25', 1, 2, 1, 3),
-(93, 46, 41, '2024-11-01', NULL, NULL, 0, 3);
+(93, 46, 41, '2024-11-15', 2, 3, 1, 3),
+(95, 17, 5, '2024-12-20', 2, 0, 1, 1);
 
 -- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `articles`
---
-
-CREATE TABLE `articles` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `match_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `content` text NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Estructura de tabla para la tabla `prediccions`
@@ -258,18 +267,23 @@ CREATE TABLE `usuaris` (
 --
 
 INSERT INTO `usuaris` (`id`, `nom_usuari`, `correu_electronic`, `contrasenya`, `equip_favorit`, `reset_token_hash`, `reset_token_expires_at`, `remember_token`, `remember_token_expires`, `is_oauth_user`, `oauth_provider`, `avatar`) VALUES
-(1, 'Alexis', 'alexis@gmail.com', '$2y$10$5jOplzI9.lewF548D4UBwe.4Q/9QKm5EvfMdZX1V9e.K5U/ydH3pe', 'OGC Nice', NULL, NULL, NULL, NULL, 0, NULL, NULL),
+(1, 'admin', 'admin@alexisboisset.cat', '$2y$10$tgJfJdYsf5kTq5psWW3EK.JrwbupzOeI7AfAE3KLSGBRURlp0EIAq', '', NULL, NULL, NULL, NULL, 0, '', NULL),
 (2, 'Xavi', 'xavi@gmail.com', '$2y$10$CyjHCsfj9nNgrvf4BvUaIO9.mgEb4wrn3u7uWqQYZl43CfsO1Ueyi', 'Girona FC', NULL, NULL, NULL, NULL, 0, NULL, NULL),
 (3, 'Josep', 'jpedrerol@gmail.com', '$2y$10$UzJrOph0LT2CCR8.w2qBVOKnk1gArl8UonbTGn3UYtLykVuDcY.z.', 'Crystal Palace', NULL, NULL, NULL, NULL, 0, NULL, NULL),
-(4, 'Hola', 'opa@gmail.com', '$2y$10$QeSzE/JyMrw0g/mfk0YTEeCxwxIXZCqaaBsMEyE4jMEZNi68XhlAK', 'Tottenham', NULL, NULL, NULL, NULL, 0, NULL, NULL),
-(5, 'Alexis Marc', 'alexismarcbp@gmail.com', '$2y$10$jgLpgzo8RsjUOuDtfnXmpOnWMwfNfrSqzNw3v6Luz7gkIsRr/hrNK', 'Atlético de Madrid', '716b01f8c3ff5353933bf0dc6a244994339a6bdcf03f5ca9eeff0e6edda260d9', '2024-11-28 05:05:51', NULL, NULL, 1, 'github', NULL),
-(6, 'Alexis Marc Boisset Pérez', 'a.boisset@sapalomera.cat', NULL, 'Olympique de Marseille', NULL, NULL, NULL, NULL, 1, 'google', 'avatar_f1519010cd.png');
-
--- --------------------------------------------------------
+(5, 'SaPAlexsi', 'a.boisset@sapalomera.cat', '$2y$10$dyyBsbxrO0Z9AxLxNEPzKehJYuBiEoHAUvOIVXlK7ro8dHEMMdgwW', 'OGC Nice', NULL, NULL, NULL, NULL, 0, '', NULL),
+(7, 'Alexis', 'alexis@gmail.com', '$2y$10$5jOplzI9.lewF548D4UBwe.4Q/9QKm5EvfMdZX1V9e.K5U/ydH3pe', 'OGC Nice', NULL, NULL, NULL, NULL, 0, NULL, NULL);
 
 --
--- Indices para tablas volcadas
+-- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `articles`
+--
+ALTER TABLE `articles`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `match_id` (`match_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indices de la tabla `equips`
@@ -313,15 +327,14 @@ ALTER TABLE `usuaris`
   ADD UNIQUE KEY `reset_token_hash` (`reset_token_hash`);
 
 --
--- Indices de la tabla `articles`
---
-ALTER TABLE `articles`
-  ADD KEY `match_id` (`match_id`),
-  ADD KEY `user_id` (`user_id`);
-
---
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `articles`
+--
+ALTER TABLE `articles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `equips`
@@ -339,7 +352,7 @@ ALTER TABLE `lligues`
 -- AUTO_INCREMENT de la tabla `partits`
 --
 ALTER TABLE `partits`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
 
 --
 -- AUTO_INCREMENT de la tabla `prediccions`
@@ -351,11 +364,18 @@ ALTER TABLE `prediccions`
 -- AUTO_INCREMENT de la tabla `usuaris`
 --
 ALTER TABLE `usuaris`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `articles`
+--
+ALTER TABLE `articles`
+  ADD CONSTRAINT `articles_ibfk_1` FOREIGN KEY (`match_id`) REFERENCES `partits` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `articles_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `usuaris` (`id`);
 
 --
 -- Filtros para la tabla `equips`
@@ -377,14 +397,6 @@ ALTER TABLE `partits`
 ALTER TABLE `prediccions`
   ADD CONSTRAINT `prediccions_ibfk_1` FOREIGN KEY (`partit_id`) REFERENCES `partits` (`id`),
   ADD CONSTRAINT `prediccions_ibfk_2` FOREIGN KEY (`usuari_id`) REFERENCES `usuaris` (`id`);
-
---
--- Filtros para la tabla `articles`
---
-ALTER TABLE `articles`
-  ADD CONSTRAINT `articles_ibfk_1` FOREIGN KEY (`match_id`) REFERENCES `partits` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `articles_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `usuaris` (`id`);
-
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
