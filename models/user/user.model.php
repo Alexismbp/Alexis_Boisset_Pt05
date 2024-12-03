@@ -71,7 +71,7 @@ function registerUser(
 function getUserData(string $email, PDO $conn): array|false
 {
     try {
-        $query = $conn->prepare("SELECT id, nom_usuari, correu_electronic, contrasenya, equip_favorit, is_oauth_user, oauth_provider, avatar FROM usuaris WHERE correu_electronic = :email");
+        $query = $conn->prepare("SELECT * FROM usuaris WHERE correu_electronic = :email");
         $query->bindParam(':email', $email);
         $query->execute();
         $result = $query->fetch(PDO::FETCH_ASSOC);

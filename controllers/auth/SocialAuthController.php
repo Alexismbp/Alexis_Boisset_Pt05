@@ -146,7 +146,8 @@ class SocialAuthController {
             'oauth_user' => true,
             'needs_preferences' => $needsPreferences,
             'equip' => $needsPreferences ? null : $userData['equip_favorit'],
-            'lliga' => $needsPreferences ? null : $lliga
+            'lliga' => $needsPreferences ? null : $lliga,
+            'avatar' => $userData['avatar'] 
         ]);
 
         header('Location: ' . BASE_URL . ($needsPreferences ? 'preferences' : ''));
