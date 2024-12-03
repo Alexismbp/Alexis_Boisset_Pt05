@@ -1,6 +1,4 @@
 <?php
-require_once __DIR__ . '/../models/database/database.model.php'; // Incluir la base de datos si es necesario
-
 class SearchController {
     private $conn;
 

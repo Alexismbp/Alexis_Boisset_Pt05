@@ -3,7 +3,7 @@
 
 - [**Porra de Futbol - Gestió de Resultats**](#porra-de-futbol---gestió-de-resultats)
   - [0. Índex](#0-índex)
-  - [1. Explicació del Projecte (Depracated)](#1-explicació-del-projecte-depracated)
+  - [1. Explicació del Projecte (Deprecated)](#1-explicació-del-projecte-deprecated)
   - [2. Estructura del Projecte](#2-estructura-del-projecte)
   - [3. Funcionalitats Principals](#3-funcionalitats-principals)
   - [4. Base de Dades](#4-base-de-dades)
@@ -27,7 +27,7 @@
     - [index.php](#indexphp)
     - [.gitignore](#gitignore)
 
-## 1. Explicació del Projecte (Depracated)
+## 1. Explicació del Projecte (Deprecated)
 
 Aquest projecte és una aplicació de **porra de futbol** que permet als usuaris predir els resultats dels partits de futbol de diverses lligues (LaLiga, Premier League, Ligue 1). Inclou funcionalitats d'autenticació d'usuaris, gestió de partits i un sistema de feedback visual per veure si l'usuari ha encertat la seva predicció.
 
