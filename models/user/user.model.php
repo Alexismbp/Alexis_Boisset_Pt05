@@ -392,3 +392,31 @@ function getAllTeams(PDO $conn): array
     }
     return [];
 }
+
+/**
+ * Obtiene todos los usuarios excepto el admin.
+ * @param PDO $conn
+ * @return array
+ */
+function getAllUsers(PDO $conn): array
+{
+    $query = $conn->prepare("SELECT id, nom_usuari, correu_electronic FROM usuaris WHERE id != 1");
+    $query->execute();
+    return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/**
+ * Elimina un usuario por su ID.
+ * @param int $userId
+ * @param PDO $conn
+ * @return bool
+ */
+function deleteUser(int $userId, PDO $conn): bool
+{
+    if ($userId == 1) {
+        return false; // No permitir borrar al admin
+    }
+    $query = $conn->prepare("DELETE FROM usuaris WHERE id = :id");
+    $query->bindParam(':id', $userId, PDO::PARAM_INT);
+    return $query->execute();
+}

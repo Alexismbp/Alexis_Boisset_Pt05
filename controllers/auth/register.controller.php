@@ -10,11 +10,11 @@ require_once BASE_PATH . 'controllers/utils/SessionHelper.php';
 try {
 
     // DEBUG
-    /* $_POST['username'] = 'Hola';
-    $_POST['password'] = 'Admin123';
-    $_POST['password_confirm'] = 'Admin123';
-    $_POST['email'] = 'hola@gmail.com';
-    $_POST['equip'] = 'FC Barcelona';
+   /*  $_POST['username'] = 'admin';
+    $_POST['password'] = 'Admin123!';
+    $_POST['password_confirm'] = 'Admin123!';
+    $_POST['email'] = 'admin@alexisboisset.cat';
+    $_POST['equip'] = 'Barcelona';
     $_SERVER['REQUEST_METHOD'] = 'POST'; */
 
     $missatgesError = [];
@@ -41,12 +41,12 @@ try {
         $passwordConfirm = Validation::sanitizeInput($_POST['password_confirm']);
 
         // Validar campos
-        $errors = array_filter([
+        /* $errors = array_filter([
             Validation::validateUsername($nomUsuari),
             Validation::validatePassword($contrasenya, $passwordConfirm),
             Validation::validateEmail($email),
             Validation::validateTeam($equipFavorit)
-        ]);
+        ]); */
 
         if (!empty($errors)) {
             $missatgesError = array_merge($missatgesError, $errors);

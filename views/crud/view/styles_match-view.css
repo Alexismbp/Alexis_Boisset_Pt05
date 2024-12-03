@@ -1,0 +1,81 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.match-details {
+    background: linear-gradient(145deg, #1a472a, #2d5a3f); /* Verde de campo de fútbol */
+    border-radius: 10px;
+    padding: 25px;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.match-details .btn-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.match-details a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.match-details a:hover {
+    background-color: #218838;
+}
+
+.match-details h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ffd700; /* Amarillo */
+    padding-bottom: 10px;
+}
+
+.match-details p {
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+.match-details .article h2 {
+    color: #ffd700;
+    margin-bottom: 15px;
+}
+
+.match-details .article p {
+    line-height: 1.6;
+}
+
+.article {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.btn-back-main {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #28a745; /* Verde para botones */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-back-main:hover {
+    background-color: #218838; /* Verde más oscuro al pasar el mouse */
+}

@@ -11,7 +11,8 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-if (!isset($_SESSION['loggedin'])) {
+if (!isset($_SESSION['loggedin']) && $_SESSION['loggedin'] !== true || !isset($_SESSION['userid'])) {
+    $_SESSION['failure'] = "No tens permisos per editar aquest partit (Que intentas Xavi?)";
     header("Location: " . BASE_URL);
     exit();
 }

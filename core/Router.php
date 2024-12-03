@@ -60,12 +60,19 @@ class Router
 
     private function convertRouteToRegex($route)
     {
-        return '#^' . preg_replace('/\{([a-zA-Z]+)\}/', '([^/]+)', $route) . '$#';
+        // Escapar caracteres especiales
+        $route = preg_quote($route, '#');
+        // Reemplazar el parámetro con un patrón de captura
+        $route = preg_replace('/\\\{([a-zA-Z]+)\\\}/', '([^/]+)', $route);
+        return '#^' . $route . '$#';
     }
 
     private function extractParamName($route)
     {
-        preg_match('/\{([a-zA-Z]+)\}/', $route, $matches);
-        return $matches[1];
+        if (preg_match('/\{([a-zA-Z]+)\}/', $route, $matches)) {
+            return $matches[1];
+        }
+        return null;
     }
 }
+?>

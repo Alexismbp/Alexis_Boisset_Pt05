@@ -63,7 +63,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
 $stmt = $conn->prepare($sql);
 if (isset($_GET['lliga'])) {
     $stmt->bindParam(':lliga', $_GET['lliga']);
-    if ($_SESSION['loggedin']) {
+    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
         $stmt->bindParam(':user_id', $_SESSION['userid']);
     }
 }

@@ -34,6 +34,11 @@
                     </form>
                 </div>
             <?php endif; ?>
+            <td>
+                <a href="<?php echo BASE_URL; ?>view-match/<?php echo $partit['id']; ?>" class="btn btn-primary">
+                    Veure
+                </a>
+            </td>
         </div>
     <?php endforeach; ?>
 </div>
