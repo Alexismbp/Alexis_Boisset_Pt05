@@ -60,7 +60,7 @@ SessionHelper::checkLogin();
 
             <button type="submit">Guardar Canvis</button>
         </form>
-        <a href="<?php echo BASE_URL; ?>" class="btn-tornar">Tornar enrere</a>
+        <a href="<?php echo BASE_URL; ?>/" class="btn-tornar">Tornar enrere</a>
     </div>
 </body>
 </html>

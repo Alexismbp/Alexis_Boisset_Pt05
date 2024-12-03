@@ -36,6 +36,9 @@ try {
         $userData = getUserData($email, $conn);
 
         if ($userData && password_verify($password, $userData['contrasenya'])) {
+            // DEBUG
+            error_log("Avatar from DB: " . print_r($userData['avatar'], true));
+            
             SessionHelper::resetLoginAttempts();
             
             // Handle remember me

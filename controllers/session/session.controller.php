@@ -6,6 +6,10 @@
 if (!session_id()) {
     session_start();
 }
+// Al inicio del archivo, después del session_start()
+if (session_status() === PHP_SESSION_ACTIVE) {
+    error_log("Session active. Session data: " . print_r($_SESSION, true));
+}
 // 2400 segundos = 40 minutos
 if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 2400) && (isset($_SESSION['loggedin']) && $_SESSION['loggedin'])) {
     // Si han pasado más de 40 minutos

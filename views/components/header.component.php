@@ -1,3 +1,7 @@
+<?php
+// Debug al inicio del archivo
+error_log("Session avatar: " . print_r($_SESSION['avatar'] ?? 'no avatar', true));
+?>
 <header>
     <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
         <div class="user-menu">

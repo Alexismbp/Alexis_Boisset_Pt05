@@ -67,25 +67,25 @@ function registerUser(
  * @param PDO $conn
  * @return array|false
  */
-function getUserData(string $email, PDO $conn)
-{
-    if (!userExists($email, $conn)) {
+function getUserData(string $email, PDO $conn): array|false {
+    try {
+        $query = $conn->prepare("SELECT id, nom_usuari, correu_electronic, contrasenya, equip_favorit, is_oauth_user, oauth_provider, avatar FROM usuaris WHERE correu_electronic = :email");
+        $query->bindParam(':email', $email);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        
+        // Debug
+        error_log("getUserData result: " . print_r($result, true));
+        
+        return $result;
+    } catch (PDOException $e) {
+        error_log("Error en getUserData: " . $e->getMessage());
         return false;
     }
-
-    $sql = $conn->prepare("SELECT *
-                          FROM usuaris 
-                          WHERE correu_electronic = :email");
-    $sql->bindParam(':email', $email);
-    $sql->execute();
-    
-    return $sql->fetch(PDO::FETCH_ASSOC);
 }
 
 /**
  * Obtiene el nombre de la liga del equipo favorito
- * @param string $equipFavorit
- * @param PDO $conn
  * @return string|false
  */
 function getLeagueName(string $equipFavorit, PDO $conn)
@@ -337,9 +337,7 @@ function mergeAccounts(string $email, string $provider, PDO $conn): bool {
  */
 function updateUserProfile(string $email, string $username, string $equip, ?string $avatar, PDO $conn): bool {
     try {
-        $sql = "UPDATE usuaris SET 
-                nom_usuari = :username,
-                equip_favorit = :equip";
+        $sql = "UPDATE usuaris SET nom_usuari = :username, equip_favorit = :equip";
         
         if ($avatar !== null) {
             $sql .= ", avatar = :avatar";
@@ -348,6 +346,7 @@ function updateUserProfile(string $email, string $username, string $equip, ?stri
         $sql .= " WHERE correu_electronic = :email";
         
         $stmt = $conn->prepare($sql);
+        
         $params = [
             ':username' => $username,
             ':equip' => $equip,
@@ -357,6 +356,10 @@ function updateUserProfile(string $email, string $username, string $equip, ?stri
         if ($avatar !== null) {
             $params[':avatar'] = $avatar;
         }
+        
+        // Debug
+        error_log("SQL Update: " . $sql);
+        error_log("Params: " . print_r($params, true));
         
         return $stmt->execute($params);
     } catch (PDOException $e) {
@@ -378,6 +381,8 @@ function getAllTeams(PDO $conn): array {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         error_log("Error obteniendo equipos: " . $e->getMessage());
+    }
         return [];
     }
+}
 }
