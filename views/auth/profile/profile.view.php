@@ -7,7 +7,7 @@ SessionHelper::checkLogin();
 <head>
     <meta charset="UTF-8">
     <title>Editar Perfil</title>
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>views/auth/profile/profile.styles.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>views/auth/profile/styles_profile.css">
     <script src="<?php echo BASE_URL; ?>scripts/lligaequip.js" defer></script>
 </head>
 <body>

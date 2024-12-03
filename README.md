@@ -1,142 +1,275 @@
-## **Porra de Futbol - Gestió de Resultats**.
+# **Porra de Futbol - Gestió de Resultats**
+## 0. Índex
 
-### 1. Explicació del Projecte
+- [**Porra de Futbol - Gestió de Resultats**](#porra-de-futbol---gestió-de-resultats)
+  - [0. Índex](#0-índex)
+  - [1. Explicació del Projecte](#1-explicació-del-projecte)
+  - [2. Estructura del Projecte](#2-estructura-del-projecte)
+  - [3. Funcionalitats Principals](#3-funcionalitats-principals)
+  - [4. Base de Dades](#4-base-de-dades)
+  - [5. Usuaris Predefinits](#5-usuaris-predefinits)
+  - [6. Tecnologies Utilitzades](#6-tecnologies-utilitzades)
+  - [7. Instruccions per a l'Usuari Nou](#7-instruccions-per-a-lusuari-nou)
+  - [8. Instal·lació](#8-installació)
+  - [9. Documentació del Codi](#9-documentació-del-codi)
+  - [10. Problemes Coneguts i Limitacions](#10-problemes-coneguts-i-limitacions)
+  - [11. Crèdits](#11-crèdits)
+  - [12. Llicència](#12-llicència)
+  - [13. Detalls Tècnics Addicionals](#13-detalls-tècnics-addicionals)
+    - [Router.php](#routerphp)
+    - [SocialAuthController.php](#socialauthcontrollerphp)
+    - [SessionHelper.php](#sessionhelperphp)
+    - [database.model.php](#databasemodelphp)
+    - [form.controller.php](#formcontrollerphp)
+    - [match.controller.php](#matchcontrollerphp)
+    - [prediction.controller.php](#predictioncontrollerphp)
+    - [lligaequip.js](#lligaequipjs)
+    - [prediction.js](#predictionjs)
+    - [main.css](#maincss)
+    - [auth.css](#authcss)
+    - [match.css](#matchcss)
+    - [index.php](#indexphp)
+    - [.gitignore](#gitignore)
 
-Aquest projecte és una aplicació de **porra de futbol** en què els usuaris poden predir els resultats dels partits de futbol de diverses lligues (LaLiga, Premier League, Ligue 1). A més, inclou funcionalitats d'autenticació d'usuaris, gestió de partits, i sistema de feedback visual per veure si l'usuari ha encertat la seva predicció.
+## 1. Explicació del Projecte
 
-### 2. Estructura de carpetes i arxius
+Aquest projecte és una aplicació de **porra de futbol** que permet als usuaris predir els resultats dels partits de futbol de diverses lligues (LaLiga, Premier League, Ligue 1). Inclou funcionalitats d'autenticació d'usuaris, gestió de partits i un sistema de feedback visual per veure si l'usuari ha encertat la seva predicció.
+
+## 2. Estructura del Projecte
 
 ```plaintext
-ALEXIS_BOISSET_PT04/
-├── controller
-│   ├── config.php                 # Configuració general del projecte.
-│   ├── delete.php                 # Controla la eliminació d'elements (ex: partits o prediccions).
-│   ├── guardar_prediccio.php      # Guarda la predicció d'un usuari.
-│   ├── login.controller.php       # Processa el login d'usuaris.
-│   ├── logout.php                 # Gestiona el logout i tanca la sessió d'un usuari.
-│   ├── register.controller.php    # Controla el registre de nous usuaris.
-│   ├── save_partit.php            # Guarda un nou partit a la base de dades.
+ALEXIS_BOISSET_PT05/
+├── controllers
+│   ├── main.controller.php              # Controlador principal de l'aplicació.
+│   ├── auth
+│   │   ├── login.controller.php         # Processa el login d'usuaris.
+│   │   ├── logout.controller.php        # Gestiona el logout i tanca la sessió.
+│   │   ├── register.controller.php      # Controla el registre de nous usuaris.
+│   │   ├── preferences.controller.php   # Gestiona les preferències dels usuaris.
+│   │   ├── SocialAuthController.php     # Gestiona l'autenticació social amb OAuth i HybridAuth.
+│   ├── match
+│   │   ├── match.controller.php         # Controla les operacions relacionades amb els partits.
+│   │   ├── prediction.controller.php    # Gestiona les prediccions dels usuaris.
+│   ├── utils
+│       ├── cookie.controller.php        # Gestiona les cookies de l'aplicació.
+│       ├── SessionHelper.php            # Funcions auxiliars per a la gestió de sessions.
+│       ├── form.controller.php          # Validació i processament de formularis.
+│       ├── RecaptchaController.php      # Gestiona la verificació de reCAPTCHA.
+│       ├── validation.controller.php    # Funcions de validació de dades.
+│       ├── search.controller.php        # Gestiona les cerques dins l'aplicació.
 │
-├── model
-│   ├── db_conn.php                # Connexió a la base de dades mitjançant PDO.
-│   ├── porra.php                  # Funcions per gestionar les prediccions dels partits.
-│   ├── Pt04_Alexis_Boisset.sql    # Estructura i dades inicials de la base de dades.
-│   ├── user_model.php             # Funcions de gestió d'usuaris (registre, verificació).
+├── models
+│   ├── database
+│   │   ├── database.model.php           # Connexió a la base de dades mitjançant PDO.
+│   │   ├── Pt05_Alexis_Boisset.sql      # Esquema de la base de dades.
+│   ├── user
+│   │   ├── user.model.php               # Funcions de gestió d'usuaris.
+│   ├── utils
+│   │   ├── porra.model.php              # Funcions per gestionar els partits.
+│   ├── env.php
 │
 ├── scripts
-│   ├── lligaequip.js              # Script per mostrar equips segons la lliga seleccionada.
+│   ├── cleanup-tokens.php               # Script per netejar tokens obsolets.
+│   ├── index.js                         # Script principal per gestionar la lògica del client.
+│   ├── lligaequip.js                    # Script per mostrar equips segons la lliga seleccionada.
+│   ├── prediction.js                    # Script per gestionar les prediccions en temps real.
 │
-├── view
-│   ├── styles
-│   │   ├── styles_crear.css       # Estils per la pàgina de creació de registres.
-│   │   ├── styles_eliminar.css    # Estils per la pàgina d'eliminació.
-│   │   ├── styles_llistar.css     # Estils per la pàgina de llistat d'elements.
-│   │   ├── styles_login.css       # Estils per la pàgina de login.
-│   │   ├── styles_register.css    # Estils per la pàgina de registre.
-│   │   ├── styles.css             # Estils generals per l'aplicació.
+├── views
+│   ├── admin
+│   │   ├── manage-users.view.php         # Pàgina per gestionar els usuaris.
+│   │   ├── styles_manage-users.css       # Estils per a la pàgina de gestió d'usuaris.
+│   ├── auth
+│   │   ├── change
+│   │   │   ├── change-password.view.php   # Formulari per canviar la contrasenya.
+│   │   │   ├── styles_change.css          # Estils per a la pàgina de canvi de contrasenya.
+│   │   ├── forgot
+│   │   │   ├── forgot-password.view.php   # Formulari per restablir la contrasenya.
+│   │   │   ├── styles_forgot.css          # Estils per a la pàgina de restabliment de contrasenya.
+│   │   ├── login
+│   │   │   ├── login.view.php             # Formulari de login.
+│   │   │   ├── styles_login.css           # Estils per a la pàgina de login.
+│   │   ├── merge
+│   │   │   ├── merge-accounts.view.php    # Pàgina per fusionar comptes d'usuari.
+│   │   │   ├── styles_merge.css           # Estils per a la pàgina de fusió de comptes.
+│   │   ├── preferences
+│   │   │   ├── preferences.view.php       # Formulari per configurar preferències.
+│   │   │   ├── styles_preferences.css     # Estils per a la pàgina de preferències.
+│   │   ├── profile
+│   │   │   ├── profile.view.php           # Pàgina de perfil de l'usuari.
+│   │   │   ├── styles_profile.css         # Estils per a la pàgina de perfil.
+│   │   ├── register
+│   │   │   ├── register.view.php          # Formulari de registre.
+│   │   │   ├── styles_register.css        # Estils per a la pàgina de registre.
+│   │   ├── reset
+│   │   │   ├── reset-password.view.php    # Formulari per restablir la contrasenya.
+│   │   │   ├── styles_reset.css           # Estils per a la pàgina de restabliment de contrasenya.
 │   │
-│   ├── change_pswd.php            # Pàgina per canviar la contrasenya de l'usuari.
-│   ├── crear_partit.php           # Form per crear nous partits (amb selecció de lliga/equip).
-│   ├── eliminar.php               # Interfície per eliminar elements.
-│   ├── index.view.php            # Pàgina principal que mostra els partits i prediccions.
-│   ├── login.view.php            # Formulari de login.
-│   ├── register.view.php          # Formulari de registre.
+│   ├── components
+│   │   ├── admin-actions.component.php           # Accions d'administrador.
+│   │   ├── footer.component.php                  # Peu de pàgina comú de l'aplicació.
+│   │   ├── header.component.php                  # Capçalera comuna de l'aplicació.
+│   │   ├── league-selector.component.php         # Selector de lligues.
+│   │   ├── match-actions.component.php           # Accions relacionades amb els partits.
+│   │   ├── matches-list.component.php            # Llista de partits.
+│   │   ├── matches-per-page.component.php        # Selector de nombre de partits per pàgina.
+│   │   ├── pagination.component.php              # Paginació de llistes.
+│   ├── crud
+│   │   ├── create
+│   │   │   ├── admin-create.view.php             # Formulari per crear nous administradors.
+│   │   │   ├── match-create.view.php             # Formulari per crear nous partits.
+│   │   │   ├── styles_crear.css                  # Estils per a la pàgina de creació.
+│   │   ├── delete
+│   │   │   ├── delete.view.php                   # Confirmació per eliminar un element.
+│   │   │   ├── styles_eliminar.css               # Estils per a la pàgina d'eliminació.
+│   │   ├── edit
+│   │   │   ├── match-edit.view.php               # Formulari per editar partits existents.
+│   │   ├── view
+│   │   │   ├── match-view.view.php               # Vista detallada d'un partit.
+│   │   │   ├── styles_match-view.css             # Estils per a la pàgina de vista de partits.
+│   ├── errors/
+│   │   ├── 404.view.php                        # Pàgina d'error 404.
+│   ├── layouts/
+│   │   ├── feedback.view.php                    # Missatges de feedback per a l'usuari.
+│   ├── main/
+│       ├── index.view.php                       # Pàgina principal de l'aplicació.
+│       ├── styles.css                           # Estils per a la pàgina principal.
 │
-├── .gitignore                     # Arxius i carpetes a ignorar en Git.
-└── index.php                      # Punt d'entrada principal de l'aplicació.
+│
+├── .gitignore                           # Arxius i carpetes a ignorar en Git.
+└── index.php                            # Punt d'entrada principal de l'aplicació.
 ```
 
+## 3. Funcionalitats Principals
 
-### 3. Funcionalitats Principals
+- **Autenticació d'usuaris**: Permet als usuaris registrar-se i iniciar sessió per accedir a les funcionalitats.
+- **Predicció de partits**: Els usuaris poden fer prediccions de resultats i comprovar si han encertat.
+- **Selecció dinàmica d'equips**: Durant el registre, l'usuari selecciona la seva lliga i equip favorit.
+- **Gestió de partits**: Administradors poden afegir, editar i eliminar partits des de l'aplicació.
+- **Control de sessió i preferències**: Les sessions tenen una durada limitada i es guarden preferències com el nombre de partits per pàgina.
+- **Feedback visual**: Es mostra si l'usuari ha encertat la predicció amb indicadors visuals.
 
-- **Autenticació d'usuaris**: Permet als usuaris crear comptes i iniciar sessió. Només els usuaris autenticats poden fer prediccions i gestionar alguns elements de la plataforma.
-- **Predicció de partits**: Els usuaris poden fer prediccions de partits futurs i veure si han encertat una vegada el partit s'ha jugat.
-- **Filtrat dinàmic de selecció d'equip**: Quan es registra, l'usuari pot seleccionar un equip favorit, el qual queda registrat al seu perfil. A més, pot veure només els partits del seu equip si així ho desitja.
-- **Control de sessió i cookies**: Manté les sessions actives durant 40 minuts i guarda preferències com el nombre de partits per pàgina o la lliga seleccionada.
-- **Gestió de partits**: Permet afegir, modificar i eliminar partits (per usuaris amb permisos).
-- **Lifetime màxim de sessions personalitzat**: S'ha creat especialment per aquest projecte un arxiu que substitueix la funció session.gc_maxlifetime per una que sí que funciona. Molt robusta y amb rutes relatives que funcionen en qualsevol entorn on s'executi (A.K.A.: **Aplicació portàtil**). Si algú em trenca el funcionament d'aquest arxiu, ploraria.
+## 4. Base de Dades
 
-### 4. Base de Dades
+La base de dades inclou les taules principals següents:
 
-La base de dades conté les següents taules principals per gestionar els equips, lligues, partits i usuaris:
+- **`equips`**: Informació dels equips, incloent nom i lliga a la qual pertanyen.
+- **`lligues`**: Llistat de lligues disponibles amb els seus respectius identificadors.
+- **`partits`**: Registre de partits amb equips participants, data i resultats.
+- **`usuaris`**: Informació dels usuaris, incloent credencials i preferències.
+- **`prediccions`**: Prediccions realitzades pels usuaris per als diferents partits.
 
-- **Taula `equips`**: Inclou informació sobre els equips de diferents lligues, amb camps com `id`, `nom` (nom de l'equip) i `lliga_id` (identificador de la lliga a la qual pertany l'equip).
+## 5. Usuaris Predefinits
 
-- **Taula `lligues`**: Emmagatzema les lligues en què participen els equips, amb els camps `id` i `nom` (nom de la lliga).
+A continuació es mostren els usuaris predefinits:
 
-- **Taula `partits`**: Conté els partits que es disputen entre equips. Els camps inclouen `equip_local_id` i `equip_visitant_id` per identificar els equips participants, `data` per la data del partit, `gols_local` i `gols_visitant` per als resultats, `jugat` per indicar si el partit s'ha jugat, i `liga_id` per associar-lo a la lliga corresponent.
+| Nom d'Usuari             | Contrasenya   | Equip Favorit    | Lliga           |
+|--------------------------|---------------|------------------|-----------------|
+| admin@alexisboisset.cat  | Admin123!     | -                | -               |
+| alexis@gmail.com         | Admin123      | OGC Nice         | Ligue 1         |
+| xavi@gmail.com           | Admin123      | Girona FC        | LaLiga          |
+| pedrerol@gmail.com       | Admin123      | Crystal Palace   | Premier League  |
 
-- **Taula `usuaris`**: Emmagatzema els usuaris que poden accedir al sistema i interactuar amb ell. Inclou camps com `id`, `nom_usuari`, `contrasenya` i altres dades de perfil.
+## 6. Tecnologies Utilitzades
 
-### 4.1  Usuaris Registrats
+- **Backend**: PHP amb PDO per a la interacció amb la base de dades.
+- **Frontend**: HTML, CSS i JavaScript per a la interfície d'usuari.
+- **Base de Dades**: MySQL per emmagatzemar dades dels usuaris i partits.
+- **Gestió d'Errors**: Maneig d'excepcions amb `try-catch` per assegurar l'estabilitat.
 
-Aquests són els usuaris que venen registrats a la base de dades per defecte:
+## 7. Instruccions per a l'Usuari Nou
 
-| Nom d'Usuari         | Contrasenya       | Equip Favorit             | Lliga                    |
-|----------------------|-------------------|---------------------------|--------------------------|
-| alexis@gmail.com     | Admin123          | OGC Nice                  | Ligue 1                  |
-| xavi@gmail.com       | Admin123          | Girona FC                 | La Liga                  |
-| jpedrerol@gmail.com  | Admin123          | Crystal Palace            | Premier League           | 
+1. **Registrar-se**: Accedeix a `register.view.php` per crear un nou compte.
+2. **Iniciar Sessió**: Utilitza `login.view.php` per iniciar sessió amb les teves credencials.
+3. **Configurar Preferències**: Selecciona la teva lliga i equip favorit després d'iniciar sessió.
+4. **Fer Prediccions**: A `index.view.php`, selecciona un partit i introdueix la teva predicció.
+5. **Consultar Resultats**: Comprova els partits jugats i veu si has encertat.
+6. **Modificar Perfil**: Accedeix a `profile.view.php` per actualitzar les teves dades.
+7. **Tancar Sessió**: Fes logout per assegurar la confidencialitat de la teva sessió.
 
-### 5. Tecnologies Utilitzades
-   - Llista de les tecnologies emprades, com:
-     - **Backend**: PHP amb PDO per a la gestió de la base de dades.
-     - **Frontend**: HTML, CSS, JavaScript (per a la càrrega dinàmica d'equips).
-     - **Base de Dades**: MySQL, amb una estructura de taules per usuaris, partits, lligues i equips.
-     - **Gestió d'Errors**: Try-catch amb `Throwable` per capturar i mostrar errors d'execució.
+## 8. Instal·lació
 
-### 6. Instruccions per l'Usuari Nou
+Per instal·lar el projecte:
 
-1. **Registrar-se**: Si és la primera vegada que accedeixes, ves a la pàgina de registre (`register.view.php`) i crea un compte amb les teves dades. Aquí pots seleccionar la teva lliga preferida i el teu equip favorit.
-   
-2. **Iniciar Sessió**: Un cop registrat, pots iniciar sessió a la pàgina de login (`login.view.php`) amb les teves credencials.
+1. **Clona el repositori** al teu ordinador.
+2. **Importa la base de dades** proporcionada utilitzant una eina com phpMyAdmin.
+3. **Configura la connexió** a la base de dades en el fitxer de configuració.
+4. **Executa el servidor local** amb XAMPP o similar i accedeix al projecte.
 
-3. **Fer Prediccions**: A la pàgina principal (`index.view.php`), podràs veure una llista de partits. Si el partit encara no s'ha jugat, pots introduir una predicció pel resultat.
+## 9. Documentació del Codi
 
-4. **Revisar els Resultats**: Quan un partit es jugui, podràs veure el resultat real comparat amb la teva predicció. Els gols apareixeran en verd si has encertat i en vermell si no.
+- **`connectarBaseDades()`**: Inicia una connexió segura amb la base de dades.
+- **`registrarUsuari()`**: Gestiona el procés de registre d'un nou usuari.
+- **`autenticarUsuari()`**: Verifica les credencials i inicia la sessió de l'usuari.
+- **`mostrarPartitsPaginats()`**: Mostra els partits amb opció de paginació.
+- **`afegirPartit()`**: Permet afegir nous partits a la base de dades.
 
-5. **Gestionar Preferències**: Pots escollir quants partits veure per pàgina des d'un menú desplegable. Aquest valor es guardarà en una cookie per recordar la teva elecció la propera vegada que visitis la pàgina.
+## 10. Problemes Coneguts i Limitacions
 
-6. **Tancar Sessió**: Quan hagis acabat, recorda tancar la sessió des de l'opció de logout per garantir la seguretat del teu compte.
+- La funcionalitat d'afegir prediccions pot tenir limitacions en certes condicions.
+- La gestió de partits podria integrar-se millor a la pàgina principal per millorar l'experiència d'usuari.
 
+## 11. Crèdits
 
-### 7. Instal·lació
-   - Passos per instal·lar el projecte en local:
-     - **1**: Clonar el repositori al teu directori desitjat.
-     - **2**: Crear/Importar la base de dades amb l'estructura proporcionada (P.E.: ***phpMyAdmin***).
-     - **3**: Accedir al projecte des d'un servidor local (P.E.: ***XAMPP***).
+- Autor del projecte: Alexis Boisset.
 
+## 12. Llicència
 
+- Aquest projecte està sota la llicència MIT.
 
-   ### 8. Documentació del Codi
+## 13. Detalls Tècnics Addicionals
 
-Aquest projecte inclou funcions per gestionar una porra de futbol amb autenticació d'usuaris, prediccions, paginació de partits i gestió de preferències d'equip. A continuació, es descriuen algunes de les funcions més rellevants:
+### Router.php
 
-- **connectarBaseDades()**: Estableix una connexió segura amb la base de dades utilitzant PDO per permetre operacions com insercions, actualitzacions i consultes de dades.
+El fitxer `Router.php` és responsable de gestionar les rutes de l'aplicació. Utilitza una estructura de matriu per emmagatzemar les rutes GET i POST. Quan es fa una sol·licitud, el router comprova si la ruta sol·licitada coincideix amb alguna de les rutes definides i executa el controlador corresponent. També gestiona rutes per a fitxers estàtics com imatges i fulls d'estil.
 
-- **registrarUsuari()**: Processa el registre de nous usuaris, validant les dades i associant l'equip favorit i la lliga seleccionats durant el registre.
+### SocialAuthController.php
 
-- **autenticarUsuari()**: Verifica les credencials de l'usuari per permetre l'accés i crea una sessió amb la informació de l'usuari autenticat, incloent l'equip favorit.
+La classe `SocialAuthController.php` gestiona l'autenticació social mitjançant OAuth. Aquesta classe permet als usuaris iniciar sessió amb proveïdors com Google i GitHub. Inclou mètodes per redirigir els usuaris als proveïdors d'autenticació, gestionar les respostes de callback i processar les dades dels usuaris autenticats. També maneja la fusió de comptes si un usuari ja existeix amb el mateix correu electrònic.
 
-- **mostrarPartitsPaginats()**: Gestiona la visualització paginada dels partits. Diferencia entre usuaris autenticats (que només veuen partits del seu equip favorit) i no autenticats (que veuen tots els partits).
+### SessionHelper.php
 
-- **afegirPartit()**: Permet crear un nou partit seleccionant equips específics per lliga, actualitzant automàticament el llistat d'equips segons la lliga escollida.
+El fitxer `SessionHelper.php` conté funcions auxiliars per a la gestió de sessions. Inclou mètodes per iniciar i destruir sessions, així com per establir i obtenir dades de sessió. També gestiona la verificació de captcha i el control de l'activitat de la sessió per evitar inactivitat prolongada.
 
-- **actualitzarEquipsPerLliga()**: Carrega i mostra dinàmicament els equips disponibles segons la lliga seleccionada al formulari, facilitant la selecció precisa per a cada lliga.
+### database.model.php
 
-- **predirResultat()**: Permet als usuaris autenticats predir el resultat d’un partit abans que es jugui. Compara la predicció amb el resultat real i mostra visualment si l'usuari ha encertat o no. 
+El fitxer `database.model.php` gestiona la connexió a la base de dades mitjançant PDO. Proporciona una connexió segura i reutilitzable a la base de dades MySQL, permetent l'execució de consultes SQL de manera eficient i segura.
 
-Aquestes funcions proporcionen una estructura completa i funcional per a la gestió de la porra, amb una experiència d'usuari intuïtiva i dinàmica.
+### form.controller.php
 
-*Nota: El nom d'aquestes funcions pot variar en l'idioma o l'ordre del nom de la funció. Només s'ha simplificat els noms en aquest arxiu per lectura més senzilla.*
+El fitxer `form.controller.php` s'encarrega de la validació i processament de formularis. Inclou funcions per validar camps de formulari com noms d'usuari, correus electrònics i contrasenyes. També maneja la validació de fitxers d'imatge per assegurar que compleixen amb els requisits establerts.
 
+### match.controller.php
 
-### 9. Problemes Coneguts i Limitacions
-   - L'autor us asegura de tot cor que coneix la limitació **actual** per afegir prediccions de partit a la base de dades.
-   - L'autor es conscient que en comptes de afegir un enllaç que redirigeixi a una pàgina per crear un partit o per eliminar-lo, es podria fer a la mateixa pàgina principal. L'autor reclama que no té temps per fer-ho.
+El fitxer `match.controller.php` controla les operacions relacionades amb els partits. Permet als administradors afegir, editar i eliminar partits, així com gestionar les prediccions dels usuaris. També inclou funcions per obtenir dades dels partits i mostrar-les a la interfície d'usuari.
 
-### 10. Crèdits
-   - Autor del projecte, Alexis Boisset.
+### prediction.controller.php
 
-### 11. Llicència
-   - Under MIT license.
+El fitxer `prediction.controller.php` gestiona les prediccions dels usuaris. Permet als usuaris fer prediccions de resultats de partits i comprovar si han encertat. També inclou funcions per calcular els punts obtinguts per cada predicció i mostrar un rànquing dels usuaris.
+
+### lligaequip.js
+
+El fitxer `lligaequip.js` és un script que mostra els equips disponibles segons la lliga seleccionada per l'usuari. Actualitza dinàmicament la llista d'equips en el formulari de registre i preferències, millorant l'experiència d'usuari.
+
+### prediction.js
+
+El fitxer `prediction.js` és un script que gestiona les prediccions en temps real. Permet als usuaris introduir les seves prediccions de manera interactiva i veure els resultats immediatament. També inclou funcions per validar les prediccions abans d'enviar-les al servidor.
+
+### main.css
+
+El fitxer `main.css` conté els estils generals de l'aplicació. Defineix l'aparença i el disseny de les pàgines, incloent colors, tipografies i disposició dels elements.
+
+### auth.css
+
+El fitxer `auth.css` conté els estils específics per a les pàgines d'autenticació. Defineix l'aparença dels formularis de login, registre i preferències, assegurant una experiència d'usuari consistent i atractiva.
+
+### match.css
+
+El fitxer `match.css` conté els estils específics per a les pàgines de partits. Defineix l'aparença de la llista de partits, els formularis de creació i edició de partits, i els resultats de les prediccions.
+
+### index.php
+
+El fitxer `index.php` és el punt d'entrada principal de l'aplicació. Inicia la sessió, carrega les dependències necessàries i gestiona les rutes definides en el `Router.php`. També inclou la lògica per manejar errors i redirigir els usuaris a les pàgines corresponents segons les seves accions.
+
+### .gitignore
+
+El fitxer `.gitignore` especifica els arxius i carpetes que han de ser ignorats pel sistema de control de versions Git. Això inclou fitxers temporals, configuracions locals i altres arxius que no són necessaris per al funcionament de l'aplicació en altres entorns.
