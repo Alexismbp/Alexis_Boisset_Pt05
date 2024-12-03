@@ -3,7 +3,7 @@
         <div class="user-menu">
             <p>Benvingut, <?php echo htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8'); ?>!</p>
             <div class="admin-profile">
-                <img src="<?php echo !empty($_SESSION['avatar']) ? BASE_URL . 'uploads/avatars/' . $_SESSION['avatar'] : BASE_URL . 'assets/img/default-avatar.png'; ?>" 
+                <img src="<?php echo !empty($_SESSION['avatar']) ? BASE_URL . 'uploads/avatars/' . $_SESSION['avatar'] : BASE_URL . 'assets/img/default-avatar.webp'; ?>" 
                      class="header-avatar" alt="Avatar" onclick="toggleAdminMenu()">
                 <div class="admin-dropdown" id="adminMenu">
                     <a href="<?php echo BASE_URL; ?>partido/crear">Crear nou partit</a>

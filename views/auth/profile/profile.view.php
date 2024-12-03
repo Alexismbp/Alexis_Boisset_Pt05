@@ -21,7 +21,7 @@ SessionHelper::checkLogin();
             <div class="form-group">
                 <label for="avatar">Avatar:</label>
                 <div class="avatar-container">
-                    <img src="<?php echo isset(($_SESSION['avatar'])) ? BASE_URL . 'uploads/avatars/' . $_SESSION['avatar'] : BASE_URL . 'assets/img/default-avatar.png'; ?>" 
+                    <img src="<?php echo isset(($_SESSION['avatar'])) ? BASE_URL . 'uploads/avatars/' . $_SESSION['avatar'] : BASE_URL . 'assets/img/default-avatar.webp'; ?>" 
                          class="current-avatar" id="current-avatar" alt="Avatar actual">
                     <div class="avatar-preview-container">
                         <img src="" class="avatar-preview" id="avatar-preview" alt="Preview" style="display: none;">
