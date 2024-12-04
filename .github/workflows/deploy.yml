@@ -25,7 +25,6 @@ jobs:
         timeout: 350000  # Incrementar el tiempo de espera a 5 minutos
         state-name: .ftp-deploy.json
         dry-run: false
-        log-level: verbose
         security: loose
         local-dir: ./
         server-dir: /
