@@ -130,6 +130,7 @@ try {
 } catch (Exception $e) {
     if ($e->getMessage() === 'Route not found') {
         http_response_code(404);
+        include BASE_PATH . 'views/errors/404.view.php';
     } else {
         // Manejar otras excepciones
         http_response_code(500);
