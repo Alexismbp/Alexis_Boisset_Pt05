@@ -164,8 +164,7 @@ function verifyCurrentPassword(string $email, string $password, PDO $conn): bool
     $query->bindParam(':email', $email);
     $query->execute();
 
-    $hash = $query->fetchColumn();
-    return password_verify($password, $hash);
+    return $hash = $query->fetchColumn();
 }
 
 /**
@@ -419,4 +418,22 @@ function deleteUser(int $userId, PDO $conn): bool
     $query = $conn->prepare("DELETE FROM usuaris WHERE id = :id");
     $query->bindParam(':id', $userId, PDO::PARAM_INT);
     return $query->execute();
+}
+
+/**
+ * Añade una contraseña a un usuario OAuth y actualiza su estado
+ * @param string $email
+ * @param PDO $conn
+ * @return bool
+ */
+function addPasswordToOAuthUser(string $email, PDO $conn): bool
+{
+    try {
+        $sql = "UPDATE usuaris SET is_oauth_user = 2 WHERE correu_electronic = :email";
+        $stmt = $conn->prepare($sql);
+        return $stmt->execute([':email' => $email]);
+    } catch (PDOException $e) {
+        error_log("Error adding password to OAuth user: " . $e->getMessage());
+        return false;
+    }
 }

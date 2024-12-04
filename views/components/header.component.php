@@ -1,4 +1,5 @@
 <header>
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/styles/search.css">
     <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
         <div class="user-menu">
             <p>Benvingut, <?php echo htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8'); ?>!</p>

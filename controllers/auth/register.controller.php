@@ -62,14 +62,15 @@ try {
             $userData = getUserData($email, $conn);
             SessionHelper::setSessionData([
                 'email' => $email,
-                'avatar' => $userData['avatar'],
+                'oauth_user' => $userData['is_oauth_user'],
+                'avatar' => $userData['avatar'] ?? 'default-avatar.webp',
                 'LAST_ACTIVITY' => time(),
                 'loggedin' => true,
                 'userid' => $userData['id'],
                 'username' => $userData['nom_usuari'],
                 'equip' => $userData['equip_favorit'],
                 'lliga' => getLeagueName($userData['equip_favorit'], $conn),
-                'success' => "Usuari registrat correctament"
+                'success' => 'Usuari registrat correctament'
             ]);
             header("Location: " . BASE_URL);
             exit();

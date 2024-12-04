@@ -1,16 +1,10 @@
 <?php
 // Alexis Boisset
-
 require_once __DIR__ . '/../../models/database/database.model.php';
 require_once __DIR__ . '/../../models/user/user.model.php';
 require_once __DIR__ . '/../utils/validation.controller.php';
 require_once __DIR__ . '/../utils/ReCaptchaController.php';
 require_once __DIR__ . '/../utils/SessionHelper.php';
-
-// DEBUGG
-/* $_SERVER['REQUEST_METHOD'] = 'POST';
-$_POST['email'] = 'alexis@gmail.com';
-$_POST['password'] = 'Admin123'; */
 
 try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -65,13 +59,15 @@ try {
 
             SessionHelper::setSessionData([
                 'email' => $email,
+                'oauth_user' => $userData['is_oauth_user'],
                 'avatar' => $userData['avatar'] ?? 'default-avatar.webp',
                 'LAST_ACTIVITY' => time(),
                 'loggedin' => true,
                 'userid' => $userData['id'],
                 'username' => $userData['nom_usuari'],
                 'equip' => $userData['equip_favorit'],
-                'lliga' => getLeagueName($userData['equip_favorit'], $conn)
+                'lliga' => getLeagueName($userData['equip_favorit'], $conn),
+                'success' => 'Has iniciat sessió correctament'
             ]);
             header("Location: " . BASE_URL);
             exit();

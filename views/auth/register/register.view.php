@@ -31,7 +31,7 @@ if (isset($_GET['netejar']) && $_GET['netejar'] == true) {
 
         <form action="<?php echo BASE_URL; ?>register" method="POST">
             <!-- FEEDBACK -->
-            <?php include_once BASE_PATH . "views/layouts/feedback.view.php"?> 
+            <?php include_once BASE_PATH . "views/layouts/feedback.view.php" ?>
 
             <div class="form-group">
                 <label for="username">Nom d'usuari:</label>
@@ -79,6 +79,15 @@ if (isset($_GET['netejar']) && $_GET['netejar'] == true) {
 
             <input type="submit" class="btn-submit" value="Enregistrar-se">
         </form>
+        
+        <div class="oauth-buttons">
+            <a href="<?php echo BASE_URL; ?>oauth/google" class="btn-google">
+                <img src="<?php echo BASE_URL; ?>assets/img/google-icon.webp" alt="Google Icon">
+            </a>
+            <a href="<?php echo BASE_URL; ?>oauth/github" class="btn-github">
+                <img src="<?php echo BASE_URL; ?>assets/img/github-icon.webp" alt="GitHub Icon">
+            </a>
+        </div>
 
         <a href="<?php echo FormController::getClearFormUrl(); ?>" class="btn-back">Netejar</a>
         <br>

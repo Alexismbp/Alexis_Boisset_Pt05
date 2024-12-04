@@ -18,16 +18,24 @@ if (!isset($_SESSION['loggedin'])) {
 </head>
 <body>
     <div class="container">
-        <h2>Canviar Contrasenya</h2>
+        <h2>
+            <?php if (isset($_SESSION['oauth_user']) && $_SESSION['oauth_user'] == 0): ?>
+                Afegir Contrasenya al Compte
+            <?php else: ?>
+                Canviar Contrasenya
+            <?php endif; ?>
+        </h2>
         <?php if (isset($_SESSION['error'])): ?>
             <div class="alert alert-danger"><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></div>
         <?php endif; ?>
         
         <form action="<?php echo BASE_URL; ?>changepassword" method="POST">
-            <div class="form-group">
-                <label for="current_password">Contrasenya Actual:</label>
-                <input type="password" name="current_password" required>
-            </div>
+            <?php if (!isset($_SESSION['oauth_user'])): ?>
+                <div class="form-group">
+                    <label for="current_password">Contrasenya Actual:</label>
+                    <input type="password" name="current_password" required>
+                </div>
+            <?php endif; ?>
             
             <div class="form-group">
                 <label for="new_password">Nova Contrasenya:</label>
@@ -39,7 +47,9 @@ if (!isset($_SESSION['loggedin'])) {
                 <input type="password" name="confirm_password" required>
             </div>
             
-            <button type="submit">Canviar Contrasenya</button>
+            <button type="submit">
+                <?php echo isset($_SESSION['oauth_user']) ? 'Afegir Contrasenya' : 'Canviar Contrasenya'; ?>
+            </button>
         </form>
         <a href="<?php echo BASE_URL; ?>" class="btn-tornar">Tornar enrere</a>
     </div>

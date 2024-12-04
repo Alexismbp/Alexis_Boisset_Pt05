@@ -23,11 +23,19 @@ if (isset($router)) {
         // Get match data
         $stmt = consultarPartido($conn, $id);
         $partit = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+        $partit['equip_local'] = getTeamName($conn, $partit['equip_local_id']);
+        $partit['equip_visitant'] = getTeamName($conn, $partit['equip_visitant_id']);
+
         if (!$partit) {
             $_SESSION['failure'] = "Aquest partit no existeix";
             header("Location: " . BASE_URL);
             exit();
+        } elseif (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && isset($_SESSION['equip'])) { // Comprovar si está loguejat i té equip
+            if($_SESSION['equip'] != $partit['equip_local'] && $_SESSION['equip'] != $partit['equip_visitant']) {
+                $_SESSION['failure'] = "No tens permisos per veure aquest partit";
+                header("Location: " . BASE_URL);
+                exit();
+            } 
         }
 
         // Get article data
@@ -35,8 +43,7 @@ if (isset($router)) {
 
         // Store match and article data in session
         
-         $partit['equip_local'] = getTeamName($conn, $partit['equip_local_id']);
-         $partit['equip_visitant'] = getTeamName($conn, $partit['equip_visitant_id']);
+         
       
         
 

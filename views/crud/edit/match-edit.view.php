@@ -1,82 +1,8 @@
 <?php
-
-require_once __DIR__ . "/../../../models/env.php";
-require_once BASE_PATH . 'models/database/database.model.php';
-require_once BASE_PATH . 'models/utils/porra.model.php';
 require_once BASE_PATH . '/controllers/session/session.controller.php';
-require_once BASE_PATH . 'controllers/utils/form.controller.php';
+require_once BASE_PATH . 'controllers/crud/edit-match.controller.php';
 
 
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
-if (!isset($_SESSION['loggedin']) && $_SESSION['loggedin'] !== true || !isset($_SESSION['userid'])) {
-    $_SESSION['failure'] = "No tens permisos per editar aquest partit (Que intentas Xavi?)";
-    header("Location: " . BASE_URL);
-    exit();
-}
-
-// Obtener el ID del partido desde la URL usando Router
-$id = basename($_SERVER['REQUEST_URI']);
-
-if (!$id || !is_numeric($id)) {
-    header("Location: " . BASE_URL);
-    exit();
-}
-
-// Obtener datos del partido
-$conn = Database::getInstance();
-$stmt = consultarPartido($conn, $id);
-$partit = $stmt->fetch(PDO::FETCH_ASSOC);
-
-// Obtener datos del artículo asociado
-$article = getArticleByMatchId($conn, $id);
-
-if (!$partit) {
-    $_SESSION['failure'] = "Partit no trobat";
-    header("Location: " . BASE_URL);
-    exit();
-}
-
-if ($article) {
-    if ($_SESSION['userid'] != $article['user_id']) {
-        $_SESSION['failure'] = "No tens permisos per editar aquest partit";
-        header("Location: " . BASE_URL);
-        exit();
-    } else {
-        $_SESSION['failure'] = "No s'ha trobat cap article associat a aquest partit";
-        header("Location: " . BASE_URL);
-        exit();
-    }
-}
-
-// Guardar datos en sesión para el formulario
-dadesEdicio($conn, $partit, $article, $id);
-
-// Obtenim els noms y dades dels equips y partits per a mostrar-los
-function dadesEdicio($conn, $partit, $article, $id)
-{
-    
-
-    // Pasar a una dada que sigui HUMAN READABLE (B2 English)
-    $equip_local_name = isset($partit['equip_local_id'])  ? getTeamName($conn, $partit['equip_local_id']) : '';
-    $equip_visitant_name = isset($partit['equip_visitant_id']) ? getTeamName($conn, $partit['equip_visitant_id']) : '';
-
-    $_SESSION['equip_local'] = $equip_local_name;
-    $_SESSION['equip_visitant'] = $equip_visitant_name;
-    $_SESSION['data'] = $partit['data'];
-    $_SESSION['gols_local'] = $partit['gols_local'];
-    $_SESSION['gols_visitant'] = $partit['gols_visitant'];
-    $_SESSION['jugat'] = $partit['jugat'];
-    $_SESSION["id"] = $id;
-    $_SESSION['editant'] = true;
-    $_SESSION['lliga'] = getLeagueNameByTeam($equip_local_name, $conn);
-    $_SESSION['article_title'] = $article ? $article['title'] : '';
-    $_SESSION['article_content'] = $article ? $article['content'] : '';
-
-    return true;
-}
 ?>
 <!DOCTYPE html>
 <html lang="ca">

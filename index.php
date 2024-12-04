@@ -19,6 +19,7 @@ $email = 'a.boisset@sapalomera.cat';
 $userData = getUserData($email, $conn);
 SessionHelper::setSessionData([
     'email' => $email,
+    'oauth_user' => $userData['is_oauth_user'],
     'avatar' => $userData['avatar'] ?? 'default-avatar.webp',
     'LAST_ACTIVITY' => time(),
     'loggedin' => true,
@@ -27,7 +28,7 @@ SessionHelper::setSessionData([
     'equip' => $userData['equip_favorit'],
     'lliga' => getLeagueName($userData['equip_favorit'], $conn)
 ]);
-$_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/edit-match/31";
+$_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/view-match/72";
 $_SERVER['REQUEST_METHOD'] = "GET"; */
 
 $router = new Router();
@@ -92,7 +93,7 @@ $router->post('/delete-user', 'controllers/admin/manage-users.controller.php');
 $router->post('/login', 'controllers/auth/login.controller.php');
 $router->post('/register', 'controllers/auth/register.controller.php');
 $router->post('/create', 'controllers/crud/create.controller.php');
-$router->post('/delete-match', 'controllers/crud/delete.controller.php'); 
+$router->post('/delete-match', 'controllers/crud/delete.controller.php');
 $router->post('/forgotpassword', 'controllers/auth/email-password.controller.php');
 $router->post('/changepassword', 'controllers/auth/change-password.controller.php');
 $router->post('/resetpassword', 'controllers/auth/reset-password.controller.php');
