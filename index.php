@@ -11,6 +11,23 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+require_once __DIR__ . '/models/user/user.model.php';
+require_once __DIR__ . '/controllers/utils/SessionHelper.php';
+$email = 'a.boisset@sapalomera.cat';
+$userData = getUserData($email, $conn);
+SessionHelper::setSessionData([
+    'email' => $email,
+    'oauth_user' => $userData['is_oauth_user'],
+    'avatar' => $userData['avatar'] ?? 'default-avatar.webp',
+    'LAST_ACTIVITY' => time(),
+    'loggedin' => true,
+    'userid' => $userData['id'],
+    'username' => $userData['nom_usuari'],
+    'equip' => $userData['equip_favorit'],
+    'lliga' => getLeagueName($userData['equip_favorit'], $conn),
+    'success' => 'Has iniciat sessió correctament'
+]);
+
 $router = new Router();
 
 // Ejecutar middleware de autenticación

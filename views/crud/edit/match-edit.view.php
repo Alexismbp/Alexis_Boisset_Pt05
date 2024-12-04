@@ -1,8 +1,6 @@
 <?php
 require_once BASE_PATH . '/controllers/session/session.controller.php';
 require_once BASE_PATH . 'controllers/crud/edit-match.controller.php';
-
-
 ?>
 <!DOCTYPE html>
 <html lang="ca">

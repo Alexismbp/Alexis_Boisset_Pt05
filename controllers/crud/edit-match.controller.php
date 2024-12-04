@@ -66,7 +66,6 @@ function dadesEdicio($conn, $partit, $article, $id)
     $_SESSION['jugat'] = $partit['jugat'];
     $_SESSION["id"] = $id;
     $_SESSION['editant'] = true;
-    $_SESSION['lliga'] = getLeagueNameByTeam($partit['equip_local_id'], $conn);
     $_SESSION['article_title'] = $article ? $article['title'] : '';
     $_SESSION['article_content'] = $article ? $article['content'] : '';
 
