@@ -119,11 +119,21 @@ $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $basePath = rtrim(parse_url(BASE_URL, PHP_URL_PATH), '/');
 $uri = "/" . ltrim(substr($uri, strlen($basePath)), '/');
 
-
-$result = $router->dispatch($uri);
-
-if ($result instanceof Closure) {
-    $result();
-} else {
-    include BASE_PATH . $result;
+try {
+    $result = $router->dispatch($uri);
+    
+    if ($result instanceof Closure) {
+        $result();
+    } else {
+        include BASE_PATH . $result;
+    }
+} catch (Exception $e) {
+    if ($e->getMessage() === 'Route not found') {
+        http_response_code(404);
+    } else {
+        // Manejar otras excepciones
+        http_response_code(500);
+        echo 'Error Interno del Servidor';
+    }
 }
+?>

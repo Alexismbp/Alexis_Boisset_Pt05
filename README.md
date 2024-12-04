@@ -20,12 +20,19 @@
     - [SocialAuthController.php](#socialauthcontrollerphp)
     - [SessionHelper.php](#sessionhelperphp)
     - [database.model.php](#databasemodelphp)
+  - [Justificació de l'eliminació en cascada d'articles](#justificació-de-leliminació-en-cascada-darticles)
+    - [change-password.controller.php](#change-passwordcontrollerphp)
     - [form.controller.php](#formcontrollerphp)
     - [match.controller.php](#matchcontrollerphp)
     - [lligaequip.js](#lligaequipjs)
     - [styles.css](#stylescss)
     - [index.php](#indexphp)
     - [.gitignore](#gitignore)
+    - [Configuració de Seguretat](#configuració-de-seguretat)
+      - [Redirecció i Routing](#redirecció-i-routing)
+      - [Protecció del Servidor](#protecció-del-servidor)
+      - [Prevenció d'Accés](#prevenció-daccés)
+      - [HTTPS i WWW (Comentat en Desenvolupament)](#https-i-www-comentat-en-desenvolupament)
 
 ## 1. Explicació del Projecte (Deprecated)
 
@@ -44,17 +51,17 @@ ALEXIS_BOISSET_PT05/
 │   │   ├── logout.controller.php        # Gestiona el logout i tanca la sessió.
 │   │   ├── register.controller.php      # Controla el registre de nous usuaris.
 │   │   ├── preferences.controller.php   # Gestiona les preferències dels usuaris.
-│   │   ├── SocialAuthController.php     # Gestiona l'autenticació social amb OAuth i HybridAuth.
+│   │   └──SocialAuthController.php     # Gestiona l'autenticació social amb OAuth i HybridAuth.
 │   ├── match
 │   │   ├── match.controller.php         # Controla les operacions relacionades amb els partits.
-│   │   ├── prediction.controller.php    # Gestiona les prediccions dels usuaris.
-│   ├── utils
+│   │   └── prediction.controller.php    # Gestiona les prediccions dels usuaris.
+│   └── utils
 │       ├── cookie.controller.php        # Gestiona les cookies de l'aplicació.
 │       ├── SessionHelper.php            # Funcions auxiliars per a la gestió de sessions.
 │       ├── form.controller.php          # Validació i processament de formularis.
 │       ├── RecaptchaController.php      # Gestiona la verificació de reCAPTCHA.
 │       ├── validation.controller.php    # Funcions de validació de dades.
-│       ├── search.controller.php        # Gestiona les cerques dins l'aplicació.
+│       └── search.controller.php        # Gestiona les cerques dins l'aplicació.
 │
 ├── models
 │   ├── database
@@ -63,14 +70,14 @@ ALEXIS_BOISSET_PT05/
 │   ├── user
 │   │   ├── user.model.php               # Funcions de gestió d'usuaris.
 │   ├── utils
-│   │   ├── porra.model.php              # Funcions per gestionar els partits.
-│   ├── env.php
+│   │   └── porra.model.php              # Funcions per gestionar els partits.
+│   └── env.php
 │
 ├── scripts
 │   ├── cleanup-tokens.php               # Script per netejar tokens obsolets.
 │   ├── index.js                         # Script principal per gestionar la lògica del client.
 │   ├── lligaequip.js                    # Script per mostrar equips segons la lliga seleccionada.
-│   ├── prediction.js                    # Script per gestionar les prediccions en temps real.
+│   └── prediction.js                    # Script per gestionar les prediccions en temps real.
 │
 ├── views
 │   ├── admin
@@ -139,7 +146,6 @@ ALEXIS_BOISSET_PT05/
 ## 3. Funcionalitats Principals
 
 - **Autenticació d'usuaris**: Permet als usuaris registrar-se i iniciar sessió per accedir a les funcionalitats.
-- **Predicció de partits**: Els usuaris poden fer prediccions de resultats i comprovar si han encertat.
 - **Selecció dinàmica d'equips**: Durant el registre, l'usuari selecciona la seva lliga i equip favorit.
 - **Gestió de partits**: Administradors poden afegir, editar i eliminar partits des de l'aplicació.
 - **Control de sessió i preferències**: Les sessions tenen una durada limitada i es guarden preferències de l'usuari.
@@ -230,6 +236,24 @@ El fitxer `SessionHelper.php` conté funcions auxiliars per a la gestió de sess
 
 El fitxer `database.model.php` gestiona la connexió a la base de dades mitjançant PDO. Proporciona una connexió segura i reutilitzable a la base de dades MySQL, permetent l'execució de consultes SQL de manera eficient i segura. S'utilitza el patró singleton.
 
+## Justificació de l'eliminació en cascada d'articles
+
+Quan l'administrador elimina un usuari del sistema, tots els articles associats a aquest usuari s'eliminen automàticament. Aquesta decisió de disseny es basa en els següents motius:
+
+1. **Integritat de dades**: Els articles estan estretament vinculats a l'usuari que els ha creat. Mantenir articles sense un autor associat podria crear inconsistències en la base de dades.
+
+2. **Propietat del contingut**: Els articles representen opinions personals i experiències dels usuaris. Quan un usuari és eliminat, el seu contingut personal també hauria de ser eliminat per respectar la seva privacitat.
+
+3. **Simplificació de la gestió**: L'eliminació en cascada simplifica la gestió de la base de dades i evita tenir contingut "orfe" sense un autor assignat.
+
+4. **Coherència del sistema**: Mantenir articles d'usuaris eliminats podria crear confusió en el sistema i dificultar el manteniment a llarg termini.
+
+5. **Protecció de dades**: Compleix amb les bones pràctiques de protecció de dades, assegurant que tota la informació relacionada amb un usuari s'elimina quan aquest és donat de baixa del sistema.
+   
+### change-password.controller.php
+
+El fitxer `change-password.controller.php` gestiona el procés de canvi de contrasenya per als usuaris. Si l'usuari és autenticat mitjançant OAuth, permet afegir una nova contrasenya al compte. En canvi, si l'usuari és normal, verifica la contrasenya actual abans d'actualitzar-la amb una de nova. La justificació d'aquest canvi és per que es molt comú que una pàgina permeti el login tant per OAuth com per usuari i contrasenya, he volgut afegir aquesta funcionalitat per aquesta raó i tampoc és massa complicat.
+
 ### form.controller.php
 
 El fitxer `form.controller.php` s'encarrega de la validació i processament de formularis. Inclou funcions per validar camps de formulari com noms d'usuari, correus electrònics i contrasenyes. També maneja la validació de fitxers d'imatge per assegurar que compleixen amb els requisits establerts.
@@ -253,3 +277,31 @@ El fitxer `index.php` és el punt d'entrada principal de l'aplicació. Inicia la
 ### .gitignore
 
 El fitxer `.gitignore` especifica els arxius i carpetes que han de ser ignorats pel sistema de control de versions Git. Això inclou fitxers temporals, configuracions locals i altres arxius que no són necessaris per al funcionament de l'aplicació en altres entorns.
+
+### Configuració de Seguretat
+
+El projecte implementa diverses mesures de seguretat a través del fitxer `.htaccess`:
+
+#### Redirecció i Routing
+- Utilitza `RewriteEngine` per gestionar les URL netes
+- Redirigeix totes les peticions no existents a `index.php`
+- Gestiona errors 404 amb una pàgina personalitzada
+
+#### Protecció del Servidor
+- Desactiva el llistat de directoris amb `Options -Indexes`
+- Oculta la signatura del servidor amb `ServerSignature Off`
+
+#### Prevenció d'Accés
+- Bloqueja l'accés a fitxers que comencen amb punt (.)
+- Restringeix l'accés a fitxers sensibles com:
+  - Backups (.bak)
+  - Configuracions (.config, .ini)
+  - Logs (.log)
+  - Scripts (.sh)
+  - Fitxers SQL (.sql)
+  - Fitxers temporals (.swp, .swo)
+
+#### HTTPS i WWW (Comentat en Desenvolupament)
+- Inclou regles per forçar HTTPS
+- Configuració per redirigir a www
+- Aquestes regles estan comentades per facilitar el desenvolupament local
