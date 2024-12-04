@@ -11,7 +11,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// DEBUGG
+/// DEBUGG
 /* require_once BASE_PATH . '/models/user/user.model.php';
 require_once BASE_PATH . '/controllers/utils/SessionHelper.php';
 
