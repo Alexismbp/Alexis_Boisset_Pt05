@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <p>Fecha: ${new Date(partit.data).toLocaleDateString()}</p>
                     `;
                     div.addEventListener('click', () => {
-                        window.location.href = `${base_url}/view-match/${partit.id}`;
+                        window.location.href = `${base_url}view-match/${partit.id}`;
                     });
                     searchResults.appendChild(div);
                 });
