@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('searchBar');
     const searchResults = document.getElementById('searchResults');
-    const base_url = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+    // Obtenim la BASE_URL de la pàgina
+    const base_url = document.querySelector('meta[name="base-url"]').getAttribute('content');
     let timeoutId;
 
     // Función para almacenar búsqueda en localStorage
