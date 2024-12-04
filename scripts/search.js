@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(error => {
                 console.error('Error en la búsqueda:', error);
-                searchResults.innerHTML = `<p>Error al realizar la búsqueda.</p>`;
+                searchResults.innerHTML = `<p>Error al realizar la búsqueda: ${error.message}</p>`;
                 searchResults.style.display = 'block';
             });
         }, 300);
