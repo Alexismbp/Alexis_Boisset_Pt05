@@ -39,10 +39,16 @@ if (!$partit) {
     exit();
 }
 
-if($_SESSION['userid'] != $article['user_id']) {
-    $_SESSION['failure'] = "No tens permisos per editar aquest partit";
-    header("Location: " . BASE_URL);
-    exit();
+if ($article) {
+    if ($_SESSION['userid'] != $article['user_id']) {
+        $_SESSION['failure'] = "No tens permisos per editar aquest partit";
+        header("Location: " . BASE_URL);
+        exit();
+    } else {
+        $_SESSION['failure'] = "No s'ha trobat cap article associat a aquest partit";
+        header("Location: " . BASE_URL);
+        exit();
+    }
 }
 
 // Guardar datos en sesión para el formulario

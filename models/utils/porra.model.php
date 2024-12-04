@@ -24,27 +24,27 @@ function insertPartido($conn, $equipo_local_id, $equipo_visitante_id, $liga_id, 
     }
 }
 
-function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fecha, $goles_local, $goles_visitante, $jugado)
-{
+function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fecha, $goles_local, $goles_visitante, $jugado) {
     $sql = "UPDATE partits 
             SET equip_local_id = :equipo_local_id, 
                 equip_visitant_id = :equipo_visitante_id, 
                 data = :fecha, 
                 gols_local = :goles_local, 
-                gols_visitant = :goles_visitant, 
+                gols_visitant = :goles_visitante, 
                 jugat = :jugado 
             WHERE id = :id";
 
     $stmt = $conn->prepare($sql);
+    
+    // Vincular todos los parámetros
     $stmt->bindParam(':id', $id);
     $stmt->bindParam(':equipo_local_id', $equipo_local_id);
     $stmt->bindParam(':equipo_visitante_id', $equipo_visitante_id);
     $stmt->bindParam(':fecha', $fecha);
-    $stmt->bindParam(':goles_local', $goles_local, PDO::PARAM_INT);
-    $stmt->bindParam(':gols_visitant', $goles_visitante, PDO::PARAM_INT); // Cambiado a :gols_visitant
-    $stmt->bindParam(':jugado', $jugado, PDO::PARAM_INT);
-    
-    
+    $stmt->bindParam(':goles_local', $goles_local);
+    $stmt->bindParam(':goles_visitante', $goles_visitante);
+    $stmt->bindParam(':jugado', $jugado);
+
     return $stmt;
 }
 

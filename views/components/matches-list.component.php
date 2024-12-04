@@ -25,15 +25,9 @@
                 </div>
             <?php endif; ?>
 
-            <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-                <div class="match-actions">
-                    <a href="<?php echo BASE_URL; ?>edit-match/<?php echo $partit['id']; ?>" class="btn-edit">Editar</a>
-                    <form action="<?php echo BASE_URL; ?>delete-match" method="POST" class="delete-form" onsubmit="return confirmDelete(event)">
-                        <input type="hidden" name="partit_id" value="<?php echo $partit['id']; ?>">
-                        <button type="submit" class="btn-delete">Eliminar</button>
-                    </form>
-                </div>
-            <?php endif; ?>
+            <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+                include BASE_PATH . 'views/components/match-actions.component.php';
+            } ?>
             <td>
                 <a href="<?php echo BASE_URL; ?>view-match/<?php echo $partit['id']; ?>" class="btn btn-primary">
                     Veure
@@ -43,10 +37,3 @@
     <?php endforeach; ?>
 </div>
 
-<script>
-function confirmDelete(event) {
-    if (!confirm('¿Estás seguro de que quieres eliminar este partido?')) {
-        event.preventDefault();
-    }
-}
-</script>

@@ -11,6 +11,25 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// DEBUGG
+/* require_once BASE_PATH . '/models/user/user.model.php';
+require_once BASE_PATH . '/controllers/utils/SessionHelper.php';
+
+$email = 'a.boisset@sapalomera.cat';
+$userData = getUserData($email, $conn);
+SessionHelper::setSessionData([
+    'email' => $email,
+    'avatar' => $userData['avatar'] ?? 'default-avatar.webp',
+    'LAST_ACTIVITY' => time(),
+    'loggedin' => true,
+    'userid' => $userData['id'],
+    'username' => $userData['nom_usuari'],
+    'equip' => $userData['equip_favorit'],
+    'lliga' => getLeagueName($userData['equip_favorit'], $conn)
+]);
+$_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/edit-match/31";
+$_SERVER['REQUEST_METHOD'] = "GET"; */
+
 $router = new Router();
 
 // Ejecutar middleware de autenticación
@@ -43,9 +62,11 @@ $router->get('/create-match', 'views/crud/create/match-create.view.php');
 $router->get('/edit-match/{id}', function () use ($router) {
     include BASE_PATH . 'views/crud/edit/match-edit.view.php';
 });
+
 $router->get('/view-match/{id}', function () use ($router) {
     include BASE_PATH . 'controllers/crud/view-match.controller.php';
 });
+
 $router->post('/save-match', 'controllers/crud/save-match.controller.php');
 
 // Rutas OAuth
@@ -71,7 +92,7 @@ $router->post('/delete-user', 'controllers/admin/manage-users.controller.php');
 $router->post('/login', 'controllers/auth/login.controller.php');
 $router->post('/register', 'controllers/auth/register.controller.php');
 $router->post('/create', 'controllers/crud/create.controller.php');
-$router->post('/delete-match', 'controllers/crud/delete.controller.php'); // Asegurar esta ruta
+$router->post('/delete-match', 'controllers/crud/delete.controller.php'); 
 $router->post('/forgotpassword', 'controllers/auth/email-password.controller.php');
 $router->post('/changepassword', 'controllers/auth/change-password.controller.php');
 $router->post('/resetpassword', 'controllers/auth/reset-password.controller.php');
@@ -81,8 +102,8 @@ $router->post('/merge-accounts', 'controllers/auth/merge-accounts.controller.php
 $router->get('/logout', 'controllers/auth/logout.controller.php');
 
 // Rutas para artículos
-$router->get('/edit-article/{id}', 'views/crud/edit/edit-article.view.php');
-$router->post('/save-article', 'controllers/crud/save-article.controller.php');
+/* $router->get('/edit-article/{id}', 'views/crud/edit/edit-article.view.php'); */
+/* $router->post('/save-article', 'controllers/crud/save-article.controller.php'); */
 
 // Añadir nuevas rutas
 $router->get('/preferences', 'views/auth/preferences/preferences.view.php');

@@ -6,9 +6,7 @@
                 <img src="<?php echo !empty($_SESSION['avatar']) ? BASE_URL . 'uploads/avatars/' . $_SESSION['avatar'] : BASE_URL . 'assets/img/default-avatar.webp'; ?>"
                     class="header-avatar" alt="Avatar" onclick="toggleAdminMenu()">
                 <div class="admin-dropdown" id="adminMenu">
-                    <a href="<?php echo BASE_URL; ?>/create-match">Crear nou partit</a>
-                    <a href="<?php echo BASE_URL; ?>equipo/gestionar">Gestionar equips</a>
-                    <a href="<?php echo BASE_URL; ?>liga/gestionar">Gestionar lligues</a>
+                    <a href="<?php echo BASE_URL; ?>create-match">Crear nou partit</a>
                     <a href="<?php echo BASE_URL; ?>changepassword">Canviar contrasenya</a>
                     <a href="<?php echo BASE_URL; ?>profile">Editar Perfil</a>
                     <?php if ($_SESSION['userid'] == 1): ?>

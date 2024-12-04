@@ -18,9 +18,7 @@ class SaveMatchController {
     public function handleRequest() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             return $this->handlePost();
-        } elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
-            return $this->handleGet();
-        }
+        } 
         return $this->redirectWithError("Método no válido");
     }
 
@@ -130,51 +128,6 @@ class SaveMatchController {
         }
     }
 
-    private function handleGet() {
-        $id = $_GET['id'];
-        
-        if (!is_numeric($id)) {
-            return $this->redirectWithError('L\'ID ha de ser numèric');
-        }
-
-        try {
-            // Consulta el partido para editar
-            $stmt = consultarPartido($this->conn, $id);
-            $partit = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if (!$partit) {
-                return $this->redirectWithError("Aquest partit no existeix");
-            }
-
-            // Obtener datos del artículo asociado
-            $article = getArticleByMatchId($this->conn, $id);
-
-            // Preparar datos para la vista
-            $equip_local_name = getTeamName($this->conn, $partit['equip_local_id']);
-            $equip_visitant_name = getTeamName($this->conn, $partit['equip_visitant_id']);
-
-            SessionHelper::setSessionData([
-                'equip_local' => $equip_local_name,
-                'equip_visitant' => $equip_visitant_name,
-                'data' => $partit['data'],
-                'gols_local' => $partit['gols_local'],
-                'gols_visitant' => $partit['gols_visitant'],
-                'jugat' => $partit['jugat'],
-                'id' => $id,
-                'editant' => true,
-                'lliga' => getLeagueNameByTeam($equip_local_name, $this->conn),
-                'article_title' => $article['title'] ?? '',
-                'article_content' => $article['content'] ?? ''
-            ]);
-
-            header("Location: " . BASE_URL . "views/crud/edit/match-edit.view.php");
-            exit();
-
-        } catch (PDOException $e) {
-            return $this->redirectWithError("Error: " . $e->getMessage());
-        }
-    }
-
     private function validateAndSanitizeInput() {
         $data = [
             'id' => filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT),
@@ -240,13 +193,17 @@ class SaveMatchController {
             'gols_visitant' => $data['gols_visitant'],
             'errors' => $this->errors
         ]);
-        header("Location: " . BASE_URL . "views/crud/edit/match-edit.view.php");
+        
+        // Redirigir a la página anterior
+        $referer = $_SERVER['HTTP_REFERER'] ?? BASE_URL;
+        header("Location: " . $referer);
         exit();
     }
 
     private function redirectWithError($message) {
         $_SESSION['failure'] = $message;
-        header("Location: " . BASE_URL . "views/crud/edit/match-edit.view.php");
+        $referer = $_SERVER['HTTP_REFERER'] ?? BASE_URL;
+        header("Location: " . $referer);
         exit();
     }
 }
