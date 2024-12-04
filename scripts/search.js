@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            fetch(`${base_url}/search?term=${encodeURIComponent(searchTerm)}`, {
+            fetch(`${base_url}search?term=${encodeURIComponent(searchTerm)}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
