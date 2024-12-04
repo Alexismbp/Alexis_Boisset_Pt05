@@ -12,7 +12,8 @@ class SearchController {
         }
 
         try {
-            searchBarQuery($this->conn, $term);
+            $results = searchBarQuery($this->conn, $term);
+            echo json_encode($results);
         } catch (PDOException $e) {
             error_log("Error en SearchController: " . $e->getMessage());
             http_response_code(500);
