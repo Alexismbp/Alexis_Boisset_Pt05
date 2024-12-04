@@ -1,9 +1,11 @@
-
 <?php
-require_once __DIR__ . "/../../models/env.php";
 require_once BASE_PATH . "models/database/database.model.php";
 require_once BASE_PATH . "models/utils/porra.model.php";
 require_once BASE_PATH . '/controllers/utils/SessionHelper.php';
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Get match ID from router parameter
 if (isset($router)) {
@@ -32,15 +34,11 @@ if (isset($router)) {
         $article = getArticleByMatchId($conn, $id);
 
         // Store match and article data in session
-        SessionHelper::setSessionData([
-            'equip_local' => getTeamName($conn, $partit['equip_local_id']),
-            'equip_visitant' => getTeamName($conn, $partit['equip_visitant_id']),
-            'data' => $partit['data'],
-            'gols_local' => $partit['gols_local'],
-            'gols_visitant' => $partit['gols_visitant'],
-            'article_title' => $article ? $article['title'] : '',
-            'article_content' => $article ? $article['content'] : ''
-        ]);
+        
+         $partit['equip_local'] = getTeamName($conn, $partit['equip_local_id']);
+         $partit['equip_visitant'] = getTeamName($conn, $partit['equip_visitant_id']);
+      
+        
 
         // Include the view
         include BASE_PATH . 'views/crud/view/match-view.view.php';

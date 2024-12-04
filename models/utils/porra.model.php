@@ -31,7 +31,7 @@ function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fech
                 equip_visitant_id = :equipo_visitante_id, 
                 data = :fecha, 
                 gols_local = :goles_local, 
-                gols_visitant = :gols_visitant, 
+                gols_visitant = :goles_visitant, 
                 jugat = :jugado 
             WHERE id = :id";
 
@@ -238,5 +238,13 @@ function getArticleByMatchId($conn, $match_id)
     $stmt->bindParam(':match_id', $match_id, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function getUsernameById($conn, $user_id) {
+    $sql = "SELECT nom_usuari FROM usuaris WHERE id = :user_id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchColumn();
 }
 ?>

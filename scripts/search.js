@@ -4,6 +4,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const base_url = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
     let timeoutId;
 
+    // Función para almacenar búsqueda en localStorage
+    function almacenarBusqueda(busqueda) {
+        let historial = JSON.parse(localStorage.getItem('historialBusquedas')) || [];
+        if (!historial.includes(busqueda)) {
+            historial.push(busqueda);
+            localStorage.setItem('historialBusquedas', JSON.stringify(historial));
+        }
+    }
+
+    // Función para mostrar historial de búsquedas
+    function mostrarHistorial() {
+        let historial = JSON.parse(localStorage.getItem('historialBusquedas')) || [];
+        searchResults.innerHTML = '';
+        historial.forEach(busqueda => {
+            const div = document.createElement('div');
+            div.className = 'search-history-item';
+            div.textContent = busqueda;
+            div.addEventListener('click', () => {
+                searchInput.value = busqueda;
+                searchInput.dispatchEvent(new Event('input'));
+                searchResults.style.display = 'none';
+            });
+            searchResults.appendChild(div);
+        });
+        if (historial.length > 0) {
+            searchResults.style.display = 'block';
+        }
+    }
+
     searchInput.addEventListener('input', (e) => {
         clearTimeout(timeoutId);
         
@@ -31,6 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .then(data => {
                 console.log('Datos recibidos:', data); // Debug
+                if (searchTerm.trim() !== '') {
+                    almacenarBusqueda(searchTerm.trim());
+                }
                 searchResults.innerHTML = '';
                 
                 if (data.error) {
@@ -65,6 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 searchResults.style.display = 'block';
             });
         }, 300);
+    });
+
+    // Añadir evento 'focus' para mostrar historial
+    searchInput.addEventListener('focus', () => {
+        mostrarHistorial();
     });
 
     // Ocultar resultados al hacer clic fuera

@@ -31,6 +31,9 @@ class Router
         }
 
         $method = $_SERVER['REQUEST_METHOD'];
+        
+        // Limpiar la URI de parámetros de consulta
+        $uri = parse_url($uri, PHP_URL_PATH);
 
         // Buscar coincidencia exacta primero
         if (isset($this->routes[$method][$uri])) {
@@ -45,6 +48,10 @@ class Router
                     // Extraer el valor del parámetro
                     $paramName = $this->extractParamName($route);
                     $this->params[$paramName] = $matches[1];
+                    
+                    // Almacenar el ID en $_GET para compatibilidad
+                    $_GET['id'] = $matches[1];
+                    
                     return $handler;
                 }
             }

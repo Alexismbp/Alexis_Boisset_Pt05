@@ -15,8 +15,6 @@
                         <a href="<?php echo BASE_URL; ?>manage-users">Gestionar Usuarios</a>
                     <?php endif; ?>
                     <a href="<?php echo BASE_URL; ?>logout">Tancar sessió</a>
-                    <!-- Añadir enlace a la página del partit -->
-                    <a href="<?php echo BASE_URL; ?>match/<?php echo htmlspecialchars($partit_id, ENT_QUOTES, 'UTF-8'); ?>">Ver Partit</a>
                 </div>
             </div>
         </div>
@@ -29,6 +27,8 @@
     <div class="search-container">
         <input type="text" id="searchBar" placeholder="Cercar partits...">
         <div id="searchResults"></div>
+        <!-- Contenedor para historial de búsquedas -->
+        <div id="searchHistory" class="search-history"></div>
     </div>
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>public/css/search.css">
     <script src="<?php echo BASE_URL; ?>scripts/search.js" defer></script>

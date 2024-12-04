@@ -12,7 +12,10 @@ body {
     color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     max-width: 800px;
-    margin: 20px auto;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
     text-align: center;
 }
 
@@ -27,7 +30,7 @@ body {
     display: inline-block;
     padding: 10px 20px;
     background-color: #28a745;
-    color: white;
+    color: #d8e2db;
     text-decoration: none;
     border-radius: 5px;
     transition: background-color 0.3s;
@@ -39,14 +42,15 @@ body {
 
 .match-details h1 {
     font-size: 2em;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    color: #d8e2db;
     border-bottom: 2px solid #ffd700; /* Amarillo */
     padding-bottom: 10px;
 }
 
 .match-details p {
-    font-size: 1.2em;
-    margin: 10px 0;
+    font-size: 1.1em;
+    margin: 8px 0;
 }
 
 .match-details .article h2 {
@@ -59,10 +63,22 @@ body {
 }
 
 .article {
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 15px;
-    border-radius: 5px;
     margin-top: 20px;
+    padding: 15px;
+    background-color: #d8e2db;
+    border-left: 5px solid #28a745;
+    border-radius: 4px;
+}
+
+.article h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333333;
+}
+
+.article p {
+    font-size: 1em;
+    color: #555555;
 }
 
 .btn-back-main {
@@ -78,4 +94,19 @@ body {
 
 .btn-back-main:hover {
     background-color: #218838; /* Verde más oscuro al pasar el mouse */
+}
+
+.btn-back {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-back:hover {
+    background-color: #5a6268;
 }

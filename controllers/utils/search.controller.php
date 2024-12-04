@@ -23,8 +23,11 @@ class SearchController {
             
             $stmt = $this->conn->prepare($sql);
             $stmt->execute(['term' => '%' . $term . '%']);
-            
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Debugging
+            /* $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            error_log("Resultat query BDD: " . print_r($result, true)); */
+            return $stmt -> fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             // Registro de error para depuración
             error_log("Error en SearchController: " . $e->getMessage());
