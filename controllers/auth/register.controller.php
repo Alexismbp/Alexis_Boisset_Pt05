@@ -9,14 +9,6 @@ require_once BASE_PATH . 'controllers/utils/SessionHelper.php';
 
 try {
 
-    // DEBUG
-   /*  $_POST['username'] = 'admin';
-    $_POST['password'] = 'Admin123!';
-    $_POST['password_confirm'] = 'Admin123!';
-    $_POST['email'] = 'admin@alexisboisset.cat';
-    $_POST['equip'] = 'Barcelona';
-    $_SERVER['REQUEST_METHOD'] = 'POST'; */
-
     $missatgesError = [];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {

@@ -399,6 +399,6 @@ FodyWeavers.xsd
 
 altres/
 DUDASXAVI*
-env*
+models/env.php
 .htaccess
 .DS_Store

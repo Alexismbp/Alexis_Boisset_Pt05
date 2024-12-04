@@ -11,14 +11,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-/// DEBUGG
-require_once BASE_PATH . '/models/user/user.model.php';
-require_once BASE_PATH . '/controllers/utils/SessionHelper.php';
-
-/* $email = 'a.boisset@sapalomera.cat';
-$_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/forgotpassword";
-$_SERVER['REQUEST_METHOD'] = "POST"; */
-
 $router = new Router();
 
 // Ejecutar middleware de autenticación

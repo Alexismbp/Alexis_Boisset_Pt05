@@ -6,7 +6,7 @@ function insertPartido($conn, $equipo_local_id, $equipo_visitante_id, $liga_id, 
     $jugado = (!is_null($goles_local) && !is_null($goles_visitante)) ? 1 : 0;
     $sql = "INSERT INTO partits (equip_local_id, equip_visitant_id, liga_id, data, gols_local, gols_visitant, jugat) 
             VALUES (:equipo_local_id, :equipo_visitante_id, :liga_id, :fecha, :goles_local, :goles_visitante, :jugado)";
-    
+
     try {
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':equipo_local_id', $equipo_local_id);
@@ -16,7 +16,7 @@ function insertPartido($conn, $equipo_local_id, $equipo_visitante_id, $liga_id, 
         $stmt->bindParam(':goles_local', $goles_local);
         $stmt->bindParam(':goles_visitante', $goles_visitante);
         $stmt->bindParam(':jugado', $jugado);
-        
+
         $stmt->execute();
         return $conn->lastInsertId(); // Retorna el ID del partido insertado
     } catch (PDOException $e) {
@@ -24,7 +24,8 @@ function insertPartido($conn, $equipo_local_id, $equipo_visitante_id, $liga_id, 
     }
 }
 
-function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fecha, $goles_local, $goles_visitante, $jugado) {
+function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fecha, $goles_local, $goles_visitante, $jugado)
+{
     $sql = "UPDATE partits 
             SET equip_local_id = :equipo_local_id, 
                 equip_visitant_id = :equipo_visitante_id, 
@@ -35,7 +36,7 @@ function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fech
             WHERE id = :id";
 
     $stmt = $conn->prepare($sql);
-    
+
     // Vincular todos los parámetros
     $stmt->bindParam(':id', $id);
     $stmt->bindParam(':equipo_local_id', $equipo_local_id);
@@ -132,14 +133,15 @@ function getLeagueNameByTeam($equipLocal, $conn)
     JOIN lligues ON equips.lliga_id = lligues.id 
     WHERE equips.nom = :equipLocal");
     $query->bindParam(':equipLocal', $equipLocal);
-    
+
     $query->execute();
-    
+
     $nomLliga = $query->fetch(PDO::FETCH_COLUMN);
     return $nomLliga; // Return del nom de la lliga exclusivament
 }
 
-function getPartits($conn, $lliga, $limit, $offset, $equipFavorit = null, $orderColumn = 'p.data', $orderDirection = 'DESC') {
+function getPartits($conn, $lliga, $limit, $offset, $equipFavorit = null, $orderColumn = 'p.data', $orderDirection = 'DESC')
+{
     $baseSelect = "SELECT p.id, p.data, e_local.nom AS equip_local, e_visitant.nom AS equip_visitant, 
                    p.gols_local, p.gols_visitant, p.jugat, l.nom AS lliga,
                    a.id as article_id, a.title as article_title, 
@@ -179,7 +181,8 @@ function getPartits($conn, $lliga, $limit, $offset, $equipFavorit = null, $order
     return $partits;
 }
 
-function getTotalPartits($conn, $lliga, $equipFavorit = null) {
+function getTotalPartits($conn, $lliga, $equipFavorit = null)
+{
     if ($equipFavorit) {
         $sql = "SELECT COUNT(*) 
                 FROM partits p
@@ -240,11 +243,28 @@ function getArticleByMatchId($conn, $match_id)
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-function getUsernameById($conn, $user_id) {
+function getUsernameById($conn, $user_id)
+{
     $sql = "SELECT nom_usuari FROM usuaris WHERE id = :user_id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchColumn();
 }
-?>
+
+function searchBarQuery($conn, $term)
+{
+    $sql = "SELECT p.id, e_local.nom AS equip_local, e_visitant.nom AS equip_visitant, p.data
+                    FROM partits p
+                    JOIN equips e_local ON p.equip_local_id = e_local.id
+                    JOIN equips e_visitant ON p.equip_visitant_id = e_visitant.id
+                    WHERE e_local.nom LIKE :term
+                    OR e_visitant.nom LIKE :term
+                    ORDER BY p.data DESC
+                    LIMIT 5";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->execute(['term' => '%' . $term . '%']);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}

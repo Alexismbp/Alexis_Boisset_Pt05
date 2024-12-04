@@ -89,7 +89,7 @@ if (isset($_GET['netejar']) && $_GET['netejar'] == true) {
             </a>
         </div>
 
-        <a href="<?php echo FormController::getClearFormUrl(); ?>" class="btn-back">Netejar</a>
+        <a href="<?php echo BASE_URL; ?>register?netejar=true" class="btn-back">Netejar</a>
         <br>
         <a href="<?php echo BASE_URL; ?>" class="btn-back">Tornar a la pàgina principal</a>
     </div>
