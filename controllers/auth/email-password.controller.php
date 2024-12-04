@@ -1,6 +1,6 @@
 <?php
-require BASE_PATH . "models/user/user.model.php";
-require BASE_PATH . "vendor/autoload.php";
+require_once BASE_PATH . "models/user/user.model.php";
+require_once BASE_PATH . "vendor/autoload.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;

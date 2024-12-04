@@ -12,24 +12,12 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 /// DEBUGG
-/* require_once BASE_PATH . '/models/user/user.model.php';
+require_once BASE_PATH . '/models/user/user.model.php';
 require_once BASE_PATH . '/controllers/utils/SessionHelper.php';
 
-$email = 'a.boisset@sapalomera.cat';
-$userData = getUserData($email, $conn);
-SessionHelper::setSessionData([
-    'email' => $email,
-    'oauth_user' => $userData['is_oauth_user'],
-    'avatar' => $userData['avatar'] ?? 'default-avatar.webp',
-    'LAST_ACTIVITY' => time(),
-    'loggedin' => true,
-    'userid' => $userData['id'],
-    'username' => $userData['nom_usuari'],
-    'equip' => $userData['equip_favorit'],
-    'lliga' => getLeagueName($userData['equip_favorit'], $conn)
-]);
-$_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/view-match/72";
-$_SERVER['REQUEST_METHOD'] = "GET"; */
+/* $email = 'a.boisset@sapalomera.cat';
+$_SERVER['REQUEST_URI'] = "http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/forgotpassword";
+$_SERVER['REQUEST_METHOD'] = "POST"; */
 
 $router = new Router();
 
