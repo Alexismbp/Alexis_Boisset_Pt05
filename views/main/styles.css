@@ -11,6 +11,7 @@ body {
     color: #333;
     min-width: 100%;
     max-width: none;
+    overflow-x: hidden; /* Prevenir scroll horizontal */
 }
 
 header {
@@ -24,10 +25,10 @@ header {
     margin: 0;
     margin-bottom: 30px;
     width: 100%;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
 }
 
 footer {
@@ -36,11 +37,8 @@ footer {
     text-align: center;
     color: #ffd700; /* Amarillo */
     margin: 40px 0 0 0;
-    border-radius: 0;
     position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100vw;
+    width: 100%;
 }
 
 h1 {
@@ -331,6 +329,7 @@ label {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
+    margin-top: 80px; /* Añadir espacio para el header fijo */
 }
 
 /* Estilos para el avatar y menú de administración */
@@ -423,6 +422,7 @@ label {
 
     .main-content-wrapper {
         padding: 0 10px;
+        margin-top: 60px; /* Ajustar espacio para header en móviles */
     }
 
     .admin-dropdown {
