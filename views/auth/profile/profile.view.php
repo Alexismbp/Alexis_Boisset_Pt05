@@ -1,5 +1,8 @@
 <?php
+// Alexis Boisset
 require_once BASE_PATH . 'controllers/utils/SessionHelper.php';
+
+// Comprovar si l'usuari està autenticat
 SessionHelper::checkLogin();
 ?>
 <!DOCTYPE html>
@@ -27,6 +30,7 @@ SessionHelper::checkLogin();
                         <img src="" class="avatar-preview" id="avatar-preview" alt="Preview" style="display: none;">
                     </div>
                 </div>
+                <!-- Acceptar només arxius d'imatge i mostrar previsualització en petit -->
                 <input type="file" id="avatar" name="avatar" accept="image/*" onchange="previewImage(this);">
             </div>
 

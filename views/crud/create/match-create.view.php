@@ -1,4 +1,6 @@
 <?php
+// Alexis Boisset
+// Vista per crear un nou partit. Només es pot crear si l'usuari està autenticat.
 require_once __DIR__ . "/../../../models/env.php";
 require_once BASE_PATH . 'models/database/database.model.php';
 require_once BASE_PATH . 'models/utils/porra.model.php';
@@ -9,11 +11,13 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
+// Si l'usuari no està autenticat, se va pa casa.
 if (!isset($_SESSION['loggedin'])) {
     header("Location: " . BASE_URL);
     exit();
 }
 
+// Netejar camps del formulari
 if (isset($_GET['netejar'])) {
     FormController::clearFormFields(['equip_local', 'equip_visitant', 'data', 'gols_local', 'gols_visitant']);
 }
@@ -32,6 +36,7 @@ if (isset($_GET['netejar'])) {
     <div class="container">
         <h1>Crear Nou Partit</h1>
         <form action="<?php echo BASE_URL; ?>save-match" method="POST">
+            <!-- Feedback -->
             <?php require_once BASE_PATH . '/views/layouts/feedback.view.php'; ?>
             
             <div class="form-group">

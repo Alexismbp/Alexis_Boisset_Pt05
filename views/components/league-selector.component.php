@@ -1,3 +1,4 @@
+<!-- Alexis Boisset -->
 <?php if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true): ?>
     <div class="league-selector">
         <form action="<?php echo BASE_URL; ?>/" method="GET">

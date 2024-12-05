@@ -3,6 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Agafar el token de la URL per després enviar-lo amb el formulari amb hidden input
 $token = $_GET['token'] ?? '';
 ?>
 

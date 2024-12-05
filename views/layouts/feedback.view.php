@@ -2,6 +2,7 @@
 // Alexis Boisset
 echo '<div class="form-group" style="grid-column: 1 / -1;">';
 
+// Mostra missatges d'error o èxit i després l'elimina.
 if (isset($_SESSION['failure'])) {
     echo '<div class="message error">' . $_SESSION['failure'] . '</div>';
     unset($_SESSION['failure']);

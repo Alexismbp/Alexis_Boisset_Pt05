@@ -1,9 +1,11 @@
+<!-- Alexis Boisset -->
 <div class="matches-per-page">
     <form action="<?php echo BASE_URL; ?>/" method="GET" class="form-partits-per-page">
         <?php if (isset($_GET['lliga'])): ?>
             <input type="hidden" name="lliga" value="<?php echo htmlspecialchars($_GET['lliga']); ?>">
         <?php endif; ?>
         
+        <!-- Partits per pàgina currat -->
         <label for="partitsPerPage">Partits per pàgina:</label>
         <select name="partitsPerPage" id="partitsPerPage" onchange="this.form.submit()">
             <?php foreach ($partidosPerPageOptions as $option): ?>
@@ -13,6 +15,7 @@
             <?php endforeach; ?>
         </select>
 
+        <!-- Order by chapucero -->
         <label for="orderBy">Ordenar per:</label>
         <select name="orderBy" id="orderBy" onchange="this.form.submit()">
             <option value="date_desc" <?php echo ($orderBy == 'date_desc') ? 'selected' : ''; ?>>Data (més recent)</option>

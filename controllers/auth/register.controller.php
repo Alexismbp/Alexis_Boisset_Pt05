@@ -33,12 +33,12 @@ try {
         $passwordConfirm = Validation::sanitizeInput($_POST['password_confirm']);
 
         // Validar campos
-        /* $errors = array_filter([
+        $errors = array_filter([
             Validation::validateUsername($nomUsuari),
             Validation::validatePassword($contrasenya, $passwordConfirm),
             Validation::validateEmail($email),
             Validation::validateTeam($equipFavorit)
-        ]); */
+        ]);
 
         if (!empty($errors)) {
             $missatgesError = array_merge($missatgesError, $errors);

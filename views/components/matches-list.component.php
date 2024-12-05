@@ -1,3 +1,5 @@
+<!-- Alexis Boisset -->
+<!-- Foreach per mostrar tots els partits que pot veure l'usuari -->
 <div class="matches-list">
     <?php foreach ($partits as $partit): ?>
         <div class="match-card">

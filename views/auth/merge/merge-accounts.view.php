@@ -1,4 +1,6 @@
-
+<!-- Alexis Boisset -->
+<!-- Vista que es mostra quan es vol fusionar un compte amb un altre ja existent -->
+<!-- Això permetrà a l'usuari accedir amb els dos mètodes d'autenticació: OAuth i contrasenya -->
 <!DOCTYPE html>
 <html lang="ca">
 <head>

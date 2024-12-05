@@ -1,8 +1,12 @@
-<!-- Alexis Boisset -->
 <?php
+// Alexis Boisset
+// Vista per eliminar un partit. Només es pot eliminar si l'usuari està autenticat.
 require "../../private/controllers/session.controller.php"; // Detecció de temps d'inactivitat
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
+// Si l'usuari no està autenticat, se va pa casa.
 if (!isset($_SESSION['loggedin'])) {
     header("Location: ./login.view.php");
 }
@@ -24,15 +28,9 @@ if (!isset($_SESSION['loggedin'])) {
         <h1>Eliminar Partit</h1>
 
         <!-- Missatges de feedback -->
-        <?php
-        if (isset($_SESSION['success'])) {
-            echo '<div class="alert alert-success">' . $_SESSION['success'] . '</div>'; // Missatge d'èxit.
-            unset($_SESSION['success']);
-        } elseif (isset($_SESSION['error'])) {
-            echo '<div class="alert alert-danger">' . $_SESSION['error'] . '</div>'; // Missatge d'error.
-            unset($_SESSION['error']);
-        }
-        ?>
+        
+        <?php include BASE_PATH . "views/layouts/feedback.view.php";?>
+        
 
         <!-- Formulari -->
         <form id="deleteForm" action="<?php echo BASE_URL; ?>delete-match" method="POST">

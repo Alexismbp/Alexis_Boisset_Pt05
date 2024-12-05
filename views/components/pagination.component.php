@@ -1,3 +1,4 @@
+<!-- Alexis Boisset -->
 <?php
 if ($totalPages > 1): ?>
     <div class="pagination">

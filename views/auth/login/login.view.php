@@ -23,6 +23,7 @@ require_once BASE_PATH . '/controllers/utils/ReCaptchaController.php';
 
             <div class="form-group">
                 <label for="email">Correu electrònic:</label>
+                <!-- Si te la cookie de recordar email, posar-lo com a valor per defecte -->
                 <input type="email" id="email" name="email" class="input-field" value="<?php echo isset($_SESSION['remembered_email']) ? $_SESSION['remembered_email'] : SessionHelper::getFormValue('email'); ?>" required> 
             </div>
 
@@ -38,6 +39,7 @@ require_once BASE_PATH . '/controllers/utils/ReCaptchaController.php';
             </div>
 
             <?php if (SessionHelper::needsCaptcha()): ?>
+                <!-- Si l'usuari ha intentat logar-se 3 vegades sense èxit, mostrar el captcha -->
                 <div class="form-group captcha-container">
                     <?php echo ReCaptchaController::renderCaptcha(); ?>
                 </div>

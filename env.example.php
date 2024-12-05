@@ -1,5 +1,5 @@
 <?php
-
+// Alexis Boisset
 // Constantes de configuración de base de datos
 define('DB_HOST', '');
 define('DB_NAME', '');

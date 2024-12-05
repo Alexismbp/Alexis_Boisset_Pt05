@@ -15,10 +15,10 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $router = new Router();
 
-// Ejecutar middleware de autenticación
+// Ejecutar middleware para cookie remember me
 AuthMiddleware::handleRememberToken();
 
-// Añadir la ruta para búsquedas
+// Ruta para búsquedas
 $router->get('/search', function () {
     require_once BASE_PATH . 'controllers/utils/search.controller.php'; 
     $conn = Database::getInstance();

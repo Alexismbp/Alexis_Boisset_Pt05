@@ -1,4 +1,6 @@
 <?php
+// Alexis Boisset
+// Vista per editar un partit. Només es pot editar si l'usuari està autenticat.
 require_once BASE_PATH . '/controllers/session/session.controller.php';
 require_once BASE_PATH . 'controllers/crud/edit-match.controller.php';
 ?>

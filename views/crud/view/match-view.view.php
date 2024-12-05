@@ -1,4 +1,8 @@
 <?php
+// Alexis Boisset
+// Vista per veure els detalls d'un partit per cerca a la barra 
+// de busqueda o per clic a enllaç "veure" que hi ha a cada partit.
+
 require_once __DIR__ . "/../../../models/env.php";
 require_once BASE_PATH . 'controllers/utils/SessionHelper.php';
 ?>

@@ -1,5 +1,6 @@
-
 <?php
+// Alexis Boisset
+
 require_once __DIR__ . '/../../models/env.php';
 require_once BASE_PATH . 'models/database/database.model.php';
 require_once BASE_PATH . 'models/user/user.model.php';
@@ -9,6 +10,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
+// Si no està autenticat, pa casa. I si no es l'admin, també.
 if (!isset($_SESSION['loggedin']) || $_SESSION['userid'] != 1) {
     header("Location: " . BASE_URL);
     exit();
@@ -43,7 +45,7 @@ $users = getAllUsers($conn);
                         <td><?php echo htmlspecialchars($user['nom_usuari'], ENT_QUOTES, 'UTF-8'); ?></td>
                         <td><?php echo htmlspecialchars($user['correu_electronic'], ENT_QUOTES, 'UTF-8'); ?></td>
                         <td>
-                            <form action="<?php echo BASE_URL; ?>delete-user" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este usuario?');">
+                            <form action="<?php echo BASE_URL; ?>delete-user" method="POST" onsubmit="return confirm('Segur que vols eliminar aquest usuari?');">
                                 <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['id'], ENT_QUOTES, 'UTF-8'); ?>">
                                 <button type="submit" class="btn-delete">Eliminar</button>
                             </form>

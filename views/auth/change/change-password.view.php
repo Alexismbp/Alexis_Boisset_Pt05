@@ -1,8 +1,10 @@
 <?php
+// Alexis Boisset
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
+// Si no està autenticat, pa casa.
 if (!isset($_SESSION['loggedin'])) {
     header('Location: login');
     exit;
@@ -19,6 +21,7 @@ if (!isset($_SESSION['loggedin'])) {
 <body>
     <div class="container">
         <h2>
+            <!-- Si l'usuari té compte OAuth, mostrar "Afegir Contrasenya al Compte", si no, "Canviar Contrasenya" -->
             <?php if (isset($_SESSION['oauth_user']) && $_SESSION['oauth_user'] == 0): ?>
                 Afegir Contrasenya al Compte
             <?php else: ?>

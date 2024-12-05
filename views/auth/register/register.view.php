@@ -71,7 +71,8 @@ if (isset($_GET['netejar']) && $_GET['netejar'] == true) {
                 <input type="password" id="password_confirm" name="password_confirm" class="input-field" required>
             </div>
 
-            <?php if (SessionHelper::needsCaptcha()): ?>
+           <?php if (SessionHelper::needsCaptcha()): ?>
+                <!-- Si l'usuari ha intentat logar-se 3 vegades sense èxit, mostrar el captcha -->
                 <div class="form-group captcha-container">
                     <?php echo ReCaptchaController::renderCaptcha(); ?>
                 </div>

@@ -1,4 +1,7 @@
 <?php
+// Alexis Boisset
+// Vista per a seleccionar les preferències de l'usuari si s'ha autenticat per primera vegada (OAuth).
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
