@@ -1,4 +1,5 @@
 <?php
+require_once BASE_PATH . 'models/utils/porra.model.php';
 class SearchController {
     private $conn;
 
@@ -13,7 +14,7 @@ class SearchController {
 
         try {
             $results = searchBarQuery($this->conn, $term);
-            echo json_encode($results);
+            return $results;
         } catch (PDOException $e) {
             error_log("Error en SearchController: " . $e->getMessage());
             http_response_code(500);
