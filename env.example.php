@@ -26,4 +26,10 @@ define('GITHUB_CLIENT_SECRET', '');
 define('GITHUB_REDIRECT_URI', BASE_URL . 'oauth/github/callback');
 
 // PHPMailer
+define('MAIL_HOST', '');
+define('MAIL_PORT', '');
+define('MAIL_USERNAME', '');
+define('MAIL_PASSWORD', '');
+define('MAIL_FROM', '');
+define('MAIL_FROM_NAME', '');
 ?>

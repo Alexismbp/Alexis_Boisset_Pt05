@@ -49,12 +49,12 @@ function sendRecoveryEmail($email, $token)
     try {
         // Configuración del servidor
         $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com'; 
+        $mail->Host = MAIL_HOST; 
         $mail->SMTPAuth = true;
-        $mail->Username = 'a.boisset@sapalomera.cat';
-        $mail->Password = 'zpfh ujxj brmh mqdm';
+        $mail->Username = MAIL_USERNAME;
+        $mail->Password = MAIL_PASSWORD;
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = '587';
+        $mail->Port = MAIL_PORT;
         $mail->CharSet = 'UTF-8'; // Configurar la codificación
 
         $mail->SMTPOptions = array(
@@ -66,7 +66,7 @@ function sendRecoveryEmail($email, $token)
         );
 
         // Remitente y destinatario
-        $mail->setFrom('a.boisset@sapalomera.cat', 'Password Recovery');
+        $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
         $mail->addAddress($email);
 
         // Cargar plantilla HTML

@@ -29,7 +29,6 @@
         <!-- Contenedor para historial de búsquedas -->
         <div id="searchHistory" class="search-history"></div>
     </div>
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>public/css/search.css">
     <meta name="base-url" content="<?php echo BASE_URL; ?>">
     <script src="<?php echo BASE_URL; ?>scripts/search.js" defer></script>
 </header>

@@ -1,11 +1,13 @@
 <?php
+// Alexis Boisset
+
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . "/models/env.php";
 require_once __DIR__ . "/models/database/database.model.php";
 require_once __DIR__ . "/controllers/session/session.controller.php";
 require_once __DIR__ . "/core/Router.php";
 require_once __DIR__ . '/controllers/middleware/AuthMiddleware.php';
-require_once __DIR__ . '/controllers/auth/SocialAuthController.php'; // Cambiar nombre del archivo
+require_once __DIR__ . '/controllers/auth/SocialAuthController.php'; 
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -18,7 +20,7 @@ AuthMiddleware::handleRememberToken();
 
 // Añadir la ruta para búsquedas
 $router->get('/search', function () {
-    require_once BASE_PATH . 'controllers/utils/search.controller.php'; // Asegurar la ruta correcta
+    require_once BASE_PATH . 'controllers/utils/search.controller.php'; 
     $conn = Database::getInstance();
     $searchController = new SearchController($conn);
     $term = $_GET['term'] ?? '';
@@ -37,6 +39,8 @@ $router->get('/forgotpassword', 'views/auth/forgot/forgot-password.view.php');
 $router->get('/changepassword', 'views/auth/change/change-password.view.php');
 $router->get('/resetpassword', 'views/auth/reset/reset-password.view.php');
 $router->get('/profile', 'views/auth/profile/profile.view.php');
+$router->get('/preferences', 'views/auth/preferences/preferences.view.php');
+$router->get('/merge-accounts', 'views/auth/merge/merge-accounts.view.php');
 
 // Rutas para partidos
 $router->get('/create-match', 'views/crud/create/match-create.view.php');
@@ -63,10 +67,10 @@ $router->get('/oauth/{provider}/callback', function () use ($router) {
     $auth->handleCallback();
 });
 
-// Definir rutas GET
+// Definir rutas GET (Admin)
 $router->get('/manage-users', 'controllers/admin/manage-users.controller.php');
 
-// Definir rutas POST
+// Definir rutas POST (Admin)
 $router->post('/delete-user', 'controllers/admin/manage-users.controller.php');
 
 // Definir rutas POST
@@ -82,17 +86,6 @@ $router->post('/save-preferences', 'controllers/auth/save-preferences.controller
 $router->post('/merge-accounts', 'controllers/auth/merge-accounts.controller.php');
 $router->get('/logout', 'controllers/auth/logout.controller.php');
 
-// Rutas para artículos
-/* $router->get('/edit-article/{id}', 'views/crud/edit/edit-article.view.php'); */
-/* $router->post('/save-article', 'controllers/crud/save-article.controller.php'); */
-
-// Añadir nuevas rutas
-$router->get('/preferences', 'views/auth/preferences/preferences.view.php');
-$router->post('/save-preferences', 'controllers/auth/save-preferences.controller.php');
-
-// Añadir rutas para la fusión de cuentas
-$router->get('/merge-accounts', 'views/auth/merge/merge-accounts.view.php');
-$router->post('/merge-accounts', 'controllers/auth/merge-accounts.controller.php');
 
 // Obtener y procesar la URI
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
