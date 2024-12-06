@@ -6,16 +6,14 @@ require_once BASE_PATH . 'models/database/database.model.php';
 require_once BASE_PATH . 'models/utils/porra.model.php';
 require_once BASE_PATH . '/controllers/session/session.controller.php';
 require_once BASE_PATH . 'controllers/utils/form.controller.php';
+require_once BASE_PATH . 'controllers/utils/SessionHelper.php';
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
 // Si l'usuari no està autenticat, se va pa casa.
-if (!isset($_SESSION['loggedin'])) {
-    header("Location: " . BASE_URL);
-    exit();
-}
+SessionHelper::checkLogin();
 
 // Netejar camps del formulari
 if (isset($_GET['netejar'])) {

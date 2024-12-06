@@ -1,15 +1,14 @@
 <?php
 // Alexis Boisset
 // Vista per eliminar un partit. Només es pot eliminar si l'usuari està autenticat.
-require "../../private/controllers/session.controller.php"; // Detecció de temps d'inactivitat
+require_once 'controllers/session/session.controller.php'; // Detecció de temps d'inactivitat
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
 // Si l'usuari no està autenticat, se va pa casa.
-if (!isset($_SESSION['loggedin'])) {
-    header("Location: ./login.view.php");
-}
+SessionHelper::checkLogin();
 ?>
 
 <!DOCTYPE html>
