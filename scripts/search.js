@@ -1,3 +1,4 @@
+// Alexis Boisset
 document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('searchBar');
     const searchResults = document.getElementById('searchResults');

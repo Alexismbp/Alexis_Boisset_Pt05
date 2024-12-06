@@ -21,6 +21,9 @@ SET time_zone = "+00:00";
 -- Base de datos: `Pt05_Alexis_Boisset`
 --
 
+CREATE DATABASE IF NOT EXISTS `Pt05_Alexis_Boisset` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `Pt05_Alexis_Boisset`;
+
 -- --------------------------------------------------------
 
 --

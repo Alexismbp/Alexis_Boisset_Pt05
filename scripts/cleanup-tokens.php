@@ -1,7 +1,7 @@
 <?php
 // Alexis Boisset
 // Aquest script s'encarrega de netejar els tokens caducats de la base de dades.
-// NO FUNCIONA NO CONTA XAVI
+// NO FUNCIONA NO CONTA XAVI 😭
 
 require_once __DIR__ . '/../models/database/database.model.php';
 require_once __DIR__ . '/../models/user/user.model.php';

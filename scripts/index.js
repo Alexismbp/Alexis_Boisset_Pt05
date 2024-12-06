@@ -1,3 +1,5 @@
+// Alexis Boisset
+// Funcion para mostrar y ocultar el dropdown (desplegable) de la barra de navegacion
 function toggleDropdown() {
     document.getElementById("dropdown-content").classList.toggle("show");
 }

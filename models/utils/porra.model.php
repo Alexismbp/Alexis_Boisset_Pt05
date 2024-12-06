@@ -1,6 +1,18 @@
 <?php
 // Alexis Boisset
 
+/**
+ * Inserta un nuevo partido en la base de datos
+ * @param PDO $conn Conexión a la base de datos
+ * @param int $equipo_local_id ID del equipo local
+ * @param int $equipo_visitante_id ID del equipo visitante
+ * @param int $liga_id ID de la liga
+ * @param string $fecha Fecha del partido
+ * @param int|null $goles_local Goles del equipo local
+ * @param int|null $goles_visitante Goles del equipo visitante
+ * @return int ID del partido insertado
+ * @throws PDOException Si hay error en la inserción
+ */
 function insertPartido($conn, $equipo_local_id, $equipo_visitante_id, $liga_id, $fecha, $goles_local, $goles_visitante)
 {
     $jugado = (!is_null($goles_local) && !is_null($goles_visitante)) ? 1 : 0;
@@ -24,6 +36,18 @@ function insertPartido($conn, $equipo_local_id, $equipo_visitante_id, $liga_id, 
     }
 }
 
+/**
+ * Actualiza los datos de un partido existente
+ * @param PDO $conn Conexión a la base de datos
+ * @param int $id ID del partido a actualizar
+ * @param int $equipo_local_id ID del equipo local
+ * @param int $equipo_visitante_id ID del equipo visitante
+ * @param string $fecha Nueva fecha del partido
+ * @param int|null $goles_local Goles del equipo local
+ * @param int|null $goles_visitante Goles del equipo visitante
+ * @param bool $jugado Estado del partido
+ * @return PDOStatement Objeto statement con la consulta preparada
+ */
 function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fecha, $goles_local, $goles_visitante, $jugado)
 {
     $sql = "UPDATE partits 
@@ -49,7 +73,12 @@ function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fech
     return $stmt;
 }
 
-// Agafar dades dels partits
+/**
+ * Consulta los datos de un partido específico
+ * @param PDO $conn Conexión a la base de datos
+ * @param int $id ID del partido a consultar
+ * @return PDOStatement Objeto statement con los resultados
+ */
 function consultarPartido($conn, $id)
 {
     $sql = "SELECT * FROM partits WHERE id = :id";
@@ -60,7 +89,12 @@ function consultarPartido($conn, $id)
     return $stmt; // Retorna el statement per a futures manipulacions
 }
 
-// Delete per esborrar partits
+/**
+ * Elimina un partido de la base de datos
+ * @param PDO $conn Conexión a la base de datos
+ * @param int $partit_id ID del partido a eliminar
+ * @return bool True si se eliminó correctamente
+ */
 function deletePartit($conn, $partit_id)
 {
     $sql = "DELETE FROM partits WHERE id = :partit_id";
@@ -69,7 +103,15 @@ function deletePartit($conn, $partit_id)
     return $stmt->execute();
 }
 
-// Funció per guardar la predicció en la base de dades (WORK IN PROGRESS)
+/**
+ * Guarda una predicción de usuario para un partido
+ * @param PDO $conn Conexión a la base de datos
+ * @param int $partit_id ID del partido
+ * @param int $usuari_id ID del usuario
+ * @param int $gols_local Goles predichos para el equipo local
+ * @param int $gols_visitant Goles predichos para el equipo visitante
+ * @return bool True si se guardó correctamente
+ */
 function guardarPrediccio($conn, $partit_id, $usuari_id, $gols_local, $gols_visitant)
 {
     $stmt = $conn->prepare("INSERT INTO prediccions (partit_id, usuari_id, gols_local, gols_visitant) VALUES (:partit_id, :usuari_id, :gols_local, :gols_visitant)");
@@ -84,7 +126,12 @@ function guardarPrediccio($conn, $partit_id, $usuari_id, $gols_local, $gols_visi
     return $stmt->execute();
 }
 
-// Funció per obtenir el nom d'un equip
+/**
+ * Obtiene el nombre de un equipo por su ID
+ * @param PDO $conn Conexión a la base de datos
+ * @param int $id ID del equipo
+ * @return string Nombre del equipo
+ */
 function getTeamName($conn, $id)
 {
     $stmt = $conn->prepare("SELECT nom FROM equips WHERE id = :id");
@@ -93,7 +140,12 @@ function getTeamName($conn, $id)
     return $stmt->fetchColumn();
 }
 
-// Funció per obtenir l'ID d'un equip per fer-ho DATA BASE READABLE (no sé si existeix el terme)
+/**
+ * Obtiene el ID de un equipo por su nombre
+ * @param PDO $conn Conexión a la base de datos
+ * @param string $nom Nombre del equipo
+ * @return int ID del equipo
+ */
 function getTeamID($conn, $nom)
 {
     $stmt = $conn->prepare("SELECT id FROM equips WHERE nom = :nom");
@@ -102,7 +154,12 @@ function getTeamID($conn, $nom)
     return $stmt->fetchColumn(); // Retorna ID equip
 }
 
-// Funció per obtenir l'ID d'una lliga per fer-la DATA BASE READABLE (sona bé)
+/**
+ * Obtiene el ID de la liga a la que pertenece un equipo
+ * @param PDO $conn Conexión a la base de datos
+ * @param int $equipo_id ID del equipo
+ * @return int ID de la liga
+ */
 function getLigaID($conn, $equipo_id)
 {
     $sql = "SELECT lliga_id FROM equips WHERE id = :equipo_id";
@@ -126,6 +183,12 @@ function getLigaID($conn, $equipo_id)
     return $stmt->fetchColumn();
 } */
 
+/**
+ * Obtiene el nombre de la liga de un equipo
+ * @param string $equipLocal Nombre del equipo local
+ * @param PDO $conn Conexión a la base de datos
+ * @return string Nombre de la liga
+ */
 function getLeagueNameByTeam($equipLocal, $conn)
 {
     // Obtener el nom de la lliga del equip favorit
@@ -140,6 +203,17 @@ function getLeagueNameByTeam($equipLocal, $conn)
     return $nomLliga; // Return del nom de la lliga exclusivament
 }
 
+/**
+ * Obtiene lista de partidos con paginación y filtros
+ * @param PDO $conn Conexión a la base de datos
+ * @param string $lliga Nombre de la liga
+ * @param int $limit Límite de resultados
+ * @param int $offset Desplazamiento para paginación
+ * @param string|null $equipFavorit Equipo favorito para filtrar
+ * @param string $orderColumn Columna para ordenar
+ * @param string $orderDirection Dirección del ordenamiento
+ * @return array Lista de partidos
+ */
 function getPartits($conn, $lliga, $limit, $offset, $equipFavorit = null, $orderColumn = 'p.data', $orderDirection = 'DESC')
 {
     $baseSelect = "SELECT p.id, p.data, e_local.nom AS equip_local, e_visitant.nom AS equip_visitant, 
@@ -181,6 +255,13 @@ function getPartits($conn, $lliga, $limit, $offset, $equipFavorit = null, $order
     return $partits;
 }
 
+/**
+ * Cuenta el total de partidos según filtros
+ * @param PDO $conn Conexión a la base de datos
+ * @param string $lliga Nombre de la liga
+ * @param string|null $equipFavorit Equipo favorito para filtrar
+ * @return int Total de partidos
+ */
 function getTotalPartits($conn, $lliga, $equipFavorit = null)
 {
     if ($equipFavorit) {
@@ -207,6 +288,15 @@ function getTotalPartits($conn, $lliga, $equipFavorit = null)
     return $totalPartits;
 }
 
+/**
+ * Inserta un nuevo artículo asociado a un partido
+ * @param PDO $conn Conexión a la base de datos
+ * @param int $match_id ID del partido
+ * @param string $title Título del artículo
+ * @param string $content Contenido del artículo
+ * @param int $user_id ID del usuario autor
+ * @return bool True si se insertó correctamente
+ */
 function insertArticle($conn, $match_id, $title, $content, $user_id)
 {
     $sql = "INSERT INTO articles (match_id, user_id, title, content) 
@@ -219,6 +309,15 @@ function insertArticle($conn, $match_id, $title, $content, $user_id)
     return $stmt->execute();
 }
 
+/**
+ * Actualiza un artículo existente
+ * @param PDO $conn Conexión a la base de datos
+ * @param int $match_id ID del partido
+ * @param string $title Nuevo título
+ * @param string $content Nuevo contenido
+ * @param int $user_id ID del usuario que actualiza
+ * @return bool True si se actualizó correctamente
+ */
 function updateArticle($conn, $match_id, $title, $content, $user_id)
 {
     $sql = "UPDATE articles 
@@ -234,6 +333,12 @@ function updateArticle($conn, $match_id, $title, $content, $user_id)
     return $stmt->execute();
 }
 
+/**
+ * Obtiene un artículo por el ID del partido
+ * @param PDO $conn Conexión a la base de datos
+ * @param int $match_id ID del partido
+ * @return array|false Datos del artículo o false si no existe
+ */
 function getArticleByMatchId($conn, $match_id)
 {
     $sql = "SELECT * FROM articles WHERE match_id = :match_id";
@@ -243,6 +348,12 @@ function getArticleByMatchId($conn, $match_id)
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+/**
+ * Obtiene el nombre de usuario por su ID
+ * @param PDO $conn Conexión a la base de datos
+ * @param int $user_id ID del usuario
+ * @return string Nombre del usuario
+ */
 function getUsernameById($conn, $user_id)
 {
     $sql = "SELECT nom_usuari FROM usuaris WHERE id = :user_id";
@@ -252,6 +363,12 @@ function getUsernameById($conn, $user_id)
     return $stmt->fetchColumn();
 }
 
+/**
+ * Busca partidos por término de búsqueda
+ * @param PDO $conn Conexión a la base de datos
+ * @param string $term Término de búsqueda
+ * @return array Lista de partidos que coinciden
+ */
 function searchBarQuery($conn, $term)
 {
     $sql = "SELECT p.id, e_local.nom AS equip_local, e_visitant.nom AS equip_visitant, p.data

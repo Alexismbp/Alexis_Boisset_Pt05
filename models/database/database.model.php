@@ -11,7 +11,7 @@ class Database
     private static $password = DB_PASS;  // Contrasenya MySQL
     private static $charset = DB_CHARSET;  // Joc de caràcters
     private static $conn = null;  // Connexió a la base de dades
-    private static $logfile = 'database.log'; // Archivo de logs
+    private static $logfile = 'database.log'; // Archivo de logs (DEPRECATED)
 
     // Constructor vacío
     public function __construct() {}

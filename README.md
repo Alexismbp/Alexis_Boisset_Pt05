@@ -207,8 +207,7 @@ Per instal·lar el projecte:
 
 ## 10. Problemes Coneguts i Limitacions
 
-- La funcionalitat d'afegir prediccions pot tenir limitacions en certes condicions.
-- La gestió de partits podria integrar-se millor a la pàgina principal per millorar l'experiència d'usuari.
+- **Funcions no utilitzades**: Alguns arxius están més refactoritzats que altres. Aixó es pot veure en arxius on es crida la classe SessionHelper que conté funcions utils per tot el projecte, peró per manca de temps només s'ha implementat en arxius més recents o importants. En un futur es podrá implementar en tots els arxius.
 
 ## 11. Crèdits
 
@@ -300,6 +299,7 @@ El projecte implementa diverses mesures de seguretat a través del fitxer `.htac
   - Scripts (.sh)
   - Fitxers SQL (.sql)
   - Fitxers temporals (.swp, .swo)
+  - .env (si l'hagués anomenat correctament) i altres fitxers de configuració
 
 #### HTTPS i WWW (Comentat en Desenvolupament)
 - Inclou regles per forçar HTTPS
