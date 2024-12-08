@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost
--- Tiempo de generación: 03-12-2024 a las 07:37:51
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.2.4
+-- Servidor: proxysql-01.dd.scip.local
+-- Tiempo de generación: 08-12-2024 a las 20:58:28
+-- Versión del servidor: 10.10.2-MariaDB-1:10.10.2+maria~deb11
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,8 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `Pt05_Alexis_Boisset`
 --
-
-CREATE DATABASE IF NOT EXISTS `Pt05_Alexis_Boisset` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE DATABASE IF NOT EXISTS `Pt05_Alexis_Boisset` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `Pt05_Alexis_Boisset`;
 
 -- --------------------------------------------------------
@@ -30,23 +29,27 @@ USE `Pt05_Alexis_Boisset`;
 -- Estructura de tabla para la tabla `articles`
 --
 
-CREATE TABLE `articles` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `articles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `match_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `content` text NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `match_id` (`match_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `articles`
 --
 
 INSERT INTO `articles` (`id`, `match_id`, `user_id`, `title`, `content`, `created_at`) VALUES
-(1, 93, 5, 'O James', 'Que habilidad', '2024-12-03 03:20:26'),
+(1, 93, 5, 'O James', 'Que habilidad asd', '2024-12-03 03:20:26'),
 (2, 91, 5, 'Ansu Fati', 'Butanero', '2024-12-03 03:20:53'),
-(4, 95, 2, 'SAD', 'ASD', '2024-12-03 04:31:40');
+(4, 95, 2, 'SAD', 'ASD', '2024-12-03 04:31:40'),
+(6, 98, 5, 'Empate', 'Derbi de pueblo', '2024-12-04 19:07:29');
 
 -- --------------------------------------------------------
 
@@ -54,11 +57,14 @@ INSERT INTO `articles` (`id`, `match_id`, `user_id`, `title`, `content`, `create
 -- Estructura de tabla para la tabla `equips`
 --
 
-CREATE TABLE `equips` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `equips` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `nom` varchar(100) NOT NULL,
-  `lliga_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `lliga_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nom` (`nom`),
+  KEY `fk_lliga` (`lliga_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `equips`
@@ -132,10 +138,12 @@ INSERT INTO `equips` (`id`, `nom`, `lliga_id`) VALUES
 -- Estructura de tabla para la tabla `lligues`
 --
 
-CREATE TABLE `lligues` (
-  `id` int(11) NOT NULL,
-  `nom` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE IF NOT EXISTS `lligues` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nom` (`nom`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `lligues`
@@ -152,16 +160,20 @@ INSERT INTO `lligues` (`id`, `nom`) VALUES
 -- Estructura de tabla para la tabla `partits`
 --
 
-CREATE TABLE `partits` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `partits` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `equip_local_id` int(11) NOT NULL,
   `equip_visitant_id` int(11) NOT NULL,
   `data` date NOT NULL,
   `gols_local` tinyint(4) DEFAULT NULL,
   `gols_visitant` tinyint(4) DEFAULT NULL,
   `jugat` tinyint(1) DEFAULT 0,
-  `liga_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `liga_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `equip_local_id` (`equip_local_id`),
+  KEY `equip_visitant_id` (`equip_visitant_id`),
+  KEY `fk_liga` (`liga_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `partits`
@@ -228,21 +240,9 @@ INSERT INTO `partits` (`id`, `equip_local_id`, `equip_visitant_id`, `data`, `gol
 (90, 60, 60, '2024-11-20', NULL, NULL, 0, 3),
 (91, 46, 45, '2024-10-25', 1, 2, 1, 3),
 (93, 46, 41, '2024-11-15', 2, 3, 1, 3),
-(95, 17, 5, '2024-12-20', 2, 0, 1, 1);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `prediccions`
---
-
-CREATE TABLE `prediccions` (
-  `id` int(11) NOT NULL,
-  `partit_id` int(11) NOT NULL,
-  `usuari_id` int(11) NOT NULL,
-  `gols_local` tinyint(4) DEFAULT NULL,
-  `gols_visitant` tinyint(4) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+(95, 17, 5, '2024-12-20', 2, 0, 1, 1),
+(97, 2, 5, '2024-12-11', 2, 1, 1, 1),
+(98, 1, 17, '2024-12-11', 2, 2, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -250,8 +250,8 @@ CREATE TABLE `prediccions` (
 -- Estructura de tabla para la tabla `usuaris`
 --
 
-CREATE TABLE `usuaris` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `usuaris` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `nom_usuari` varchar(50) NOT NULL,
   `correu_electronic` varchar(100) NOT NULL,
   `contrasenya` varchar(255) DEFAULT NULL,
@@ -262,112 +262,24 @@ CREATE TABLE `usuaris` (
   `remember_token_expires` datetime DEFAULT NULL,
   `is_oauth_user` tinyint(1) DEFAULT 0,
   `oauth_provider` varchar(50) DEFAULT NULL,
-  `avatar` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `avatar` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nom_usuari` (`nom_usuari`),
+  UNIQUE KEY `correu_electronic` (`correu_electronic`),
+  UNIQUE KEY `reset_token_hash` (`reset_token_hash`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuaris`
 --
 
 INSERT INTO `usuaris` (`id`, `nom_usuari`, `correu_electronic`, `contrasenya`, `equip_favorit`, `reset_token_hash`, `reset_token_expires_at`, `remember_token`, `remember_token_expires`, `is_oauth_user`, `oauth_provider`, `avatar`) VALUES
-(1, 'admin', 'admin@alexisboisset.cat', '$2y$10$tgJfJdYsf5kTq5psWW3EK.JrwbupzOeI7AfAE3KLSGBRURlp0EIAq', '', NULL, NULL, NULL, NULL, 0, '', NULL),
+(1, 'admin', 'admin@alexisboisset.cat', '$2y$10$tgJfJdYsf5kTq5psWW3EK.JrwbupzOeI7AfAE3KLSGBRURlp0EIAq', '', '4195ed43ff789e09910989a4f4b32ab3f2362f54f24608833fb4122c728b67e1', '2024-12-08 21:53:02', NULL, NULL, 0, '', NULL),
 (2, 'Xavi', 'xavi@gmail.com', '$2y$10$CyjHCsfj9nNgrvf4BvUaIO9.mgEb4wrn3u7uWqQYZl43CfsO1Ueyi', 'Girona FC', NULL, NULL, NULL, NULL, 0, NULL, NULL),
 (3, 'Josep', 'jpedrerol@gmail.com', '$2y$10$UzJrOph0LT2CCR8.w2qBVOKnk1gArl8UonbTGn3UYtLykVuDcY.z.', 'Crystal Palace', NULL, NULL, NULL, NULL, 0, NULL, NULL),
-(5, 'SaPAlexsi', 'a.boisset@sapalomera.cat', '$2y$10$dyyBsbxrO0Z9AxLxNEPzKehJYuBiEoHAUvOIVXlK7ro8dHEMMdgwW', 'OGC Nice', NULL, NULL, NULL, NULL, 0, '', NULL),
+(4, 'Alexismbp', 'alexismarcbp@gmail.com', NULL, 'pendiente', 'e7e03731333e2722a74689d023e376f5d3d9b25dcf35b8cb1fae71a9775c4222', '2024-12-08 21:30:37', NULL, NULL, 1, 'github', NULL),
+(5, 'SaPAlexsi', 'a.boisset@sapalomera.cat', '$2y$10$LUf66aewsQvfXjZP5HSHhuHDOgScxCj/SKI/J0waw5HCe2EuN7PYy', 'Atlético de Madrid', '809a2bc0d234ae92a56502d7a002c07fc477129ef98ba4d8ebe5901e93849543', '2024-12-08 21:24:34', 'e42321ea8183157366be3240d211f38da1afeb7e83497e9dc8c29f9cd02d7ffd', '2025-01-07 21:23:16', 2, '', 'avatar_c2ad742ea3.png'),
 (7, 'Alexis', 'alexis@gmail.com', '$2y$10$5jOplzI9.lewF548D4UBwe.4Q/9QKm5EvfMdZX1V9e.K5U/ydH3pe', 'OGC Nice', NULL, NULL, NULL, NULL, 0, NULL, NULL);
-
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `articles`
---
-ALTER TABLE `articles`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `match_id` (`match_id`),
-  ADD KEY `user_id` (`user_id`);
-
---
--- Indices de la tabla `equips`
---
-ALTER TABLE `equips`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `nom` (`nom`),
-  ADD KEY `fk_lliga` (`lliga_id`);
-
---
--- Indices de la tabla `lligues`
---
-ALTER TABLE `lligues`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `nom` (`nom`);
-
---
--- Indices de la tabla `partits`
---
-ALTER TABLE `partits`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `equip_local_id` (`equip_local_id`),
-  ADD KEY `equip_visitant_id` (`equip_visitant_id`),
-  ADD KEY `fk_liga` (`liga_id`);
-
---
--- Indices de la tabla `prediccions`
---
-ALTER TABLE `prediccions`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `partit_id` (`partit_id`),
-  ADD KEY `usuari_id` (`usuari_id`);
-
---
--- Indices de la tabla `usuaris`
---
-ALTER TABLE `usuaris`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `nom_usuari` (`nom_usuari`),
-  ADD UNIQUE KEY `correu_electronic` (`correu_electronic`),
-  ADD UNIQUE KEY `reset_token_hash` (`reset_token_hash`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `articles`
---
-ALTER TABLE `articles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT de la tabla `equips`
---
-ALTER TABLE `equips`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
-
---
--- AUTO_INCREMENT de la tabla `lligues`
---
-ALTER TABLE `lligues`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT de la tabla `partits`
---
-ALTER TABLE `partits`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
-
---
--- AUTO_INCREMENT de la tabla `prediccions`
---
-ALTER TABLE `prediccions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `usuaris`
---
-ALTER TABLE `usuaris`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Restricciones para tablas volcadas
@@ -393,13 +305,6 @@ ALTER TABLE `partits`
   ADD CONSTRAINT `fk_liga` FOREIGN KEY (`liga_id`) REFERENCES `lligues` (`id`),
   ADD CONSTRAINT `partits_ibfk_1` FOREIGN KEY (`equip_local_id`) REFERENCES `equips` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `partits_ibfk_2` FOREIGN KEY (`equip_visitant_id`) REFERENCES `equips` (`id`) ON DELETE CASCADE;
-
---
--- Filtros para la tabla `prediccions`
---
-ALTER TABLE `prediccions`
-  ADD CONSTRAINT `prediccions_ibfk_1` FOREIGN KEY (`partit_id`) REFERENCES `partits` (`id`),
-  ADD CONSTRAINT `prediccions_ibfk_2` FOREIGN KEY (`usuari_id`) REFERENCES `usuaris` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
