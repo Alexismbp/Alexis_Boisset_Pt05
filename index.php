@@ -15,6 +15,25 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $router = new Router();
 
+// DEBUGG
+/* require_once __DIR__ . '/models/user/user.model.php';
+$_SERVER['REQUEST_METHOD'] = 'GET';
+$_SERVER['REQUEST_URI'] = 'http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/changepassword';
+$email = 'a.boisset@sapalomera.cat';
+$userData = getUserData($email, $conn);
+            SessionHelper::setSessionData([
+                'email' => $email,
+                'oauth_user' => $userData['is_oauth_user'],
+                'avatar' => $userData['avatar'] ?? 'default-avatar.webp',
+                'LAST_ACTIVITY' => time(),
+                'loggedin' => true,
+                'userid' => $userData['id'],
+                'username' => $userData['nom_usuari'],
+                'equip' => $userData['equip_favorit'],
+                'lliga' => getLeagueName($userData['equip_favorit'], $conn),
+                'success' => 'Usuari registrat correctament'
+            ]); */
+
 // Ejecutar middleware para cookie remember me
 AuthMiddleware::handleRememberToken();
 

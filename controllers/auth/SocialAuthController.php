@@ -189,7 +189,7 @@ class SocialAuthController {
             'userid' => $userData['id'],
             'username' => $userData['nom_usuari'],
             'loggedin' => true,
-            'oauth_user' => true,
+            'oauth_user' => 1, // Asegurar que sea int 1
             'needs_preferences' => $needsPreferences,
             'equip' => $needsPreferences ? null : $userData['equip_favorit'],
             'lliga' => $needsPreferences ? null : $lliga,

@@ -59,7 +59,7 @@ try {
             
             SessionHelper::setSessionData([
                 'email' => $email,
-                'oauth_user' => $userData['is_oauth_user'],
+                'oauth_user' => (int)$userData['is_oauth_user'], // Convertir a entero
                 'avatar' => $userData['avatar'] ?? 'default-avatar.webp',
                 'LAST_ACTIVITY' => time(),
                 'loggedin' => true,

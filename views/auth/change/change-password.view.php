@@ -21,8 +21,7 @@ if (!isset($_SESSION['loggedin'])) {
 <body>
     <div class="container">
         <h2>
-            <!-- Modificar la condición para verificar el valor específico de oauth_user -->
-            <?php if (isset($_SESSION['oauth_user']) && $_SESSION['oauth_user'] === 1): ?>
+            <?php if (isset($_SESSION['oauth_user']) && (int)$_SESSION['oauth_user'] === 1): ?>
                 Afegir Contrasenya al Compte
             <?php else: ?>
                 Canviar Contrasenya
