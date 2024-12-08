@@ -31,6 +31,7 @@ if ($conn && $_SERVER['REQUEST_METHOD'] === 'POST') {
                 'from' => MAIL_FROM ?? 'a.boisset@sapalomera.cat',
                 'from_name' => MAIL_FROM_NAME ?? 'Password Recovery'
             ]; */
+            // P.D. No me ha funcionado ni así en producción, las constantes de env.php no se cargan en producción, parece problema de permisos.
 
             // Enviar correo con el token
             if (sendRecoveryEmail($email, $token, $config)) {
