@@ -235,12 +235,8 @@ function getPartits($conn, $lliga, $limit, $offset, $equipFavorit = null, $order
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':equip', $equipFavorit, PDO::PARAM_STR);
     } else {
-        $sql = "SELECT p.id, p.data, e_local.nom AS equip_local, e_visitant.nom AS equip_visitant, 
-                       p.gols_local, p.gols_visitant, p.jugat, l.nom AS lliga
-                FROM partits p
-                JOIN equips e_local ON p.equip_local_id = e_local.id
-                JOIN equips e_visitant ON p.equip_visitant_id = e_visitant.id
-                JOIN lligues l ON p.liga_id = l.id
+        $sql = "$baseSelect 
+                $baseFrom
                 WHERE l.nom = :lliga
                 ORDER BY " . $orderColumn . " " . $orderDirection . "
                 LIMIT :limit OFFSET :offset";
