@@ -22,13 +22,14 @@ if ($conn && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (storeToken($email, $token, $conn)) {
             // Configuración para PHPMailer
+            // Se Xavi que parece una tonteria pero si no lo pongo no funciona en producción.
             $config = [
-                'host' => MAIL_HOST,
-                'port' => MAIL_PORT,
-                'username' => MAIL_USERNAME,
-                'password' => MAIL_PASSWORD,
-                'from' => MAIL_FROM,
-                'from_name' => MAIL_FROM_NAME
+                'host' => MAIL_HOST ?? 'smtp.gmail.com',
+                'port' => MAIL_PORT ?? 587,
+                'username' => MAIL_USERNAME ?? 'a.boisset@sapalomera.cat',
+                'password' => MAIL_PASSWORD ?? 'zpfh ujxj brmh mqdm',
+                'from' => MAIL_FROM ?? 'a.boisset@sapalomera.cat',
+                'from_name' => MAIL_FROM_NAME ?? 'Password Recovery'
             ];
 
             // Enviar correo con el token
