@@ -44,22 +44,27 @@ function registerUser(
         return false;
     }
 
-    $nextId = ultimaIdDisponible($conn); // Cambiado de getNextId a ultimaIdDisponible
+    try {
+        $nextId = ultimaIdDisponible($conn);
 
-    $query = $conn->prepare("INSERT INTO usuaris (id, nom_usuari, correu_electronic, contrasenya, equip_favorit, is_oauth_user, oauth_provider) 
-                            VALUES (:id, :username, :email, :password, :equip, :oauth, :oauthProvider)");
+        $query = $conn->prepare("INSERT INTO usuaris (id, nom_usuari, correu_electronic, contrasenya, equip_favorit, is_oauth_user, oauth_provider) 
+                                VALUES (:id, :username, :email, :password, :equip, :oauth, :oauthProvider)");
 
-    $params = [
-        ':id' => $nextId,
-        ':username' => $username,
-        ':email' => $email,
-        ':password' => $isOAuth ? null : $password,
-        ':equip' => $equipFavorit ?? 'No especificado', // Valor por defecto ya que equip_favorit no permite NULL
-        ':oauth' => $isOAuth ? 1 : 0,
-        ':oauthProvider' => $oauthProvider
-    ];
+        $params = [
+            ':id' => $nextId,
+            ':username' => $username,
+            ':email' => $email,
+            ':password' => $isOAuth ? null : $password,
+            ':equip' => $equipFavorit ?? 'No especificado',
+            ':oauth' => $isOAuth ? 1 : 0,
+            ':oauthProvider' => $oauthProvider
+        ];
 
-    return $query->execute($params);
+        return $query->execute($params);
+    } catch (PDOException $e) {
+        error_log("Error en registerUser: " . $e->getMessage());
+        return false;
+    }
 }
 
 /**

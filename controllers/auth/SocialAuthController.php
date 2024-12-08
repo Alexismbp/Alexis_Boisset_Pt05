@@ -164,9 +164,14 @@ class SocialAuthController {
         $conn = Database::getInstance();
         
         if (!userExists($email, $conn)) {
-            registerUser($name, $email, null, 'pendiente', $conn, $provider, true);
+            // Registrar nuevo usuario
+            if (registerUser($name, $email, null, 'pendiente', $conn, $provider, true)) {
+                // Obtener datos del usuario recién creado
+                $userData = getUserData($email, $conn);
+            } else {
+                throw new Exception('Error al registrar el usuario');
+            }
             $needsPreferences = true;
-            $userData = ['equip_favorit' => 'pendiente']; // Añadir esta línea
         } else {
             $userData = getUserData($email, $conn);
             
@@ -189,7 +194,7 @@ class SocialAuthController {
             'userid' => $userData['id'],
             'username' => $userData['nom_usuari'],
             'loggedin' => true,
-            'oauth_user' => 1, // Asegurar que sea int 1
+            'oauth_user' => 1, // Marcar como usuario OAuth
             'needs_preferences' => $needsPreferences,
             'equip' => $needsPreferences ? null : $userData['equip_favorit'],
             'lliga' => $needsPreferences ? null : $lliga,
