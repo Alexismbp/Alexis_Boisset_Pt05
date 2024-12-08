@@ -1,28 +1,48 @@
 <?php
+/**
+ * Controlador para gestionar la autenticación social mediante OAuth2
+ * 
+ * Esta clase maneja la autenticación de usuarios a través de proveedores sociales
+ * como Google y GitHub utilizando el protocolo OAuth2 o HybridAuth.
+ */
+
 require_once __DIR__ . '/../../models/database/database.model.php';
 require_once __DIR__ . '/../../models/user/user.model.php';
 require_once __DIR__ . '/../utils/SessionHelper.php';
 
 use League\OAuth2\Client\Provider\Google;
-/* use League\OAuth2\Client\Provider\Github; */
 use Hybridauth\Provider\GitHub as HybridGitHub;
 
 class SocialAuthController {
+    /** @var Google|HybridGitHub El proveedor de autenticación */
     private $provider;
+    
+    /** @var string El tipo de proveedor ('google'|'github') */
     private $providerType;
     
+    /**
+     * Constructor del controlador
+     * 
+     * @param string $provider Tipo de proveedor de autenticación ('google' por defecto)
+     */
     public function __construct(string $provider = 'google') {
         $this->providerType = $provider;
         $this->initializeProvider($provider);
     }
 
+    /**
+     * Inicializa el proveedor de autenticación según el tipo especificado
+     * 
+     * @param string $provider Tipo de proveedor ('google'|'github')
+     * @throws Exception Si el proveedor no está soportado
+     */
     private function initializeProvider(string $provider) {
         switch ($provider) {
             case 'google':
                 $this->provider = new Google([
                     'clientId' => GOOGLE_CLIENT_ID,
                     'clientSecret' => GOOGLE_CLIENT_SECRET,
-                    'redirectUri' => GOOGLE_REDIRECT_URI, // Ya usa la constante correcta
+                    'redirectUri' => GOOGLE_REDIRECT_URI,
                 ]);
                 break;
             case 'github':
@@ -39,6 +59,11 @@ class SocialAuthController {
         }
     }
 
+    /**
+     * Redirige al usuario al proveedor de autenticación
+     * 
+     * @throws Exception Si hay un error en el proceso de autenticación
+     */
     public function redirectToProvider() {
         try {
             if ($this->providerType === 'google') {
@@ -60,6 +85,11 @@ class SocialAuthController {
         }
     }
 
+    /**
+     * Maneja la respuesta del proveedor de autenticación
+     * 
+     * @throws Exception Si hay un error en el proceso de callback
+     */
     public function handleCallback() {
         try {
             if ($this->providerType === 'google') {
@@ -74,6 +104,11 @@ class SocialAuthController {
         }
     }
 
+    /**
+     * Procesa el callback específico de Google
+     * 
+     * @throws Exception Si no se recibe el código o hay error en la autenticación
+     */
     private function handleGoogleCallback() {
         if (!isset($_GET['code'])) {
             throw new Exception('No se recibió el código de autorización');
@@ -105,6 +140,9 @@ class SocialAuthController {
         }
     }
 
+    /**
+     * Procesa el callback específico de GitHub
+     */
     private function handleGitHubCallback() {
         $this->provider->authenticate();
         $userProfile = $this->provider->getUserProfile();
@@ -115,6 +153,13 @@ class SocialAuthController {
         $this->processAuthenticatedUser($email, $name, 'github');
     }
 
+    /**
+     * Procesa los datos del usuario autenticado y gestiona su sesión
+     * 
+     * @param string $email Email del usuario
+     * @param string $name Nombre del usuario
+     * @param string $provider Tipo de proveedor utilizado
+     */
     private function processAuthenticatedUser($email, $name, $provider) {
         $conn = Database::getInstance();
         

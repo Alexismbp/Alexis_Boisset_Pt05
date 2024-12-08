@@ -11,6 +11,7 @@ $email = $_SESSION['email'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
+        // Recibir datos
         $username = Validation::sanitizeInput($_POST['username']);
         $equip = Validation::sanitizeInput($_POST['equip']);
 
@@ -28,15 +29,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 throw new Exception('La imagen no cumple con los requisitos');
             }
 
-            // Crear directorio de uploads si no existe
+            // Directorio de subida
             $uploadDir = BASE_PATH . 'uploads/avatars';
+
+            // Crear directorio SI NO existe
             if (!file_exists($uploadDir)) {
                 if (!mkdir($uploadDir, 0755, true)) {
                     throw new Exception('No se pudo crear el directorio de uploads');
                 }
             }
 
-            // Generar nombre seguro para el archivo
+            // Generar nombre seguro para el archivo (SIN espacios ni caracteres especiales)
             $fileExtension = strtolower(pathinfo($avatar['name'], PATHINFO_EXTENSION));
             $fileExtension = preg_replace('/[^a-zA-Z0-9]/', '', $fileExtension);
             $randomString = bin2hex(random_bytes(5)); // 10 caracteres hexadecimales

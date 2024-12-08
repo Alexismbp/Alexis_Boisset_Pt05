@@ -10,7 +10,7 @@ try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = Validation::sanitizeInput($_POST['email']);
         $password = Validation::sanitizeInput($_POST['password']);
-        
+
         if (SessionHelper::needsCaptcha()) {
             $recaptcha_response = $_POST['g-recaptcha-response'] ?? '';
             if (!ReCaptchaController::verifyResponse($recaptcha_response)) {
@@ -21,7 +21,7 @@ try {
 
         // Validar campos
         $errors = Validation::validateLogin($email, $password);
-        
+
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
             throw new Exception();
@@ -30,17 +30,17 @@ try {
         $userData = getUserData($email, $conn);
 
         if ($userData && password_verify($password, $userData['contrasenya'])) {
-            
+
             SessionHelper::resetLoginAttempts();
-            
+
             // Handle remember me
             if (isset($_POST['remember_me'])) {
                 $token = bin2hex(random_bytes(32));
                 $expiry = time() + (30 * 24 * 60 * 60); // 30 days
-                
+
                 // Store token in database
                 storeRememberToken($userData['id'], $token, $expiry, $conn);
-                
+
                 // Set remember me cookie
                 setcookie(
                     'remember_token',
@@ -56,7 +56,7 @@ try {
                 // Remove remember me cookie
                 setcookie('remember_token', '', time() - 3600, '/');
             }
-
+            
             SessionHelper::setSessionData([
                 'email' => $email,
                 'oauth_user' => $userData['is_oauth_user'],
@@ -72,9 +72,9 @@ try {
             header("Location: " . BASE_URL);
             exit();
         } else {
+            // Si falla el login, incrementar el contador de intentos
             SessionHelper::incrementLoginAttempts();
             throw new Exception("Credencials incorrectes", 1);
-        
         }
     }
 } catch (Exception $e) {

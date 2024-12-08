@@ -9,6 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
     $provider = $_POST['provider'] ?? '';
     
+    // Si se confirma la fusión de cuentas
     if ($action === 'merge') {
         try {
             $conn = Database::getInstance();
