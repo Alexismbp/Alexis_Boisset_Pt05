@@ -21,17 +21,26 @@ if ($conn && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $token = bin2hex(random_bytes(32));
 
         if (storeToken($email, $token, $conn)) {
-            // Enviar correu amb el token
-            sendRecoveryEmail($email, $token);
+            // Configuración para PHPMailer
+            $config = [
+                'host' => MAIL_HOST,
+                'port' => MAIL_PORT,
+                'username' => MAIL_USERNAME,
+                'password' => MAIL_PASSWORD,
+                'from' => MAIL_FROM,
+                'from_name' => MAIL_FROM_NAME
+            ];
 
-            $_SESSION['success'] = 'S\'ha enviat un correu amb instruccions per restablir la contrasenya.';
-
-            header('Location: ' . BASE_URL . 'login');
-            exit();
-        } else {
-            $_SESSION['failure'] = 'Algo ha fallat';
-            header('Location: ../view/forgot-password.view.php');
-            exit();
+            // Enviar correo con el token
+            if (sendRecoveryEmail($email, $token, $config)) {
+                $_SESSION['success'] = 'S\'ha enviat un correu amb instruccions per restablir la contrasenya.';
+                header('Location: ' . BASE_URL . 'login');
+                exit();
+            } else {
+                $_SESSION['failure'] = 'Error al enviar el correu';
+                header('Location: ../view/forgot-password.view.php');
+                exit();
+            }
         }
     }
 }
@@ -41,21 +50,22 @@ if ($conn && $_SERVER['REQUEST_METHOD'] === 'POST') {
  *
  * @param string $email El correo electrónico del usuario.
  * @param string $token El token de recuperación.
+ * @param array $config Configuración para PHPMailer.
  * @return bool True si el correo se envió correctamente, False en caso contrario.
  */
-function sendRecoveryEmail($email, $token)
+function sendRecoveryEmail($email, $token, $config)
 {
     $mail = new PHPMailer(true);
 
     try {
         // Configuración del servidor
         $mail->isSMTP();
-        $mail->Host = MAIL_HOST; 
+        $mail->Host = $config['host']; 
         $mail->SMTPAuth = true;
-        $mail->Username = MAIL_USERNAME;
-        $mail->Password = MAIL_PASSWORD;
+        $mail->Username = $config['username'];
+        $mail->Password = $config['password'];
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = MAIL_PORT;
+        $mail->Port = $config['port'];
         $mail->CharSet = 'UTF-8'; // Configurar la codificación
 
         $mail->SMTPOptions = array(
@@ -67,7 +77,7 @@ function sendRecoveryEmail($email, $token)
         );
 
         // Remitente y destinatario
-        $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
+        $mail->setFrom($config['from'], $config['from_name']);
         $mail->addAddress($email);
 
         // Cargar plantilla HTML
