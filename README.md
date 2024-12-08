@@ -193,7 +193,7 @@ A continuació es mostren els usuaris predefinits:
 Per instal·lar el projecte:
 
 1. **Clona el repositori** al teu ordinador.
-2. **Importa la base de dades** proporcionada utilitzant una eina com phpMyAdmin.
+2. **Importa la base de dades** proporcionada utilitzant una eina com phpMyAdmin (es troba a `/models/database/Pt05_Alexis_Boisset.sql`).
 3. **Configura la connexió** a la base de dades en el fitxer de configuració.
 4. **Executa el servidor local** amb XAMPP o similar i accedeix al projecte.
 
