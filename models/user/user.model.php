@@ -419,12 +419,12 @@ function deleteUser(int $userId, PDO $conn): bool
     try {
         $conn->beginTransaction();
 
-        // Eliminar los partidos del usuario
-        $stmt = $conn->prepare("DELETE FROM partits WHERE usuari_id = :id");
+        // Eliminar las predicciones del usuario primero (debido a las restricciones de clave foránea)
+        $stmt = $conn->prepare("DELETE FROM prediccions WHERE usuari_id = :id");
         $stmt->execute([':id' => $userId]);
 
         // Eliminar los artículos del usuario
-        $stmt = $conn->prepare("DELETE FROM articles WHERE usuari_id = :id");
+        $stmt = $conn->prepare("DELETE FROM articles WHERE user_id = :id");
         $stmt->execute([':id' => $userId]);
 
         // Finalmente eliminar el usuario
