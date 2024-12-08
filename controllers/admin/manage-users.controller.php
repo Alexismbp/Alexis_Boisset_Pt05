@@ -20,12 +20,20 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['userid'] != 1) {
 $conn = Database::getInstance();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $userId = isset($_POST['user_id']) ? (int)$_POST['user_id'] : 0;
-    
-    if ($userId && deleteUser($userId, $conn)) {
-        $_SESSION['success'] = "Usuario eliminado correctamente.";
-    } else {
-        $_SESSION['error'] = "Error al eliminar el usuario.";
+    try {
+        $userId = isset($_POST['user_id']) ? (int)$_POST['user_id'] : 0;
+        
+        if (!$userId) {
+            throw new Exception("ID de usuario no válido");
+        }
+        
+        if (deleteUser($userId, $conn)) {
+            $_SESSION['success'] = "Usuario eliminado correctamente.";
+        } else {
+            throw new Exception("Error al eliminar el usuario");
+        }
+    } catch (Exception $e) {
+        $_SESSION['error'] = "Error: " . $e->getMessage();
     }
     
     header("Location: " . BASE_URL . "manage-users");

@@ -415,9 +415,29 @@ function deleteUser(int $userId, PDO $conn): bool
     if ($userId == 1) {
         return false; // No permitir borrar al admin
     }
-    $query = $conn->prepare("DELETE FROM usuaris WHERE id = :id");
-    $query->bindParam(':id', $userId, PDO::PARAM_INT);
-    return $query->execute();
+
+    try {
+        $conn->beginTransaction();
+
+        // Eliminar los partidos del usuario
+        $stmt = $conn->prepare("DELETE FROM partits WHERE usuari_id = :id");
+        $stmt->execute([':id' => $userId]);
+
+        // Eliminar los artículos del usuario
+        $stmt = $conn->prepare("DELETE FROM articles WHERE usuari_id = :id");
+        $stmt->execute([':id' => $userId]);
+
+        // Finalmente eliminar el usuario
+        $stmt = $conn->prepare("DELETE FROM usuaris WHERE id = :id");
+        $stmt->execute([':id' => $userId]);
+
+        $conn->commit();
+        return true;
+    } catch (PDOException $e) {
+        $conn->rollBack();
+        error_log("Error eliminando usuario: " . $e->getMessage());
+        return false;
+    }
 }
 
 /**
