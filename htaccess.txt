@@ -1,0 +1,32 @@
+RewriteEngine On
+RewriteBase /
+
+# Forzar HTTPS y www
+RewriteCond %{HTTP_HOST} !^www\. [NC]
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [R=301,L]
+
+# No aplicar regla si el archivo o directorio existe
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redirigir todo lo demás a index.php
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Página de error 404
+ErrorDocument 404 /views/errors/404.view.php
+
+# Seguridad adicional
+Options -Indexes
+ServerSignature Off
+
+# Prevenir acceso a archivos sensibles
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "(^#.*#|\.(bak|config|dist|fla|inc|ini|log|psd|sh|sql|sw[op])|~)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

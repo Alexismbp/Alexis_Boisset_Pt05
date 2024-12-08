@@ -12,7 +12,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 // SessionHelper::checkLogin() no utilizado en este controlador porque necesito verificar que es el usuario admin;
 if (!isset($_SESSION['loggedin']) || $_SESSION['userid'] != 1) {
-    $_SESSION['failure'] = "JAJAJJAJAJAJAJJAJA.";
+    $_SESSION['failure'] = "No tens permisos per accedir a aquesta pàgina (sigue intentandolo Xavi)."; // Comenario de ánimo para que sigas corrigiendo 🫡
     header("Location: " . BASE_URL);
     exit();
 }
