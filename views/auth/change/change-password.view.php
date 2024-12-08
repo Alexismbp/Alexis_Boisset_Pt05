@@ -21,8 +21,8 @@ if (!isset($_SESSION['loggedin'])) {
 <body>
     <div class="container">
         <h2>
-            <!-- Si l'usuari té compte OAuth, mostrar "Afegir Contrasenya al Compte", si no, "Canviar Contrasenya" -->
-            <?php if (isset($_SESSION['oauth_user']) && $_SESSION['oauth_user'] == 0): ?>
+            <!-- Modificar la condición para verificar el valor específico de oauth_user -->
+            <?php if (isset($_SESSION['oauth_user']) && $_SESSION['oauth_user'] === 1): ?>
                 Afegir Contrasenya al Compte
             <?php else: ?>
                 Canviar Contrasenya
@@ -33,7 +33,7 @@ if (!isset($_SESSION['loggedin'])) {
         <?php endif; ?>
         
         <form action="<?php echo BASE_URL; ?>changepassword" method="POST">
-            <?php if (!isset($_SESSION['oauth_user'])): ?>
+            <?php if (!isset($_SESSION['oauth_user']) || $_SESSION['oauth_user'] !== 1): ?>
                 <div class="form-group">
                     <label for="current_password">Contrasenya Actual:</label>
                     <input type="password" name="current_password" required>
