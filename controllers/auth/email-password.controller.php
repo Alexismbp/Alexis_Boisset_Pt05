@@ -23,14 +23,14 @@ if ($conn && $_SERVER['REQUEST_METHOD'] === 'POST') {
         if (storeToken($email, $token, $conn)) {
             // Configuración para PHPMailer
             // Se Xavi que parece una tonteria pero si no lo pongo no funciona en producción.
-            $config = [
+            /* $config = [
                 'host' => MAIL_HOST ?? 'smtp.gmail.com',
                 'port' => MAIL_PORT ?? 587,
                 'username' => MAIL_USERNAME ?? 'a.boisset@sapalomera.cat',
                 'password' => MAIL_PASSWORD ?? 'zpfh ujxj brmh mqdm',
                 'from' => MAIL_FROM ?? 'a.boisset@sapalomera.cat',
                 'from_name' => MAIL_FROM_NAME ?? 'Password Recovery'
-            ];
+            ]; */
 
             // Enviar correo con el token
             if (sendRecoveryEmail($email, $token, $config)) {
@@ -61,12 +61,12 @@ function sendRecoveryEmail($email, $token, $config)
     try {
         // Configuración del servidor
         $mail->isSMTP();
-        $mail->Host = $config['host']; 
+        $mail->Host = 'smtp.gmail.com'; 
         $mail->SMTPAuth = true;
-        $mail->Username = $config['username'];
-        $mail->Password = $config['password'];
+        $mail->Username = 'a.boisset@sapalomera.cat';
+        $mail->Password = 'zpfh ujxj brmh mqdm';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = $config['port'];
+        $mail->Port = '587';
         $mail->CharSet = 'UTF-8'; // Configurar la codificación
 
         $mail->SMTPOptions = array(
@@ -78,7 +78,7 @@ function sendRecoveryEmail($email, $token, $config)
         );
 
         // Remitente y destinatario
-        $mail->setFrom($config['from'], $config['from_name']);
+        $mail->setFrom('a.boisset@sapalomera.cat', 'Password Recovery');
         $mail->addAddress($email);
 
         // Cargar plantilla HTML
