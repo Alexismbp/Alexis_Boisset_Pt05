@@ -86,6 +86,12 @@ $router->get('/oauth/{provider}/callback', function () use ($router) {
     $auth->handleCallback();
 });
 
+// Ruta para artículos compartidos
+$router->get('/shared/{token}', function () use ($router) {
+    $token = $router->getParam('token');
+    include BASE_PATH . 'controllers/shared/view-shared-article.controller.php';
+});
+
 // Definir rutas GET (Admin)
 $router->get('/manage-users', 'controllers/admin/manage-users.controller.php');
 

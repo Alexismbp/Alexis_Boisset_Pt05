@@ -5,6 +5,7 @@
 
 require_once __DIR__ . "/../../../models/env.php";
 require_once BASE_PATH . 'controllers/utils/SessionHelper.php';
+include_once BASE_PATH . 'views/components/modal-share.component.php';
 ?>
 
 <!DOCTYPE html>
@@ -35,6 +36,9 @@ require_once BASE_PATH . 'controllers/utils/SessionHelper.php';
         <?php endif; ?>
 
         <a href="<?php echo BASE_URL; ?>" class="btn-back">Tornar</a>
+        <?php if ($article): ?>
+            <button data-modal-target=".modal-content">Compartir</button>
+        <?php endif; ?>
     </div>
 
    

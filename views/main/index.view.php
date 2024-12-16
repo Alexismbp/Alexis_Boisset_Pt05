@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestor de partits</title>
+    <title>Foro furbo</title>
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/views/main/styles.css">
     <script src="<?php echo BASE_URL; ?>scripts/index.js" defer></script>
 </head>

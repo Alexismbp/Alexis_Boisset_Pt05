@@ -3,6 +3,7 @@
         "phpmailer/phpmailer": "^6.9",
         "league/oauth2-google": "^4.0",
         "league/oauth2-client": "^2.7",
-        "hybridauth/hybridauth": "^3.11"
+        "hybridauth/hybridauth": "^3.11",
+        "chillerlan/php-qrcode": "^5.0"
     }
 }
