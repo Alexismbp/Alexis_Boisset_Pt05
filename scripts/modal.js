@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const overlay = document.querySelector('[data-overlay]');
     const form = document.getElementById('share-form');
     const qrCodeContainer = document.getElementById('qr-code');
+    const base_url = document.querySelector('meta[name="base-url"]').getAttribute('content');
 
     openModalButton.addEventListener('click', () => {
         const modal = document.querySelector('[data-modal]');
@@ -31,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         const formData = new FormData(form);
         
-        fetch(`${window.location.origin}/Practiques/M07-Servidor/Alexis_Boisset_Pt05/controllers/utils/qr.php`, {
+        fetch(`${base_url}controllers/utils/qr.php`, {
             method: 'POST',
             body: formData
         })

@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/styles/modal.css">
+<meta name="base-url" content="<?php echo BASE_URL; ?>">
 <script src="<?php echo BASE_URL; ?>scripts/modal.js" defer></script>
 <dialog data-modal class="modal">
     <div class="modal-header">
