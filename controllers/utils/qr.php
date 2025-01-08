@@ -3,7 +3,10 @@ require_once __DIR__ . "/../../models/env.php";
 require_once __DIR__ . "/../../models/database/database.model.php";
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-use chillerlan\QRCode\{QRCode, QROptions};
+use chillerlan\QRCode\QRCode;
+use chillerlan\QRCode\QROptions;
+use chillerlan\QRCode\Data\QRMatrix;
+use chillerlan\QRCode\Common\EccLevel;
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -30,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Generar token y URL relativa
         $token = bin2hex(random_bytes(16));
-        $url = 'share/' . $token; // URL relativa sin BASE_URL
+        $url = BASE_URL . 'share/' . $token;
 
         // Preparar y ejecutar la inserción
         $stmt = $pdo->prepare("INSERT INTO shared_articles (token, article_id, match_id, show_title, show_content) VALUES (?, ?, ?, ?, ?)");
@@ -41,15 +44,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Configurar opciones del QR
-        $options = new QROptions([
-            'outputType' => QRCode::OUTPUT_MARKUP_SVG,
-            'eccLevel' => QRCode::ECC_L,
-            'version' => 5,
-        ]);
+        $options = new QROptions;
+        $options->outputType = QRCode::OUTPUT_MARKUP_SVG;
+        $options->eccLevel = EccLevel::L;
+        $options->version = 5;
+        $options->addQuietzone = true;
+        $options->quietzoneSize = 4;
 
         // Generar código QR
-        $qrcode = new QRCode($options);
-        $qrSvg = $qrcode->render($url);
+        $qr = new QRCode($options);
+        $qrSvg = $qr->render($url);
 
         // Devolver respuesta exitosa
         echo json_encode([
