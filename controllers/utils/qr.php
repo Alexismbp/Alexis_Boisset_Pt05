@@ -5,7 +5,6 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 use chillerlan\QRCode\QRCode;
 use chillerlan\QRCode\QROptions;
-use chillerlan\QRCode\Data\QRMatrix;
 use chillerlan\QRCode\Common\EccLevel;
 
 error_reporting(E_ALL);
@@ -44,12 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Configurar opciones del QR
-        $options = new QROptions;
-        $options->outputType = QRCode::OUTPUT_MARKUP_SVG;
-        $options->eccLevel = EccLevel::L;
-        $options->version = 5;
-        $options->addQuietzone = true;
-        $options->quietzoneSize = 4;
+        $options = new QROptions([
+            'outputType' => QRCode::OUTPUT_MARKUP_SVG,
+            'eccLevel' => EccLevel::L,
+            'version' => 5,
+            'addQuietzone' => true,
+            'quietzoneSize' => 4,
+        ]);
 
         // Generar código QR
         $qr = new QRCode($options);
