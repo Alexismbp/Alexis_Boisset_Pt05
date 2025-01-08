@@ -28,36 +28,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $show_title = isset($_POST['titol']) ? 1 : 0;
         $show_content = isset($_POST['cos']) ? 1 : 0;
         
-        // Generar token y URL
+        // Generar token y URL relativa
         $token = bin2hex(random_bytes(16));
-        $url = rtrim(BASE_URL, '/') . '/share/' . $token;
+        $url = 'share/' . $token; // URL relativa sin BASE_URL
 
         // Preparar y ejecutar la inserción
         $stmt = $pdo->prepare("INSERT INTO shared_articles (token, article_id, match_id, show_title, show_content) VALUES (?, ?, ?, ?, ?)");
         
+        // Ejecutar la consulta
         if (!$stmt->execute([$token, $article_id, $match_id, $show_title, $show_content])) {
-            throw new Exception('Error al guardar en la base de datos: ' . implode(' ', $stmt->errorInfo()));
+            throw new Exception('Error al guardar en la base de datos');
         }
 
-        // Generar QR
+        // Configurar opciones del QR
         $options = new QROptions([
             'outputType' => QRCode::OUTPUT_MARKUP_SVG,
             'eccLevel' => QRCode::ECC_L,
-            'imageBase64' => true,
+            'version' => 5,
         ]);
 
+        // Generar código QR
         $qrcode = new QRCode($options);
-        $qrImage = $qrcode->render($url);
+        $qrSvg = $qrcode->render($url);
 
+        // Devolver respuesta exitosa
         echo json_encode([
             'success' => true,
-            'qr' => $qrImage,
-            'url' => $url
+            'url' => $url,
+            'qr' => $qrSvg
         ]);
         
     } catch (Exception $e) {
         error_log($e->getMessage());
-        http_response_code(500);
+        http_response_code(400);
         echo json_encode([
             'success' => false,
             'error' => $e->getMessage()

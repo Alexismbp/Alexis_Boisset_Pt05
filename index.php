@@ -92,6 +92,15 @@ $router->get('/shared/{token}', function () use ($router) {
     include BASE_PATH . 'controllers/shared/view-shared-article.controller.php';
 });
 
+// Rutas para compartir artículos
+$router->get('/share/{token}', function($token) {
+    require BASE_PATH . 'controllers/shared/shared.controller.php';
+});
+
+$router->post('/share', function() { 
+    require BASE_PATH . 'controllers/utils/qr.php';
+});
+
 // Definir rutas GET (Admin)
 $router->get('/manage-users', 'controllers/admin/manage-users.controller.php');
 

@@ -10,6 +10,10 @@ class Router
     /** @var array Array to store route parameters */
     private $params = [];
 
+    public function __construct()
+    {
+    }
+
     /**
      * Registers a GET route with its handler
      * @param string $path The URL path to match
