@@ -2,8 +2,8 @@
 
 class FootballApi
 {
-    private const API_KEY = 'c6cc2f074c203acba5410034323e9d76';
-    private const API_HOST = 'v3.football.api-sports.io';
+    private const API_KEY = FOOTBALL_API_KEY;
+    private const API_HOST = API_HOST;
     private const SEASON = '2023';
     private const CACHE_DURATION = 3600; // Duración del caché en segundos (1 hora)
     private const CACHE_DIR = __DIR__ . '/cache'; // Directorio para almacenar los archivos de caché
@@ -126,27 +126,3 @@ class FootballApi
         return self::$leagueIds[$leagueName] ?? null;
     }
 }
-
-// Procesar la solicitud
-// header('Content-Type: application/json');
-// header('Access-Control-Allow-Origin: *');
-
-// try {
-//     $api = new FootballApi();
-
-//     if (isset($_GET['team_id'])) {
-//         $result = $api->getTeamPlayers($_GET['team_id']);
-//     } else {
-//         // Usar league_id de la URL o 140 (LaLiga) por defecto
-
-//         // CAMBIAR ESTA LINEA, DEBE COGER LA LIGA DE LA SESION NO LA DEL GET, NO SE PASA NADA POR GET.
-
-//         $leagueId = isset($_GET['league_id']) ? (int)$_GET['league_id'] : 140;
-//         $result = $api->getTeams($leagueId);
-//     }
-
-//     json_encode($result);
-// } catch (Exception $e) {
-//     http_response_code(400);
-//     json_encode(['error' => $e->getMessage()]);
-// }
