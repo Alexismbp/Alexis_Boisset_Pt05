@@ -49,13 +49,11 @@ class FootballApi
                 'x-rapidapi-key: ' . self::API_KEY,
                 'x-rapidapi-host: ' . self::API_HOST
             ],
-            // Opción 1: Configurar el path correcto al certificado (seguro)
+
             CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_CAINFO => __DIR__ . '/cacert.pem',
 
-            // Opción 2: Desactivar verificación SSL (solo desarrollo)
-            // CURLOPT_SSL_VERIFYHOST => 0,
-            // CURLOPT_SSL_VERIFYPEER => false,
+
         ]);
 
         $response = curl_exec($curl);
