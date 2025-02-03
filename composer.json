@@ -4,6 +4,7 @@
         "league/oauth2-google": "^4.0",
         "league/oauth2-client": "^2.7",
         "hybridauth/hybridauth": "^3.11",
-        "chillerlan/php-qrcode": "^5.0"
+        "chillerlan/php-qrcode": "^5.0",
+        "firebase/php-jwt": "^6.10"
     }
 }

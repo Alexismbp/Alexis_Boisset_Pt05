@@ -7,7 +7,7 @@ require_once __DIR__ . "/models/database/database.model.php";
 require_once __DIR__ . "/controllers/session/session.controller.php";
 require_once __DIR__ . "/core/Router.php";
 require_once __DIR__ . '/controllers/middleware/AuthMiddleware.php';
-require_once __DIR__ . '/controllers/auth/SocialAuthController.php'; 
+require_once __DIR__ . '/controllers/auth/SocialAuthController.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -16,30 +16,34 @@ if (session_status() === PHP_SESSION_NONE) {
 $router = new Router();
 
 // DEBUGG
-/* require_once __DIR__ . '/models/user/user.model.php';
-$_SERVER['REQUEST_METHOD'] = 'GET';
-$_SERVER['REQUEST_URI'] = 'http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/changepassword';
-$email = 'a.boisset@sapalomera.cat';
-$userData = getUserData($email, $conn);
-            SessionHelper::setSessionData([
-                'email' => $email,
-                'oauth_user' => $userData['is_oauth_user'],
-                'avatar' => $userData['avatar'] ?? 'default-avatar.webp',
-                'LAST_ACTIVITY' => time(),
-                'loggedin' => true,
-                'userid' => $userData['id'],
-                'username' => $userData['nom_usuari'],
-                'equip' => $userData['equip_favorit'],
-                'lliga' => getLeagueName($userData['equip_favorit'], $conn),
-                'success' => 'Usuari registrat correctament'
-            ]); */
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// require_once __DIR__ . '/models/user/user.model.php';
+// $_SERVER['REQUEST_METHOD'] = 'GET';
+// $_SERVER['REQUEST_URI'] = 'http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/teams';
+// $email = 'a.boisset@sapalomera.cat';
+// $userData = getUserData($email, $conn);
+// SessionHelper::setSessionData([
+//     'email' => $email,
+//     'oauth_user' => $userData['is_oauth_user'],
+//     'avatar' => $userData['avatar'] ?? 'default-avatar.webp',
+//     'LAST_ACTIVITY' => time(),
+//     'loggedin' => true,
+//     'userid' => $userData['id'],
+//     'username' => $userData['nom_usuari'],
+//     'equip' => $userData['equip_favorit'],
+//     'lliga' => getLeagueName($userData['equip_favorit'], $conn),
+//     'success' => 'Usuari registrat correctament'
+// ]);
 
 // Ejecutar middleware para cookie remember me
 AuthMiddleware::handleRememberToken();
 
 // Ruta para búsquedas
 $router->get('/search', function () {
-    require_once BASE_PATH . 'controllers/utils/search.controller.php'; 
+    require_once BASE_PATH . 'controllers/utils/search.controller.php';
     $conn = Database::getInstance();
     $searchController = new SearchController($conn);
     $term = $_GET['term'] ?? '';
@@ -86,6 +90,9 @@ $router->get('/oauth/{provider}/callback', function () use ($router) {
     $auth->handleCallback();
 });
 
+// Ruta para la lista de artículos compartidos
+$router->get('/shared-articles', 'controllers/shared/list-shared-articles.controller.php');
+
 // Ruta para artículos compartidos
 $router->get('/shared/{token}', function () use ($router) {
     $token = $router->getParam('token');
@@ -93,11 +100,11 @@ $router->get('/shared/{token}', function () use ($router) {
 });
 
 // Rutas para compartir artículos
-$router->get('/share/{token}', function($token) {
+$router->get('/share/{token}', function ($token) {
     require BASE_PATH . 'controllers/shared/shared.controller.php';
 });
 
-$router->post('/share', function() { 
+$router->post('/share', function () {
     require BASE_PATH . 'controllers/utils/qr.php';
 });
 
@@ -106,6 +113,10 @@ $router->get('/manage-users', 'controllers/admin/manage-users.controller.php');
 
 // Definir rutas POST (Admin)
 $router->post('/delete-user', 'controllers/admin/manage-users.controller.php');
+
+// Definir rutas GET para equipos
+$router->get('/teams', 'controllers/teams/teams-list.controller.php');
+$router->get('/team/{id}', 'views/teams/players-list.view.php');
 
 // Definir rutas POST
 $router->post('/login', 'controllers/auth/login.controller.php');
@@ -128,7 +139,7 @@ $uri = "/" . ltrim(substr($uri, strlen($basePath)), '/');
 
 try {
     $result = $router->dispatch($uri);
-    
+
     if ($result instanceof Closure) {
         $result();
     } else {
@@ -144,4 +155,3 @@ try {
         echo 'Error Interno del Servidor';
     }
 }
-?>

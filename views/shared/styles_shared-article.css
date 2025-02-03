@@ -1,0 +1,118 @@
+/* Estilos exclusivos para la vista de artículo compartido */
+
+.shared-article {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.shared-article h1 {
+  color: #333;
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.shared-article h2 {
+  color: #555;
+  font-size: 2em;
+  margin-bottom: 15px;
+}
+
+.shared-article p {
+  font-size: 1.2em;
+  line-height: 1.6;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.shared-article label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.shared-article input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.shared-article button {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+}
+
+.shared-article button:hover {
+  background-color: #218838;
+}
+
+#share-result {
+  text-align: center;
+}
+
+#share-result img {
+  max-width: 150px;
+  margin-bottom: 10px;
+}
+
+#shared-articles {
+  margin-top: 20px;
+}
+
+.shared-article-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.shared-article-card strong {
+  color: #1a472a;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.shared-article-card p {
+  margin: 0 0 10px 0;
+}
+
+.shared-article-card small {
+  color: #666;
+}
+
+@media (max-width: 600px) {
+  .shared-article {
+    padding: 15px;
+  }
+
+  .shared-article h1 {
+    font-size: 2em;
+  }
+
+  .shared-article h2 {
+    font-size: 1.5em;
+  }
+
+  .shared-article p {
+    font-size: 1em;
+  }
+
+  .shared-article button {
+    width: 100%;
+    padding: 10px;
+  }
+}
+
+/* Opcional: estilos adicionales para mejorar la vista compartida */
+.shared-article-card strong {
+  color: #1a472a;
+}

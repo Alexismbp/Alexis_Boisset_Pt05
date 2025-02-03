@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: proxysql-01.dd.scip.local
--- Tiempo de generación: 08-12-2024 a las 20:58:28
--- Versión del servidor: 10.10.2-MariaDB-1:10.10.2+maria~deb11
--- Versión de PHP: 8.2.12
+-- Servidor: localhost
+-- Tiempo de generación: 08-01-2025 a las 20:19:50
+-- Versión del servidor: 10.4.28-MariaDB
+-- Versión de PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -247,6 +247,69 @@ INSERT INTO `partits` (`id`, `equip_local_id`, `equip_visitant_id`, `data`, `gol
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `shared_articles`
+--
+
+CREATE TABLE IF NOT EXISTS `shared_articles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `token` varchar(64) NOT NULL,
+  `article_id` int(11) NOT NULL,
+  `match_id` int(11) NOT NULL,
+  `show_title` tinyint(1) DEFAULT 0,
+  `show_content` tinyint(1) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `token` (`token`),
+  KEY `article_id` (`article_id`),
+  KEY `match_id` (`match_id`),
+  KEY `idx_token` (`token`)
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `shared_articles`
+--
+
+INSERT INTO `shared_articles` (`id`, `token`, `article_id`, `match_id`, `show_title`, `show_content`, `created_at`) VALUES
+(1, 'ef9824422842ab95be192a1fee939da9', 2, 91, 1, 0, '2024-12-16 18:59:55'),
+(2, '966fc91fe592ac7b5111cf339a323434', 2, 91, 1, 0, '2024-12-16 18:59:55'),
+(3, 'fc4d5ae123fee2acadf8d9b0defa1503', 2, 91, 1, 1, '2024-12-16 18:59:56'),
+(4, 'e725376c0660a7b59887f97ca15bf457', 2, 91, 1, 1, '2024-12-16 18:59:57'),
+(5, 'de58cd786ce7fd53028601733e868741', 2, 91, 1, 0, '2024-12-16 19:00:01'),
+(6, 'fa782d302becd359179a68359e82cd2d', 2, 91, 1, 0, '2024-12-16 19:00:54'),
+(7, '15a4351856dcba13bd4598e2dd169999', 2, 91, 1, 0, '2024-12-16 19:00:55'),
+(8, 'ada59a670f3c052fdb140e96884a0605', 2, 91, 1, 0, '2024-12-16 19:05:27'),
+(9, '10fd67b204ba998096717ffd539be06f', 2, 91, 1, 0, '2024-12-16 19:05:27'),
+(10, '5267590361d9186cc2f5dbd649269788', 2, 91, 1, 0, '2024-12-16 19:05:27'),
+(11, '34d3d0f98e9738ab8a5bb7ee6735b536', 2, 91, 0, 1, '2024-12-16 19:07:41'),
+(12, '1c7e559d3ccce01d242ec714c61165c7', 2, 91, 1, 1, '2024-12-16 19:16:06'),
+(13, '2130ed3df97ff888fc4429e5cab3ced8', 2, 91, 1, 0, '2024-12-16 19:16:09'),
+(14, 'a9b1c18f4430dd6d464d12e21beb2eb7', 2, 91, 1, 0, '2024-12-16 19:16:13'),
+(15, '8b11225ac751a366d82ffb5be853e8c9', 2, 91, 1, 0, '2024-12-16 19:16:13'),
+(16, 'eaa3fd60245454e9a619a1a75196dbc1', 2, 91, 1, 0, '2024-12-16 19:16:14'),
+(17, '1565ebc6ab4b228b23a4e4c6beb6de4c', 2, 91, 1, 0, '2024-12-16 19:16:14'),
+(18, 'fadc863ac95ae9dbb0c4245eba7c7a20', 2, 91, 1, 0, '2024-12-16 19:16:15'),
+(19, 'db7ca7ce5c312394335b05dd5d03ef61', 2, 91, 1, 0, '2024-12-16 19:16:15'),
+(20, 'a79cb89d213414ec58adf0fd37df924f', 2, 91, 1, 0, '2024-12-16 19:16:15'),
+(21, '1cbac60600c0c19988ce94c6a15d53f2', 2, 91, 1, 0, '2024-12-16 19:16:16'),
+(22, '7f20148ddd34ea4d5572debabee54975', 2, 91, 1, 0, '2024-12-16 19:16:16'),
+(23, '8ad0d23cc4e3fe2480ff8fe85769e1fa', 2, 91, 0, 0, '2024-12-16 19:18:32'),
+(24, 'b0947d7653dc67c7358517973fff9bad', 2, 91, 1, 0, '2024-12-18 18:27:06'),
+(25, '25713f3d0570b5b75c5753aa50774a1e', 2, 91, 1, 1, '2024-12-18 18:50:56'),
+(26, 'f9d418dd08e09c1b54d64715290901f4', 2, 91, 1, 1, '2024-12-18 18:50:56'),
+(27, 'ebc5404e91037b4a9d1763249c4b5cfc', 2, 91, 1, 1, '2024-12-18 18:50:56'),
+(28, '839c8284ba1a39d89324e096756c3d2d', 2, 91, 1, 1, '2024-12-18 18:50:56'),
+(29, '23a06a7deb99b73ed105c40e564e3a16', 2, 91, 1, 1, '2024-12-18 18:50:56'),
+(30, 'abb3861093dfd1084d2d4f6f61191399', 2, 91, 1, 1, '2024-12-18 18:50:56'),
+(31, '2ecbf07a0b04526ba9d59a8d5c07fb36', 2, 91, 1, 1, '2024-12-18 18:50:56'),
+(32, 'ba55a34b92d7682b4c28b6c455ccdf85', 2, 91, 1, 1, '2024-12-18 18:50:56'),
+(33, '9224c9176d7696e07ca977d1c7803fff', 2, 91, 1, 1, '2024-12-18 18:50:57'),
+(34, 'eabe62e96b78dad9d3d456fcc8870270', 2, 91, 1, 1, '2024-12-18 18:50:57'),
+(35, 'cba70240d87bbffd86fcd25de6ee496f', 2, 91, 1, 0, '2024-12-18 19:12:33'),
+(36, '1d1d6be66086bb623f2fdba0a00040aa', 4, 95, 0, 0, '2025-01-08 18:21:48');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `usuaris`
 --
 
@@ -267,7 +330,7 @@ CREATE TABLE IF NOT EXISTS `usuaris` (
   UNIQUE KEY `nom_usuari` (`nom_usuari`),
   UNIQUE KEY `correu_electronic` (`correu_electronic`),
   UNIQUE KEY `reset_token_hash` (`reset_token_hash`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuaris`
@@ -278,7 +341,7 @@ INSERT INTO `usuaris` (`id`, `nom_usuari`, `correu_electronic`, `contrasenya`, `
 (2, 'Xavi', 'xavi@gmail.com', '$2y$10$CyjHCsfj9nNgrvf4BvUaIO9.mgEb4wrn3u7uWqQYZl43CfsO1Ueyi', 'Girona FC', NULL, NULL, NULL, NULL, 0, NULL, NULL),
 (3, 'Josep', 'jpedrerol@gmail.com', '$2y$10$UzJrOph0LT2CCR8.w2qBVOKnk1gArl8UonbTGn3UYtLykVuDcY.z.', 'Crystal Palace', NULL, NULL, NULL, NULL, 0, NULL, NULL),
 (4, 'Alexismbp', 'alexismarcbp@gmail.com', NULL, 'pendiente', 'e7e03731333e2722a74689d023e376f5d3d9b25dcf35b8cb1fae71a9775c4222', '2024-12-08 21:30:37', NULL, NULL, 1, 'github', NULL),
-(5, 'SaPAlexsi', 'a.boisset@sapalomera.cat', '$2y$10$LUf66aewsQvfXjZP5HSHhuHDOgScxCj/SKI/J0waw5HCe2EuN7PYy', 'Atlético de Madrid', '809a2bc0d234ae92a56502d7a002c07fc477129ef98ba4d8ebe5901e93849543', '2024-12-08 21:24:34', 'e42321ea8183157366be3240d211f38da1afeb7e83497e9dc8c29f9cd02d7ffd', '2025-01-07 21:23:16', 2, '', 'avatar_c2ad742ea3.png'),
+(5, 'SaPAlexis', 'a.boisset@sapalomera.cat', '$2y$10$locI6NR1S0Zt7oDvaV4Gf.wverj1wSU9FeJ3hr8ndvPf2O1CEq3LC', 'OGC Nice', '100e05311bbbfb18f288f830907720cb5a280b3883cbcc81bbe4141cc9636730', '2025-01-03 13:29:00', NULL, NULL, 0, '', NULL),
 (7, 'Alexis', 'alexis@gmail.com', '$2y$10$5jOplzI9.lewF548D4UBwe.4Q/9QKm5EvfMdZX1V9e.K5U/ydH3pe', 'OGC Nice', NULL, NULL, NULL, NULL, 0, NULL, NULL);
 
 --
@@ -305,6 +368,13 @@ ALTER TABLE `partits`
   ADD CONSTRAINT `fk_liga` FOREIGN KEY (`liga_id`) REFERENCES `lligues` (`id`),
   ADD CONSTRAINT `partits_ibfk_1` FOREIGN KEY (`equip_local_id`) REFERENCES `equips` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `partits_ibfk_2` FOREIGN KEY (`equip_visitant_id`) REFERENCES `equips` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `shared_articles`
+--
+ALTER TABLE `shared_articles`
+  ADD CONSTRAINT `shared_articles_ibfk_1` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `shared_articles_ibfk_2` FOREIGN KEY (`match_id`) REFERENCES `partits` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -1,5 +1,6 @@
 <header>
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/styles/search.css">
+    <a href="<?= BASE_URL ?>"><img src="<?php echo BASE_URL; ?>assets/img/football_forum_logo.png" alt="Logo" class="logo" width="50" height="50" style="margin-left: 10px;"></a>
     <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
         <div class="user-menu">
             <p>Benvingut, <?php echo htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8'); ?>!</p>
@@ -10,8 +11,10 @@
                 <!-- Desplegable de menú d'usuari -->
                 <div class="admin-dropdown" id="adminMenu">
                     <a href="<?php echo BASE_URL; ?>create-match">Crear nou partit</a>
+                    <a href="<?php echo BASE_URL; ?>shared-articles">Partits compartits</a>
                     <a href="<?php echo BASE_URL; ?>changepassword">Canviar contrasenya</a>
                     <a href="<?php echo BASE_URL; ?>profile">Editar Perfil</a>
+                    <a href="<?php echo BASE_URL; ?>teams">Equipos</a>
                     <?php if ($_SESSION['userid'] == 1): ?>
                         <!-- Si l'usuari és l'administrador (id de l'usuari administrador és 1), mostrar enllaç per gestionar usuaris -->
                         <a href="<?php echo BASE_URL; ?>manage-users">Gestionar usuaris</a>
