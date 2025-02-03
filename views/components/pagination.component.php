@@ -1,5 +1,8 @@
 <!-- Alexis Boisset -->
 <?php
+if (!isset($totalPages)) {
+    $totalPages = 1;
+}
 if ($totalPages > 1): ?>
     <div class="pagination">
         <?php if ($currentPage > 1): ?>
@@ -7,8 +10,8 @@ if ($totalPages > 1): ?>
         <?php endif; ?>
 
         <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-            <a href="?page=<?php echo $i; ?>&lliga=<?php echo $lligaSeleccionada; ?>&partitsPerPage=<?php echo $partitsPerPage; ?>&orderBy=<?php echo $_GET['orderBy'] ?? 'date_desc'; ?>" 
-               class="<?php echo ($currentPage == $i) ? 'active' : ''; ?>">
+            <a href="?page=<?php echo $i; ?>&lliga=<?php echo $lligaSeleccionada; ?>&partitsPerPage=<?php echo $partitsPerPage; ?>&orderBy=<?php echo $_GET['orderBy'] ?? 'date_desc'; ?>"
+                class="<?php echo ($currentPage == $i) ? 'active' : ''; ?>">
                 <?php echo $i; ?>
             </a>
         <?php endfor; ?>

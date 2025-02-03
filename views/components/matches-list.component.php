@@ -1,7 +1,11 @@
 <!-- Alexis Boisset -->
 <!-- Foreach per mostrar tots els partits que pot veure l'usuari -->
 <div class="matches-list">
-    <?php foreach ($partits as $partit): ?>
+    <?php
+    if (!isset($partits) || !is_array($partits)) {
+        $partits = [];
+    }
+    foreach ($partits as $partit): ?>
         <div class="match-card">
             <p class="teams">
                 <?php echo htmlspecialchars($partit['equip_local']); ?> vs <?php echo htmlspecialchars($partit['equip_visitant']); ?>
@@ -16,7 +20,7 @@
                 </p>
             <?php endif; ?>
 
-            <?php 
+            <?php
             $hasArticle = isset($partit['article_id']) && !empty($partit['article_id']);
             if ($hasArticle): ?>
                 <div class="article-preview">
@@ -38,4 +42,3 @@
         </div>
     <?php endforeach; ?>
 </div>
-
