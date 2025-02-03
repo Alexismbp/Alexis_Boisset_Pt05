@@ -1,4 +1,4 @@
-name: Deploy to Hosting
+name: Deploy to FTP
 
 on:
   push:
@@ -8,35 +8,34 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-      
-    - name: Deploy to FTP
-      uses: SamKirkland/FTP-Deploy-Action@4.3.3
-      with:
-        server: ftp.alexisboisset.cat
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        protocol: ftps
-        port: 21
-        dangerous-clean-slate: false
-        timeout: 350000  # Incrementar el tiempo de espera a 5 minutos
-        state-name: .ftp-deploy.json
-        dry-run: false
-        security: loose
-        local-dir: ./
-        server-dir: /
-        exclude: |
-          **composer.json
-          **composer.lock
-          **/vendor/**
-          **/.git*
-          **/.git*/**
-          **/node_modules/**
-          **/.DS_Store
-          **/env.php
-          README.md
-          .htaccess
-          altres/**
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Deploy to FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        with:
+          server: ftp.alexisboisset.cat
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp # Se ha cambiado de ftps a ftp
+          port: 21
+          dangerous-clean-slate: false
+          timeout: 350000 # Incrementar el tiempo de espera a 5 minutos
+          state-name: .ftp-deploy.json
+          dry-run: false
+          local-dir: ./
+          server-dir: /
+          exclude: |
+            **composer.json
+            **composer.lock
+            **/vendor/**
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/.DS_Store
+            **/env.php
+            README.md
+            .htaccess
+            altres/**
