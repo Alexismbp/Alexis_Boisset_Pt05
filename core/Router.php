@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Router class for handling HTTP routes and requests
  */
@@ -6,13 +7,11 @@ class Router
 {
     /** @var array Array to store routes and their handlers */
     private $routes = [];
-    
+
     /** @var array Array to store route parameters */
     private $params = [];
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
      * Registers a GET route with its handler
@@ -34,6 +33,18 @@ class Router
         $this->routes['POST'][$path] = $handler;
     }
 
+    // Añadir en Router.php
+    public function put($path, $handler)
+    {
+        $this->routes['PUT'][$path] = $handler;
+    }
+
+    public function delete($path, $handler)
+    {
+        $this->routes['DELETE'][$path] = $handler;
+    }
+
+
     /**
      * Dispatches the request to the appropriate handler based on the URI
      * @param string $uri The request URI to process
@@ -43,9 +54,11 @@ class Router
     public function dispatch($uri)
     {
         // Comprobar si es una ruta de archivo estático
-        if (strpos($uri, '/uploads/') === 0 || 
-            strpos($uri, '/assets/') === 0 || 
-            strpos($uri, '/views/') === 0) {
+        if (
+            strpos($uri, '/uploads/') === 0 ||
+            strpos($uri, '/assets/') === 0 ||
+            strpos($uri, '/views/') === 0
+        ) {
             $filePath = BASE_PATH . ltrim($uri, '/');
             if (file_exists($filePath)) {
                 // Establecer el tipo MIME correcto
@@ -57,7 +70,7 @@ class Router
         }
 
         $method = $_SERVER['REQUEST_METHOD'];
-        
+
         // Limpiar la URI de parámetros de consulta
         $uri = parse_url($uri, PHP_URL_PATH);
 
@@ -74,10 +87,10 @@ class Router
                     // Extraer el valor del parámetro
                     $paramName = $this->extractParamName($route);
                     $this->params[$paramName] = $matches[1];
-                    
+
                     // Almacenar el ID en $_GET para compatibilidad
                     $_GET['id'] = $matches[1];
-                    
+
                     return $handler;
                 }
             }
@@ -125,4 +138,3 @@ class Router
         return null;
     }
 }
-?>

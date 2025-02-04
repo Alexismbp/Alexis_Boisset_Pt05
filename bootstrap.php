@@ -19,10 +19,6 @@ if (session_status() === PHP_SESSION_NONE) {
 // Ejecutar middleware de "remember me"
 AuthMiddleware::handleRememberToken();
 
-// Incluir otros archivos requeridos (modelo de partidos, etc.)
-require_once BASE_PATH . 'models/match.model.php';
-require_once BASE_PATH . 'controllers/MatchController.php';
-
 // DEBUGG
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);

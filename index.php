@@ -1,5 +1,6 @@
 <?php
 // Alexis Boisset
+require_once __DIR__ . '/bootstrap.php';
 
 $router = new Router();
 
@@ -10,13 +11,15 @@ $uri = "/" . ltrim(substr($uri, strlen($basePath)), '/');
 
 // Registrar rutas específicas para API únicamente si la URI comienza con /api
 if (strpos($uri, '/api') === 0) {
-    $matchControllerApi = new MatchControllerApi(Database::getInstance());
+    $matchControllerApi = new MatchControllerApi($conn);
     $router->get('/api/partidos', function () use ($matchControllerApi) {
         $matchControllerApi->apiGetPartidos();
     });
-    $router->get('/api/partidos/{id}', function () use ($matchControllerApi) {
-        $matchControllerApi->apiGetPartido($_GET['id']);
+    $router->get('/api/partidos/{id}', function () use ($matchControllerApi, $router) {
+        $id = $router->getParam('id');
+        $matchControllerApi->apiGetPartido($id);
     });
+
     $router->post('/api/partidos', function () use ($matchControllerApi) {
         $matchControllerApi->apiCreatePartido();
     });
