@@ -1,59 +1,34 @@
 <?php
 // Alexis Boisset
 
-require_once __DIR__ . '/vendor/autoload.php';
-require_once __DIR__ . "/models/env.php";
-require_once __DIR__ . "/models/database/database.model.php";
-require_once __DIR__ . "/controllers/session/session.controller.php";
-require_once __DIR__ . "/core/Router.php";
-require_once __DIR__ . '/controllers/middleware/AuthMiddleware.php';
-require_once __DIR__ . '/controllers/auth/SocialAuthController.php';
-
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
 $router = new Router();
 
-// DEBUGG
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// Obtener y procesar la URI
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$basePath = rtrim(parse_url(BASE_URL, PHP_URL_PATH), '/');
+$uri = "/" . ltrim(substr($uri, strlen($basePath)), '/');
 
-// require_once __DIR__ . '/models/user/user.model.php';
-// $_SERVER['REQUEST_METHOD'] = 'GET';
-// $_SERVER['REQUEST_URI'] = 'http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/qr-read';
-// $email = 'a.boisset@sapalomera.cat';
-// $userData = getUserData($email, $conn);
-// SessionHelper::setSessionData([
-//     'email' => $email,
-//     'oauth_user' => $userData['is_oauth_user'],
-//     'avatar' => $userData['avatar'] ?? 'default-avatar.webp',
-//     'LAST_ACTIVITY' => time(),
-//     'loggedin' => true,
-//     'userid' => $userData['id'],
-//     'username' => $userData['nom_usuari'],
-//     'equip' => $userData['equip_favorit'],
-//     'lliga' => getLeagueName($userData['equip_favorit'], $conn),
-//     'success' => 'Usuari registrat correctament'
-// ]);
+// Registrar rutas específicas para API únicamente si la URI comienza con /api
+if (strpos($uri, '/api') === 0) {
+    $matchControllerApi = new MatchControllerApi(Database::getInstance());
+    $router->get('/api/partidos', function () use ($matchControllerApi) {
+        $matchControllerApi->apiGetPartidos();
+    });
+    $router->get('/api/partidos/{id}', function () use ($matchControllerApi) {
+        $matchControllerApi->apiGetPartido($_GET['id']);
+    });
+    $router->post('/api/partidos', function () use ($matchControllerApi) {
+        $matchControllerApi->apiCreatePartido();
+    });
+    $router->put('/api/partidos/{id}', function () use ($matchControllerApi) {
+        $matchControllerApi->apiUpdatePartido($_GET['id']);
+    });
+    $router->delete('/api/partidos/{id}', function () use ($matchControllerApi) {
+        $matchControllerApi->apiDeletePartido($_GET['id']);
+    });
+}
 
-// Ejecutar middleware para cookie remember me
-AuthMiddleware::handleRememberToken();
-
-// Ruta para búsquedas
-$router->get('/search', function () {
-    require_once BASE_PATH . 'controllers/utils/search.controller.php';
-    $conn = Database::getInstance();
-    $searchController = new SearchController($conn);
-    $term = $_GET['term'] ?? '';
-    $results = $searchController->search($term);
-    header('Content-Type: application/json');
-    echo json_encode($results);
-    exit;
-});
-
-// Definir rutas GET
+// Registrar rutas no-API
 $router->get('/', 'controllers/main.controller.php');
 $router->get('/login', 'views/auth/login/login.view.php');
 $router->get('/register', 'views/auth/register/register.view.php');
@@ -142,12 +117,6 @@ $router->post('/save-profile', 'controllers/auth/profile.controller.php');
 $router->post('/save-preferences', 'controllers/auth/save-preferences.controller.php');
 $router->post('/merge-accounts', 'controllers/auth/merge-accounts.controller.php');
 $router->get('/logout', 'controllers/auth/logout.controller.php');
-
-
-// Obtener y procesar la URI
-$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$basePath = rtrim(parse_url(BASE_URL, PHP_URL_PATH), '/');
-$uri = "/" . ltrim(substr($uri, strlen($basePath)), '/');
 
 try {
     $result = $router->dispatch($uri);
