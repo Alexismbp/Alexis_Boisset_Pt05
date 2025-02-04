@@ -116,3 +116,36 @@
 .shared-article-card strong {
   color: #1a472a;
 }
+
+.button-group {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.btn-submit {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.btn-back {
+  background-color: #6c757d;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 1em;
+}
+
+.btn-submit:hover {
+  background-color: #218838;
+}
+
+.btn-back:hover {
+  background-color: #5a6268;
+}

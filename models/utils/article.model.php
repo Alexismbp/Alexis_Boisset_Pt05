@@ -37,3 +37,21 @@ function getAllSharedArticles($conn)
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+function articleExistsForMatchAndUser($conn, $matchId, $userId)
+{
+    $sql = "SELECT id FROM articles WHERE match_id = :match_id AND user_id = :user_id LIMIT 1";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([
+        ':match_id' => $matchId,
+        ':user_id' => $userId
+    ]);
+    return $stmt->fetch() !== false;
+}
+
+function deleteSharedArticle($conn, $token)
+{
+    $sql = "DELETE FROM shared_articles WHERE token = :token";
+    $stmt = $conn->prepare($sql);
+    return $stmt->execute([':token' => $token]);
+}

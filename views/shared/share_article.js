@@ -1,10 +1,19 @@
 document.addEventListener("DOMContentLoaded", () => {
   const shareButton = document.getElementById("share-article-btn");
   shareButton.addEventListener("click", () => {
-    const articleId = shareButton.dataset.articleId;
-    const matchId = shareButton.dataset.matchId;
     const showTitle = document.getElementById("show-title").checked;
     const showContent = document.getElementById("show-content").checked;
+
+    // Validar que al menos uno esté seleccionado
+    if (!showTitle && !showContent) {
+      alert(
+        "Debes seleccionar al menos el título o el contenido para compartir"
+      );
+      return;
+    }
+
+    const articleId = shareButton.dataset.articleId;
+    const matchId = shareButton.dataset.matchId;
 
     fetch(`${BASE_URL}ajax/share_article.php`, {
       method: "POST",

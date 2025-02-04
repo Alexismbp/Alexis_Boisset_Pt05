@@ -22,7 +22,7 @@ error_reporting(E_ALL);
 
 // require_once __DIR__ . '/models/user/user.model.php';
 // $_SERVER['REQUEST_METHOD'] = 'GET';
-// $_SERVER['REQUEST_URI'] = 'http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/teams';
+// $_SERVER['REQUEST_URI'] = 'http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/shared/966fc91fe592ac7b5111cf339a323434?action=edit';
 // $email = 'a.boisset@sapalomera.cat';
 // $userData = getUserData($email, $conn);
 // SessionHelper::setSessionData([
@@ -93,16 +93,28 @@ $router->get('/oauth/{provider}/callback', function () use ($router) {
 // Ruta para la lista de artículos compartidos
 $router->get('/shared-articles', 'controllers/shared/list-shared-articles.controller.php');
 
-// Ruta para artículos compartidos
+// Ruta para AJAX de artículos compartidos
+$router->get('/ajax-shared-articles', 'ajax/list-shared-articles.ajax.php');
+
+// Ruta para visualizar/editar artículo compartido
 $router->get('/shared/{token}', function () use ($router) {
     $token = $router->getParam('token');
     include BASE_PATH . 'controllers/shared/view-shared-article.controller.php';
 });
 
+// También agregar la ruta POST para el mismo endpoint
+$router->post('/shared/{token}', function () use ($router) {
+    $token = $router->getParam('token');
+    include BASE_PATH . 'controllers/shared/view-shared-article.controller.php';
+});
+
 // Rutas para compartir artículos
-$router->get('/share/{token}', function ($token) {
+$router->get('/share/{token}', function () use ($router) {
+    $token = $router->getParam('token');
     require BASE_PATH . 'controllers/shared/shared.controller.php';
 });
+
+$router->post('/share-article', 'controllers/shared/register-shared-article.controller.php');
 
 $router->post('/share', function () {
     require BASE_PATH . 'controllers/utils/qr.php';

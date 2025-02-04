@@ -1,10 +1,11 @@
 <?php
 require_once BASE_PATH . 'models/database/database.model.php';
 
-function handleSharedArticle($token) {
+function handleSharedArticle($token)
+{
     try {
         $pdo = Database::getInstance();
-        
+
         // Obtener información del artículo compartido
         $stmt = $pdo->prepare("
             SELECT a.*, m.*, sa.show_title, sa.show_content 
@@ -13,7 +14,7 @@ function handleSharedArticle($token) {
             JOIN partits m ON sa.match_id = m.id
             WHERE sa.token = ?
         ");
-        
+
         $stmt->execute([$token]);
         $shared = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -26,7 +27,6 @@ function handleSharedArticle($token) {
 
         // Cargar la vista con los datos
         require BASE_PATH . 'views/shared/shared-article.view.php';
-
     } catch (Exception $e) {
         // Manejar error
         error_log($e->getMessage());
@@ -36,5 +36,4 @@ function handleSharedArticle($token) {
 }
 
 // Obtener el token de la URL y manejar la solicitud
-$token = $router->getParam('token');
 handleSharedArticle($token);
