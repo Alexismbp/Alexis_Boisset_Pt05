@@ -1,48 +1,63 @@
 <?php
-require_once __DIR__ . "/../../models/env.php";
-require_once __DIR__ . "/../../models/database/database.model.php";
-require_once __DIR__ . '/../../vendor/autoload.php';
+// Prevenir cualquier salida antes del JSON
+ob_start();
+
+if (!defined('BASE_PATH')) {
+    define('BASE_PATH', dirname(__DIR__, 2) . '/');
+}
+
+require_once BASE_PATH . "models/env.php";
+require_once BASE_PATH . "models/database/database.model.php";
+require_once BASE_PATH . 'vendor/autoload.php';
 
 use chillerlan\QRCode\QRCode;
 use chillerlan\QRCode\QROptions;
 use chillerlan\QRCode\Common\EccLevel;
 
+// Limpiar cualquier salida anterior
+ob_clean();
+
+// Establecer headers
+header('Content-Type: application/json');
+header('Cache-Control: no-cache, must-revalidate');
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $pdo = Database::getInstance();
-        
-        // Validación de datos
-        if (!isset($_POST['article_id'], $_POST['match_id'])) {
-            throw new Exception('Faltan parámetros requeridos');
+
+        if (isset($_POST['token'])) {
+            // Si se envía token, generar QR para la URL de compartir existente
+            // Sanitizar usando htmlspecialchars en lugar de FILTER_SANITIZE_STRING
+            $token = htmlspecialchars(trim($_POST['token']), ENT_QUOTES, 'UTF-8');
+            $url = rtrim(BASE_URL, '/') . '/shared/' . $token;
+        } else {
+            // Validación y creación de nuevo artículo compartido
+            if (!isset($_POST['article_id'], $_POST['match_id'])) {
+                throw new Exception('Faltan parámetros requeridos');
+            }
+            $article_id = filter_input(INPUT_POST, 'article_id', FILTER_VALIDATE_INT);
+            $match_id = filter_input(INPUT_POST, 'match_id', FILTER_VALIDATE_INT);
+            if ($article_id === false || $match_id === false) {
+                throw new Exception('IDs inválidos');
+            }
+            $show_title = isset($_POST['titol']) ? 1 : 0;
+            $show_content = isset($_POST['cos']) ? 1 : 0;
+
+            // Generar token y URL relativa
+            $token = bin2hex(random_bytes(16));
+            $url = BASE_URL . 'share/' . $token;
+
+            // Insertar en la base de datos
+            $stmt = $pdo->prepare("INSERT INTO shared_articles (token, article_id, match_id, show_title, show_content) VALUES (?, ?, ?, ?, ?)");
+            if (!$stmt->execute([$token, $article_id, $match_id, $show_title, $show_content])) {
+                throw new Exception('Error al guardar en la base de datos');
+            }
         }
 
-        $article_id = filter_var($_POST['article_id'], FILTER_VALIDATE_INT);
-        $match_id = filter_var($_POST['match_id'], FILTER_VALIDATE_INT);
-        
-        if ($article_id === false || $match_id === false) {
-            throw new Exception('IDs inválidos');
-        }
-
-        $show_title = isset($_POST['titol']) ? 1 : 0;
-        $show_content = isset($_POST['cos']) ? 1 : 0;
-        
-        // Generar token y URL relativa
-        $token = bin2hex(random_bytes(16));
-        $url = BASE_URL . 'share/' . $token;
-
-        // Preparar y ejecutar la inserción
-        $stmt = $pdo->prepare("INSERT INTO shared_articles (token, article_id, match_id, show_title, show_content) VALUES (?, ?, ?, ?, ?)");
-        
-        // Ejecutar la consulta
-        if (!$stmt->execute([$token, $article_id, $match_id, $show_title, $show_content])) {
-            throw new Exception('Error al guardar en la base de datos');
-        }
-
-        // Configurar opciones del QR
+        // Configurar opciones y generar el código QR
         $options = new QROptions([
             'outputType' => QRCode::OUTPUT_MARKUP_SVG,
             'eccLevel' => EccLevel::L,
@@ -50,18 +65,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'addQuietzone' => true,
             'quietzoneSize' => 4,
         ]);
-
-        // Generar código QR
         $qr = new QRCode($options);
         $qrSvg = $qr->render($url);
 
-        // Devolver respuesta exitosa
         echo json_encode([
             'success' => true,
             'url' => $url,
             'qr' => $qrSvg
         ]);
-        
     } catch (Exception $e) {
         error_log($e->getMessage());
         http_response_code(400);
@@ -77,4 +88,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'error' => 'Método no permitido'
     ]);
 }
-?>

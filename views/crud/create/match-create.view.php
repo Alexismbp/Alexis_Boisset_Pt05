@@ -23,6 +23,7 @@ if (isset($_GET['netejar'])) {
 
 <!DOCTYPE html>
 <html lang="ca">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,11 +31,12 @@ if (isset($_GET['netejar'])) {
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/views/crud/create/styles_crear.css">
     <script src="<?php echo BASE_URL; ?>/scripts/lligaequip.js" defer></script>
 </head>
+
 <body>
     <div class="container form-container"> <!-- Cambiado de 'gestalt-form' a 'form-container' -->
         <h1>Crear Nou Partit</h1>
         <form action="<?php echo BASE_URL; ?>save-match" method="POST">
-            <input type="hidden" name="id" value="<?php echo htmlspecialchars($_SESSION['id']); ?>">
+            <input type="hidden" name="id" value="<?php echo htmlspecialchars($_SESSION['id'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
             <!-- Feedback -->
             <?php require_once BASE_PATH . '/views/layouts/feedback.view.php'; ?>
 
@@ -42,7 +44,7 @@ if (isset($_GET['netejar'])) {
                 <legend>Informació del Partit</legend>
                 <div class="form-group">
                     <label for="lliga">Lliga:</label>
-                    <input type="text" id="lliga" name="lliga" class="input-field" 
+                    <input type="text" id="lliga" name="lliga" class="input-field"
                         value="<?php echo htmlspecialchars($_SESSION['lliga']); ?>" readonly>
                 </div>
 
@@ -101,4 +103,5 @@ if (isset($_GET['netejar'])) {
         </form>
     </div>
 </body>
+
 </html>

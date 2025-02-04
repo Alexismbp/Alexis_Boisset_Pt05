@@ -75,7 +75,7 @@ if (ob_get_length()) {
 }
 
 try {
-    $token = $_GET['token'] ?? null;
+    // $token = $_GET['token'] ?? null;
 
     if (!$token) {
         throw new Exception('Token no proporcionado.');

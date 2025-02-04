@@ -22,7 +22,7 @@ error_reporting(E_ALL);
 
 // require_once __DIR__ . '/models/user/user.model.php';
 // $_SERVER['REQUEST_METHOD'] = 'GET';
-// $_SERVER['REQUEST_URI'] = 'http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/shared/966fc91fe592ac7b5111cf339a323434?action=edit';
+// $_SERVER['REQUEST_URI'] = 'http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/shared/84bce8cc1834f407ef73321b3cd49f36';
 // $email = 'a.boisset@sapalomera.cat';
 // $userData = getUserData($email, $conn);
 // SessionHelper::setSessionData([

@@ -28,6 +28,12 @@
                     <p><strong>Mostrar Contenido:</strong> <?= $row['show_content'] ? 'Sí' : 'No'; ?></p>
                     <p><small>Creado: <?= $row['created_at']; ?></small></p>
                     <a href="<?php echo rtrim(BASE_URL, '/') . '/shared/' . htmlspecialchars($row['token']); ?>?action=edit" class="btn">Dar de alta</a>
+                    <!-- Nuevo botón para mostrar QR -->
+                    <button class="btn-show-qr" data-token="<?= htmlspecialchars($row['token']); ?>">Mostrar QR</button>
+                    <!-- Contenedor oculto para el QR -->
+                    <div class="qr-container" style="display:none; margin-top:10px;">
+                        <img src="" alt="QR Code" />
+                    </div>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -64,12 +70,20 @@
                             <p><strong>Mostrar Contenido:</strong> ${article.show_content ? 'Sí' : 'No'}</p>
                             <p><small>Creado: ${article.created_at}</small></p>
                             <a href="<?php echo BASE_URL; ?>shared/${article.token}?action=edit" class="btn">Dar de alta</a>
+                            <!-- Nuevo botón para mostrar QR -->
+                            <button class="btn-show-qr" data-token="${article.token}">Mostrar QR</button>
+                            <!-- Contenedor oculto para el QR -->
+                            <div class="qr-container" style="display:none; margin-top:10px;">
+                                <img src="" alt="QR Code" />
+                            </div>
                         </div>
                         `;
                     });
                     setTimeout(() => {
                         articlesContainer.innerHTML = inner;
                         articlesContainer.style.opacity = 1;
+                        // Reasignar el listener a los nuevos botones
+                        assignQRListeners();
                     }, 300);
                 })
                 .catch(error => {
@@ -77,6 +91,46 @@
                     articlesContainer.style.opacity = 1;
                 });
         });
+
+        const baseUrl = "<?php echo BASE_URL; ?>";
+        const assignQRListeners = () => {
+            document.querySelectorAll('.btn-show-qr').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const token = this.getAttribute('data-token');
+                    const qrContainer = this.nextElementSibling;
+                    const img = qrContainer.querySelector('img');
+
+                    const formData = new FormData();
+                    formData.append('token', token);
+
+                    fetch(baseUrl + "share", {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Error en la solicitud');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success && data.qr) {
+                                img.setAttribute('src', data.qr);
+                                qrContainer.style.display = qrContainer.style.display === 'none' ? 'block' : 'none';
+                            } else {
+                                throw new Error(data.error || 'Error al generar el código QR');
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            alert(error.message);
+                        });
+                });
+            });
+        };
+
+        // Asignar listeners a los botones inicialmente
+        assignQRListeners();
     </script>
 </body>
 
