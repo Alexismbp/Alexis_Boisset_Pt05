@@ -18,6 +18,7 @@
 
         <h1>Lista de Artículos Compartidos</h1>
         <button id="update-shared-articles">Actualizar Lista de Artículos Compartidos</button>
+        <a href="<?= BASE_URL ?>qr-read">Llegir QR</a>
         <div class="shared-articles-container">
             <?php foreach ($sharedArticles as $row): ?>
                 <div class="shared-article-card">

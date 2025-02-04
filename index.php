@@ -22,7 +22,7 @@ error_reporting(E_ALL);
 
 // require_once __DIR__ . '/models/user/user.model.php';
 // $_SERVER['REQUEST_METHOD'] = 'GET';
-// $_SERVER['REQUEST_URI'] = 'http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/shared/84bce8cc1834f407ef73321b3cd49f36';
+// $_SERVER['REQUEST_URI'] = 'http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/qr-read';
 // $email = 'a.boisset@sapalomera.cat';
 // $userData = getUserData($email, $conn);
 // SessionHelper::setSessionData([
@@ -116,9 +116,9 @@ $router->get('/share/{token}', function () use ($router) {
 
 $router->post('/share-article', 'controllers/shared/register-shared-article.controller.php');
 
-$router->post('/share', function () {
-    require BASE_PATH . 'controllers/utils/qr.php';
-});
+$router->post('/share',  'controllers/utils/qr.php');
+$router->post('/qr-read', 'controllers/utils/qr-read.php');
+$router->get('/qr-read', 'views/qr/qr-read.view.php');
 
 // Definir rutas GET (Admin)
 $router->get('/manage-users', 'controllers/admin/manage-users.controller.php');
