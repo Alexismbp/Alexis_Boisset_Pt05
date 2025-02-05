@@ -3,6 +3,9 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background-color: rgba(245, 245, 245, 1);
+  color: rgba(51, 51, 51, 1);
 }
 
 .page-container {
@@ -13,35 +16,45 @@ body {
 
 .content-container {
   flex: 1;
-  padding: 1rem;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .qr-reader-container {
   max-width: 800px;
-  margin: 2rem auto;
+  width: 100%;
+  margin: auto;
   padding: 2rem;
-  background-color: var(--background-secondary);
+  background-color: rgba(242, 242, 242, 1);
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.qr-reader-container h1 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
 .qr-form {
   margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .qr-form label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: var(--text-primary);
-  font-weight: bold;
+  color: rgba(51, 51, 51, 1);
+  font-weight: 600;
 }
 
 .qr-form input[type="file"] {
-  margin-bottom: 1rem;
   padding: 0.5rem;
-  width: 100%;
-  border: 1px solid var(--border-color);
+  border: 1px solid rgba(204, 204, 204, 1);
   border-radius: 4px;
+  cursor: pointer;
 }
 
 .result-container {
@@ -49,68 +62,71 @@ body {
   flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
-  margin-top: 1rem;
 }
 
 #qr-output {
   flex: 1;
-  min-width: 200px;
+  min-width: 150px;
   padding: 0.5rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid rgba(204, 204, 204, 1);
   border-radius: 4px;
-  background-color: var(--background-primary);
-  color: var(--text-primary);
+  background-color: rgba(255, 255, 255, 1);
 }
 
 .btn-submit {
   padding: 0.5rem 1rem;
-  background-color: var(--primary-color);
+  background-color: rgba(40, 167, 69, 1);
   color: #fff;
-  border: none;
+  border: 2px solid rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  transition: background-color 0.3s, box-shadow 0.3s, border-color 0.3s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .btn-submit:hover {
-  background-color: var(--primary-color-dark);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  background-color: rgba(33, 136, 56, 1);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  border-color: rgba(0, 0, 0, 0.3);
 }
 
 .btn-link {
   padding: 0.5rem 1rem;
-  background-color: var(--primary-color); /* mismo verde que el header */
-  color: #fff; /* texto blanco */
+  background-color: rgba(40, 167, 69, 1);
+  color: #fff;
   border: 2px solid rgba(0, 0, 0, 0.2);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  transition: background-color 0.3s, box-shadow 0.3s, border-color 0.3s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   display: none;
 }
 
 .btn-link:hover {
-  background-color: var(--primary-color-dark);
-  border-color: rgba(0, 0, 0, 0.3);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-}
-
-/* Actualización para diferenciar los botones sobre fondo blanco */
-.btn-submit,
-.btn-link {
-  border: 2px solid rgba(0, 0, 0, 0.2);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  background-clip: padding-box;
-}
-
-.btn-submit:hover,
-.btn-link:hover {
+  background-color: rgba(33, 136, 56, 1);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
   border-color: rgba(0, 0, 0, 0.3);
 }
 
-/* Footer siempre abajo */
 footer {
   margin-top: auto;
   padding: 1rem;
-  background-color: var(--background-secondary);
+  background-color: rgba(230, 230, 230, 1);
   text-align: center;
+}
+
+@media (max-width: 600px) {
+  .qr-reader-container {
+    padding: 1rem;
+  }
+  .result-container {
+    flex-direction: column;
+  }
+  #qr-output {
+    width: 100%;
+  }
+  .btn-submit,
+  .btn-link {
+    width: 100%;
+  }
 }
