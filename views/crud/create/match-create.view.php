@@ -87,11 +87,14 @@ if (isset($_GET['netejar'])) {
                 <div class="article-section">
                     <div class="form-group">
                         <label for="article_title">Títol de l'Article (Opcional):</label>
-                        <input type="text" id="article_title" name="article_title" class="input-field">
+                        <input type="text" id="article_title" name="article_title" class="input-field"
+                            value="<?php echo htmlspecialchars($_GET['shared_title'] ?? ''); ?>">
                     </div>
                     <div class="form-group">
                         <label for="article_content">Contingut de l'Article (Opcional):</label>
-                        <textarea id="article_content" name="article_content" class="input-field article-content"></textarea>
+                        <textarea id="article_content" name="article_content" class="input-field article-content"><?php
+                                                                                                                    echo htmlspecialchars($_GET['shared_content'] ?? '');
+                                                                                                                    ?></textarea>
                     </div>
                 </div>
             </fieldset>

@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (isset($_POST['token'])) {
             // Si se envía token, generar QR para la URL de compartir existente
-            // Sanitizar usando htmlspecialchars en lugar de FILTER_SANITIZE_STRING
+
             $token = htmlspecialchars(trim($_POST['token']), ENT_QUOTES, 'UTF-8');
             if (!$sharedArticle->validateToken($token)) {
                 throw new Exception('Token inválido');
@@ -47,8 +47,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($article_id === false || $match_id === false) {
                 throw new Exception('IDs inválidos');
             }
+
+            // Verificar que al menos una checkbox está marcada
             $show_title = isset($_POST['titol']) ? 1 : 0;
             $show_content = isset($_POST['cos']) ? 1 : 0;
+
+            if (!$show_title && !$show_content) {
+                throw new Exception('Has de seleccionar almenys una opció per compartir');
+            }
 
             // Generar token y URL relativa
             $token = bin2hex(random_bytes(16));
