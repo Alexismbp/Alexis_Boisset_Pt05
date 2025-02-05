@@ -35,8 +35,13 @@
             <div class="action-buttons">
                 <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']): ?>
                     <form action="<?php echo BASE_URL; ?>create-match" method="GET">
-                        <input type="hidden" name="shared_title" value="<?= htmlspecialchars($shared['title'] ?? ''); ?>">
-                        <input type="hidden" name="shared_content" value="<?= htmlspecialchars($shared['content'] ?? ''); ?>">
+                        <?php if ($shared['show_title']): ?>
+                            <input type="hidden" name="shared_title" value="<?= htmlspecialchars($shared['title'] ?? ''); ?>">
+                        <?php endif; ?>
+
+                        <?php if ($shared['show_content']): ?>
+                            <input type="hidden" name="shared_content" value="<?= htmlspecialchars($shared['content'] ?? ''); ?>">
+                        <?php endif; ?>
                         <button type="submit" class="btn-primary">Crear Article al Meu Perfil</button>
                     </form>
                 <?php else: ?>
