@@ -61,7 +61,7 @@ class FootballApi
             ],
 
             CURLOPT_SSL_VERIFYPEER => true,
-            CURLOPT_CAINFO => __DIR__ . '/cacert.pem',
+            CURLOPT_CAINFO => BASE_PATH . 'controllers/api/cacert.pem',
 
 
         ]);
