@@ -3,10 +3,16 @@ require_once __DIR__ . '/../../models/env.php';
 
 // Procesar petición AJAX si existe
 if (isset($_GET['action']) && $_GET['action'] === 'teamPlayers' && isset($_GET['team_id'])) {
-    $api = new FootballApi();
-    $response = $api->getTeamPlayers($_GET['team_id']);
-    header('Content-Type: application/json');
-    echo json_encode($response);
+    try {
+        $api = new FootballApi();
+        $response = $api->getTeamPlayers($_GET['team_id']);
+        header('Content-Type: application/json');
+        echo json_encode($response);
+    } catch (Exception $e) {
+        error_log('Error en FootballApi: ' . $e->getMessage());
+        http_response_code(500);
+        echo json_encode(['error' => 'Error del servidor: ' . $e->getMessage()]);
+    }
     exit;
 }
 
@@ -121,13 +127,27 @@ class FootballApi
     public function getTeamPlayers(int $teamId): array
     {
         try {
-            return $this->executeApiCall('players', [
+            if (!defined('FOOTBALL_API_KEY') || !defined('API_HOST')) {
+                throw new Exception('API credentials not configured');
+            }
+
+            $response = $this->executeApiCall('players', [
                 'team' => $teamId,
                 'season' => self::SEASON
             ]);
+
+            if (!isset($response['response'])) {
+                throw new Exception('Invalid API response format');
+            }
+
+            return $response;
         } catch (Exception $e) {
-            error_log($e->getMessage());
-            return ['error' => 'Error obteniendo jugadores'];
+            error_log('FootballApi getTeamPlayers error: ' . $e->getMessage());
+            return [
+                'error' => 'Error obteniendo jugadores',
+                'details' => $e->getMessage(),
+                'team_id' => $teamId
+            ];
         }
     }
 
