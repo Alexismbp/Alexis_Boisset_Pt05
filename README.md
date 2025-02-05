@@ -23,6 +23,8 @@ El controller que fa les sol·licituds a l'API de Football `FootballApi.php` té
 
 El tema de que els articles s'han de poder duplicar pero després no poden haber duplicats: La meva solució és que a la taula de `shared_articles` es poden duplicar els articles, o sigui, puc compartir el mateix article 1000 vegades si vull i amb les mateixes condicions (mostrar només titol, cos, o les dos opcions). Però a l'hora de donar d'alta l'article a la taula d'`articles` un usuari no pot tenir el mateix article duplicat. Així arreglem la singularitat de l'enunciat.
 
+Nou arxiu!!!: `bootstrap.php`. Aquest arxiu és el que s'encarrega de carregar totes les classes que necessito per a l'aplicació. Així no he de fer un `require_once` a cada arxiu que necessito. Aquest arxiu és el primer que s'executa a l'index.php. Podríem dir que es l'autoload que vas explicar a classe pero chapucero 😬.
+
 **Justificació i valoració fetch manual vistaAjax:** El botó permet que l'usuari controli quan es realitza el fetch, evitant peticions innecessàries a la base de dades i fer un ús excessiu dels recursos. També millora l'experiència d'usuari, ja que només s'actualitza la informació quan és realment necessari, imagina que estás 10 minuts buscant un article per donar d'alta i quan el trobes de sobte s'actualitza la pàgina i ara tens que tornar a trobar-lo. (WEBSOCKETS SERIA LA MILLOR SOLUCIÓ, però a día d'avui no se com fer-ho, se que és i que existeix pero no se com implementar-ho).
 
 **Justificació i valoració lectura API Rest:** El que he fet es que si la petició que s'està fent no es troba a la memòria cau llavors s'ha de fer petició a l'API, i ja està no s'acaba el món, els DNS funcionen així.

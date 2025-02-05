@@ -43,96 +43,9 @@
     <?php include BASE_PATH . 'views/components/footer.component.php'; ?>
 
     <script>
-        const articlesContainer = document.querySelector('.shared-articles-container');
-        articlesContainer.style.transition = 'opacity 0.3s ease';
-        document.getElementById('update-shared-articles').addEventListener('click', function() {
-            articlesContainer.style.opacity = 0;
-            fetch('<?php echo BASE_URL; ?>ajax-shared-articles')
-                .then(response => response.text())
-                .then(text => {
-                    try {
-                        return JSON.parse(text);
-                    } catch (e) {
-                        throw new Error('Error parseando JSON: ' + e.message);
-                    }
-                })
-                .then(data => {
-                    if (data.error) {
-                        throw new Error(data.error);
-                    }
-                    let inner = '';
-                    data.forEach(article => {
-                        inner += `
-                        <div class="shared-article-card">
-                            <h3>${article.article_title}</h3>
-                            <p><strong>Partido:</strong> ${article.equipo_local} vs ${article.equipo_visitante}</p>
-                            <p><strong>Data partit:</strong> ${article.data}</p>
-                            <p><strong>Mostrar Título:</strong> ${article.show_title ? 'Sí' : 'No'}</p>
-                            <p><strong>Mostrar Contenido:</strong> ${article.show_content ? 'Sí' : 'No'}</p>
-                            <p><small>Creado: ${article.created_at}</small></p>
-                            <a href="<?php echo BASE_URL; ?>shared/${article.token}?action=edit" class="btn">Dar de alta</a>
-                            <!-- Nuevo botón para mostrar QR -->
-                            <button class="btn-show-qr" data-token="${article.token}">Mostrar QR</button>
-                            <!-- Contenedor oculto para el QR -->
-                            <div class="qr-container" style="display:none; margin-top:10px;">
-                                <img src="" alt="QR Code" />
-                            </div>
-                        </div>
-                        `;
-                    });
-                    setTimeout(() => {
-                        articlesContainer.innerHTML = inner;
-                        articlesContainer.style.opacity = 1;
-                        // Reasignar el listener a los nuevos botones
-                        assignQRListeners();
-                    }, 300);
-                })
-                .catch(error => {
-                    articlesContainer.innerHTML = `<p class="error">Error: ${error.message}</p>`;
-                    articlesContainer.style.opacity = 1;
-                });
-        });
-
         const baseUrl = "<?php echo BASE_URL; ?>";
-        const assignQRListeners = () => {
-            document.querySelectorAll('.btn-show-qr').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const token = this.getAttribute('data-token');
-                    const qrContainer = this.nextElementSibling;
-                    const img = qrContainer.querySelector('img');
-
-                    const formData = new FormData();
-                    formData.append('token', token);
-
-                    fetch(baseUrl + "share", {
-                            method: 'POST',
-                            body: formData
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Error en la solicitud');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            if (data.success && data.qr) {
-                                img.setAttribute('src', data.qr);
-                                qrContainer.style.display = qrContainer.style.display === 'none' ? 'block' : 'none';
-                            } else {
-                                throw new Error(data.error || 'Error al generar el código QR');
-                            }
-                        })
-                        .catch(error => {
-                            console.error(error);
-                            alert(error.message);
-                        });
-                });
-            });
-        };
-
-        // Asignar listeners a los botones inicialmente
-        assignQRListeners();
     </script>
+    <script src="<?php echo BASE_URL; ?>scripts/shared-articles.js"></script>
 </body>
 
 </html>

@@ -1,3 +1,21 @@
+/**
+ * Gestió de la visualització de jugadors d'un equip
+ *
+ * @author Alexis Boisset
+ *
+ * Funcionalitats principals:
+ * - Càrrega dinàmica dels jugadors d'un equip específic
+ * - Mostra la informació bàsica de cada jugador:
+ *   - Foto del jugador (amb imatge per defecte si no està disponible)
+ *   - Nom del jugador
+ *   - Posició al camp
+ * - Gestió d'errors en la càrrega de dades
+ *
+ * @param {string} baseUrl - URL base de l'aplicació
+ * @param {number} teamId - Identificador de l'equip
+ */
+
+// Alexis Boisset
 function loadPlayers(baseUrl, teamId) {
   const container = document.getElementById("playersContainer");
   container.innerHTML = "<p>Cargando jugadores...</p>";

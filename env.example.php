@@ -37,5 +37,5 @@ define('MAIL_FROM_NAME', '');
 define('FOOTBALL_API_KEY', '');
 define('API_HOST', '');
 
-// JWT
+// JWT (Didn't use it in the end so you can leave it empty)
 define('JWT_SECRET', ''); // 32 bytes

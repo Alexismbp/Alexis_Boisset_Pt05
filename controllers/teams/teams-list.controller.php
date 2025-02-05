@@ -21,7 +21,7 @@ try {
     // Obtener el ID de la liga
     $leagueId = determineLeagueId();
 
-    // Obtener los equipos usando la nueva clase con caché
+    // Obtener los equipos
     $teams = $api->getTeams($leagueId);
 
     // Si hay error, guardarlo en session para mostrarlo
@@ -32,11 +32,11 @@ try {
         }
     }
 
-    // Incluir la vista con los datos
+
     include BASE_PATH . 'views/teams/teams-list.view.php';
 } catch (Exception $e) {
     $_SESSION['failure'] = "Error al procesar la solicitud: " . $e->getMessage();
-    // Redirigir a la página principal o mostrar un error
+    // Redirigir a la página principal
     header('Location: ' . BASE_URL);
     exit;
 }

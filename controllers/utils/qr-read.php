@@ -1,39 +1,48 @@
 <?php
 
+/**
+ * Script per llegir codis QR
+ * 
+ * Aquest fitxer proporciona la funcionalitat per llegir i processar imatges amb codis QR.
+ * Utilitza la llibreria chillerlan\QRCode per descodificar els codis QR.
+ * 
+ * @author Alexis Boisset
+ */
+
 use chillerlan\QRCode\QRCode;
-// Iniciar el almacenamiento en buffer y definir cabeceras JSON
+
+// Iniciem el buffer de sortida i configurem les capçaleres JSON
 ob_start();
 header('Content-Type: application/json');
 
-// Ajusta la ruta al autoload según tu estructura de directorios
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-
-// Solo se permite el método POST
+// Comprovem que el mètode sigui POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['success' => false, 'error' => 'Método no permitido.']);
+    echo json_encode(['success' => false, 'error' => 'Mètode no permès.']);
     exit;
 }
 
-// Verificar que se haya recibido el archivo
+// Verifiquem que s'ha rebut el fitxer
 if (!isset($_FILES['qrimage'])) {
-    echo json_encode(['success' => false, 'error' => 'No se ha enviado ningún archivo.']);
+    echo json_encode(['success' => false, 'error' => 'No s\'ha enviat cap fitxer.']);
     exit;
 }
 
+// Comprovem que no hi ha hagut errors en la pujada
 if ($_FILES['qrimage']['error'] !== UPLOAD_ERR_OK) {
-    echo json_encode(['success' => false, 'error' => 'Error al subir el archivo.']);
+    echo json_encode(['success' => false, 'error' => 'Error en pujar el fitxer.']);
     exit;
 }
 
 $tmpPath = $_FILES['qrimage']['tmp_name'];
 
 try {
-    // Instanciar la clase QRCode y leer el QR de la imagen
+    // Instanciem la classe QRCode i llegim el QR de la imatge
     $qr = new QRCode();
     $result = $qr->readFromFile($tmpPath);
 
-    // Devuelve el contenido del QR (puede ser una URL o cualquier texto)
+    // Retornem el contingut del QR (pot ser una URL o qualsevol text)
     echo json_encode([
         'success' => true,
         'data'    => $result->data

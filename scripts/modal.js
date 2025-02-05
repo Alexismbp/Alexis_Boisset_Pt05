@@ -1,3 +1,23 @@
+/**
+ * Gestió del modal per compartir contingut mitjançant codis QR
+ *
+ * @author Alexis Boisset
+ *
+ * Funcionalitats principals:
+ * - Obertura i tancament del modal
+ * - Gestió del formulari de compartició
+ * - Validació de les opcions seleccionades
+ * - Generació i visualització del codi QR
+ * - Gestió d'errors en la generació del QR
+ *
+ * Elements principals:
+ * - Modal amb formulari de compartició
+ * - Overlay per enfosquir el fons
+ * - Contenidor per mostrar el codi QR generat
+ * - Botons d'obertura i tancament del modal
+ */
+
+// Alexis Boisset
 document.addEventListener("DOMContentLoaded", () => {
   const openModalButton = document.querySelector("[data-modal-target]");
   const closeModalButtons = document.querySelectorAll("[data-close-button]");

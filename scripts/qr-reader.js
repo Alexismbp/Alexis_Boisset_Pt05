@@ -1,3 +1,16 @@
+/**
+ * Script per gestionar la lectura de codis QR
+ *
+ * @author Alexis Boisset
+ *
+ * Aquest fitxer conté la lògica per:
+ * - Capturar l'enviament del formulari de lectura QR
+ * - Enviar la imatge del codi QR al servidor
+ * - Mostrar el resultat de la lectura
+ * - Gestionar el botó per anar a l'enllaç descodificat
+ */
+
+// Alexis Boisset
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("qr-form");
   const goToLinkBtn = document.getElementById("go-to-link");
