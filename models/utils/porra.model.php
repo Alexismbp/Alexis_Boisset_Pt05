@@ -455,20 +455,37 @@ function actualitzarPartit(PDO $conn, int $id, array $data): bool
         $sql = "UPDATE partits 
                 SET equip_local_id = :equip_local_id,
                     equip_visitant_id = :equip_visitant_id,
-                    data = :data
+                    data = :data,
+                    gols_local = :gols_local,
+                    gols_visitant = :gols_visitant,
+                    jugat = :jugat,
+                    liga_id = :liga_id
                 WHERE id = :id";
 
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([
-            ':id' => $id,
-            ':equip_local_id' => getTeamID($conn, $data['equipo_local']),
-            ':equip_visitant_id' => getTeamID($conn, $data['equipo_visitante']),
-            ':data' => $data['fecha']
-        ]);
+        // Crear variables temporales para bindParam
+        $equip_local_id = getTeamID($conn, $data['equipo_local']);
+        $equip_visitant_id = getTeamID($conn, $data['equipo_visitante']);
+        $fecha = $data['fecha'];
+        $goles_local = $data['goles_local'] ?? 0;
+        $goles_visitante = $data['goles_visitante'] ?? 0;
+        $jugado = $data['jugado'] ?? 0;
+        $liga_id = $data['liga_id'];
 
-        return true;
+        $stmt = $conn->prepare($sql);
+
+        // Vincular parámetros
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':equip_local_id', $equip_local_id);
+        $stmt->bindParam(':equip_visitant_id', $equip_visitant_id);
+        $stmt->bindParam(':data', $fecha);
+        $stmt->bindParam(':gols_local', $goles_local);
+        $stmt->bindParam(':gols_visitant', $goles_visitante);
+        $stmt->bindParam(':jugat', $jugado);
+        $stmt->bindParam(':liga_id', $liga_id, PDO::PARAM_INT);
+
+        return $stmt->execute();
     } catch (PDOException $e) {
         error_log("Error en actualitzarPartit: " . $e->getMessage());
-        return false;
+        throw $e;
     }
 }
