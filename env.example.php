@@ -32,4 +32,10 @@ define('MAIL_USERNAME', '');
 define('MAIL_PASSWORD', '');
 define('MAIL_FROM', '');
 define('MAIL_FROM_NAME', '');
-?>
+
+// API de fútbol
+define('FOOTBALL_API_KEY', '');
+define('API_HOST', '');
+
+// JWT
+define('JWT_SECRET', ''); // 32 bytes

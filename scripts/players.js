@@ -3,7 +3,7 @@ function loadPlayers(baseUrl, teamId) {
   container.innerHTML = "<p>Cargando jugadores...</p>";
 
   fetch(
-    `${baseUrl}models/utils/FootballApi.php?action=teamPlayers&team_id=${teamId}`
+    `${baseUrl}controllers/api/FootballApi.php?action=teamPlayers&team_id=${teamId}`
   )
     .then((response) => response.json())
     .then((data) => {

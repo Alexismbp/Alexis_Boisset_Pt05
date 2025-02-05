@@ -19,9 +19,9 @@ class FootballApi
     private const CACHE_DIR = __DIR__ . '/cache'; // Directorio para almacenar los archivos de caché
 
     private static $leagueIds = [
-        'premierleague' => 39,   // Premier League
-        'laliga' => 140,   // LaLiga
-        'ligue1' => 61     // Ligue 1
+        'premierleague' => 39,
+        'laliga' => 140,
+        'ligue1' => 61
     ];
 
     public function __construct()

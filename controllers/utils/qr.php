@@ -9,6 +9,7 @@ if (!defined('BASE_PATH')) {
 require_once BASE_PATH . "models/env.php";
 require_once BASE_PATH . "models/database/database.model.php";
 require_once BASE_PATH . 'vendor/autoload.php';
+require_once BASE_PATH . "models/shared_article.model.php";
 
 use chillerlan\QRCode\QRCode;
 use chillerlan\QRCode\QROptions;
@@ -26,12 +27,15 @@ ini_set('display_errors', 1);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $pdo = Database::getInstance();
+        $sharedArticle = new SharedArticle();
 
         if (isset($_POST['token'])) {
             // Si se envía token, generar QR para la URL de compartir existente
             // Sanitizar usando htmlspecialchars en lugar de FILTER_SANITIZE_STRING
             $token = htmlspecialchars(trim($_POST['token']), ENT_QUOTES, 'UTF-8');
+            if (!$sharedArticle->validateToken($token)) {
+                throw new Exception('Token inválido');
+            }
             $url = rtrim(BASE_URL, '/') . '/shared/' . $token;
         } else {
             // Validación y creación de nuevo artículo compartido
@@ -50,9 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $token = bin2hex(random_bytes(16));
             $url = BASE_URL . 'share/' . $token;
 
-            // Insertar en la base de datos
-            $stmt = $pdo->prepare("INSERT INTO shared_articles (token, article_id, match_id, show_title, show_content) VALUES (?, ?, ?, ?, ?)");
-            if (!$stmt->execute([$token, $article_id, $match_id, $show_title, $show_content])) {
+            if (!$sharedArticle->createSharedArticle($token, $article_id, $match_id, $show_title, $show_content)) {
                 throw new Exception('Error al guardar en la base de datos');
             }
         }

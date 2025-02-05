@@ -1,5 +1,5 @@
 <?php
-require_once BASE_PATH . 'models/utils/FootballApi.php';
+require_once BASE_PATH . 'controllers/api/FootballApi.php';
 
 /**
  * Determina el ID de la liga según la liga del usuario en sesión

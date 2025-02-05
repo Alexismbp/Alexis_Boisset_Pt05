@@ -9,7 +9,7 @@ require_once __DIR__ . "/controllers/session/session.controller.php";
 require_once __DIR__ . "/core/Router.php";
 require_once __DIR__ . '/controllers/middleware/AuthMiddleware.php';
 require_once __DIR__ . '/controllers/auth/SocialAuthController.php';
-require_once __DIR__ . '/controllers/MatchControllerApi.php';
+require_once __DIR__ . '/controllers/api/MatchControllerApi.php';
 
 // Iniciar la sesión si es necesario
 if (session_status() === PHP_SESSION_NONE) {
