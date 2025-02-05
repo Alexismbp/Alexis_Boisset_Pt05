@@ -1,4 +1,15 @@
 <?php
+
+/**
+ * Funciones para la gestión de claves API
+ */
+
+/**
+ * Valida si una clave API existe en la base de datos
+ * @param PDO $conn Conexión a la base de datos
+ * @param string $providedKey Clave API a validar
+ * @return bool True si la clave es válida, False si no existe
+ */
 function validarApiKey($conn, $providedKey)
 {
     $sql = "SELECT id FROM api_keys WHERE api_key = ?";
@@ -7,6 +18,12 @@ function validarApiKey($conn, $providedKey)
     return $stmt->fetch(PDO::FETCH_ASSOC) !== false;
 }
 
+/**
+ * Genera o actualiza una clave API para un usuario específico
+ * @param PDO $conn Conexión a la base de datos
+ * @param int $userId ID del usuario para el que se genera la clave
+ * @return string Nueva clave API generada
+ */
 function generateApiKey($conn, $userId)
 {
     $newKey = bin2hex(random_bytes(16)); // genera 32 caràcters hex

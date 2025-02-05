@@ -1,22 +1,12 @@
 <?php
 require_once BASE_PATH . 'models/database/database.model.php';
+require_once BASE_PATH . 'models/shared_article.model.php';
 
 function handleSharedArticle($token)
 {
     try {
-        $pdo = Database::getInstance();
-
-        // Obtener información del artículo compartido
-        $stmt = $pdo->prepare("
-            SELECT a.*, m.*, sa.show_title, sa.show_content 
-            FROM shared_articles sa
-            JOIN articles a ON sa.article_id = a.id
-            JOIN partits m ON sa.match_id = m.id
-            WHERE sa.token = ?
-        ");
-
-        $stmt->execute([$token]);
-        $shared = $stmt->fetch(PDO::FETCH_ASSOC);
+        $sharedArticleModel = new SharedArticle();
+        $shared = $sharedArticleModel->getSharedArticleByToken($token);
 
         if (!$shared) {
             // Manejar enlace inválido o expirado

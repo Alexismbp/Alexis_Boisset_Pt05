@@ -1,15 +1,35 @@
 <?php
+
+/**
+ * Controlador per gestionar la visualització i edició d'articles compartits
+ * 
+ * Aquest controlador permet:
+ * - Visualitzar articles compartits mitjançant un token
+ * - Editar i crear nous articles basats en articles compartits
+ * - Gestionar les peticions AJAX per obtenir informació dels articles
+ */
+
 require_once BASE_PATH . 'models/database/database.model.php';
 require_once BASE_PATH . 'models/utils/article.model.php';
+require_once BASE_PATH . 'models/shared_article.model.php';
 
+// Iniciar sessió si no està iniciada
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Comprovem si és POST per actualitzar (donar d'alta l'article propi)
+/**
+ * Gestió de la creació d'articles a partir d'un article compartit
+ * 
+ * Processa el formulari POST quan un usuari vol crear un nou article
+ * basat en un article compartit. Realitza les següents validacions:
+ * - Comprova l'autenticació de l'usuari
+ * - Valida el token de compartició
+ * - Verifica que no existeixi un article duplicat
+ * - Gestiona la creació de l'article mitjançant una transacció
+ */
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] === 'edit') {
-    session_start();
-    // Suposant que l'id de l'usuari està emmagatzemat a $_SESSION['userid']
+    // Obtenir l'ID de l'usuari de la sessió actual
     $userId = $_SESSION['userid'] ?? null;
     if (!$userId) {
         $_SESSION['error'] = "No estas autenticat.";
@@ -17,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['ac
         exit;
     }
 
+    // Obtenir i validar el token de la URL
     $token = $_GET['token'] ?? null;
     if (!$token) {
         $_SESSION['error'] = "Token no proporcionat.";
@@ -24,15 +45,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['ac
         exit;
     }
 
-    // Recuperem les dades de l'article compartit
-    $articleData = getSharedArticleData($token);
+    // Crear instància del model i obtenir dades de l'article compartit
+    $sharedArticle = new SharedArticle();
+    $articleData = $sharedArticle->getSharedArticleByToken($token);
+
     if (!$articleData) {
         $_SESSION['error'] = "Enllaç no vàlid o expirat.";
         header('Location: ' . BASE_URL);
         exit;
     }
 
-    // Recollida del formulari d'edició
+    // Netejar espais en blanc de les dades del formulari
     $title = trim($_POST['title'] ?? '');
     $content = trim($_POST['content'] ?? '');
 
@@ -42,38 +65,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['ac
         exit;
     }
 
-    // Comprovació de duplicats: en aquest exemple es comprova si ja existeix un article amb mateix match_id, títol i que pertanyi a l'usuari
-    $conn = Database::getInstance();
-    $dupStmt = $conn->prepare("SELECT id FROM articles WHERE match_id = ? AND title = ? AND user_id = ?");
-    $dupStmt->execute([$articleData['match_id'], $title, $userId]);
-    if ($dupStmt->fetch(PDO::FETCH_ASSOC)) {
+    // Verificar si ja existeix un article amb el mateix títol per aquest usuari
+    if ($sharedArticle->checkDuplicateArticle($articleData['match_id'], $title, $userId)) {
         $_SESSION['error'] = "Aquest article ja està donat d'alta.";
         header("Location: " . BASE_URL . "shared/{$token}?action=edit");
         exit;
     }
 
-    // Inserir l'article com a propi
-    $insStmt = $conn->prepare("INSERT INTO articles (match_id, user_id, title, content, created_at) VALUES (?, ?, ?, ?, NOW())");
-    if ($insStmt->execute([$articleData['match_id'], $userId, $title, $content])) {
-        // Eliminar l'article compartit per evitar duplicats al llistat
-        $delStmt = $conn->prepare("DELETE FROM shared_articles WHERE token = ?");
-        $delStmt->execute([$token]);
+    try {
+        // Crear l'article utilitzant una transacció per garantir la integritat de les dades
+        $sharedArticle->createUserArticleWithTransaction(
+            $articleData['match_id'],
+            $userId,
+            $title,
+            $content,
+            $token
+        );
 
         $_SESSION['success'] = "Article donat d'alta correctament";
-        header("Location: " . BASE_URL); // Redirigir al índice principal
-    } else {
-        $_SESSION['error'] = "Error al donar d'alta l'article";
+        header("Location: " . BASE_URL);
+    } catch (Exception $e) {
+        $_SESSION['error'] = $e->getMessage();
         header("Location: " . BASE_URL . "shared/{$token}?action=edit");
     }
     exit;
 }
 
-// Resta de la lògica original (per GET) i per peticions AJAX
-// Limpiar el buffer de salida
+
+// Netejar el buffer de sortida per evitar problemes amb la redirecció
 if (ob_get_length()) {
     ob_clean();
 }
 
+/**
+ * Gestió de la visualització d'articles compartits
+ * 
+ * Permet:
+ * - Visualitzar articles compartits mitjançant un token
+ * - Respondre a peticions AJAX retornant les dades en format JSON
+ * - Gestionar errors i mostrar missatges apropriats
+ */
 try {
     // $token = $_GET['token'] ?? null;
 
@@ -81,28 +112,31 @@ try {
         throw new Exception('Token no proporcionado.');
     }
 
-    $shared = getSharedArticleData($token); // Cambiar articleData por shared para coincidir con la vista
+    $shared = getSharedArticleData($token);
 
     if (!$shared) {
         throw new Exception('Enlace no válido o expirado.');
     }
 
-    // Si es una solicitud AJAX
+    // Detectar si és una petició AJAX per retornar JSON en lloc d'HTML
     if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
         header('Content-Type: application/json');
         echo json_encode($shared);
         exit;
     }
 
-    // Incluir la vista
+    // Si no és AJAX, carregar la vista normal
     include BASE_PATH . 'views/shared/shared-article.view.php';
 } catch (Exception $e) {
-    // Manejar errores y retornar un mensaje JSON o redireccionar
+    // Gestionar errors de manera diferent per peticions AJAX i normals
     if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
         http_response_code(400);
         echo json_encode(['error' => $e->getMessage()]);
     } else {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
         $_SESSION['error'] = $e->getMessage();
         header('Location: ' . BASE_URL);
     }

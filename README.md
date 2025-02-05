@@ -1,6 +1,6 @@
 # **Porra de Futbol - Gestió de Resultats**
 
-## Changelog
+## -2. Changelog
 
 **No perdis temps Xavi, et deixo el changelog desde l'última vegada que vas veure el projecte:**
 
@@ -36,7 +36,7 @@ El tema de que els articles s'han de poder duplicar pero després no poden haber
 ## 0. Índex
 
 - [**Porra de Futbol - Gestió de Resultats**](#porra-de-futbol---gestió-de-resultats)
-  - [Changelog](#changelog)
+  - [-2. Changelog](#-2-changelog)
   - [-1. Justificacions i curiositats](#-1-justificacions-i-curiositats)
   - [0. Índex](#0-índex)
   - [1. Explicació del Projecte (Deprecated)](#1-explicació-del-projecte-deprecated)

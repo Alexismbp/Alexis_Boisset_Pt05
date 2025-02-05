@@ -1,5 +1,12 @@
 <?php
-// Alexis Boisset
+
+/**
+ * Controlador API per la gestió de partits
+ * 
+ * Aquesta classe gestiona totes les operacions CRUD relacionades amb els partits
+ * a través d'una API RESTful. Implementa mètodes per llistar, consultar, crear,
+ * actualitzar i eliminar partits.
+ */
 require_once BASE_PATH . '/models/utils/porra.model.php';
 
 class MatchControllerApi
@@ -12,8 +19,7 @@ class MatchControllerApi
     private const HTTP_METHOD_NOT_ALLOWED = 405;
     private const HTTP_INTERNAL_ERROR = 500;
 
-    // Se elimina o ignora la constante fija de API Key
-    // private const API_KEY = 'MY_SECRET_API_KEY';
+
 
     private $conn;
 
@@ -22,7 +28,16 @@ class MatchControllerApi
         $this->conn = $conn;
     }
 
-    // GET /api/partidos - Listar todos
+    /**
+     * GET /api/partidos
+     * 
+     * Endpoint per obtenir tots els partits. No requereix paràmetres.
+     * Retorna un llistat complet de tots els partits disponibles.
+     * 
+     * @return void Retorna una resposta JSON amb tots els partits o un missatge d'error
+     * @throws Exception Si el mètode HTTP no és GET
+     * @throws PDOException Si hi ha un error en la base de dades
+     */
     public function apiGetPartidos()
     {
         $this->checkApiKey();
@@ -44,7 +59,15 @@ class MatchControllerApi
         }
     }
 
-    // GET /api/partidos/{id} - Obtener uno
+    /**
+     * GET /api/partidos/{id}
+     * 
+     * Endpoint per obtenir un partit específic mitjançant el seu ID.
+     * 
+     * @param int $id Identificador del partit
+     * @return void Retorna una resposta JSON amb les dades del partit o un missatge d'error
+     * @throws Exception Si l'ID no és vàlid o el partit no existeix
+     */
     public function apiGetPartido($id)
     {
         $this->checkApiKey();
@@ -71,7 +94,15 @@ class MatchControllerApi
         }
     }
 
-    // POST /api/partidos - Crear
+    /**
+     * POST /api/partidos
+     * 
+     * Endpoint per crear un nou partit.
+     * Requereix un cos JSON amb: equipo_local, equipo_visitante, fecha, liga_id
+     * 
+     * @return void Retorna una resposta JSON confirmant la creació o un missatge d'error
+     * @throws Exception Si les dades no són vàlides o hi ha errors en la creació
+     */
     public function apiCreatePartido()
     {
         $this->checkApiKey();
@@ -102,7 +133,16 @@ class MatchControllerApi
         }
     }
 
-    // PUT /api/partidos/{id} - Actualizar
+    /**
+     * PUT /api/partidos/{id}
+     * 
+     * Endpoint per actualitzar un partit existent.
+     * Requereix un cos JSON amb: equipo_local, equipo_visitante, fecha, liga_id
+     * 
+     * @param int $id Identificador del partit a actualitzar
+     * @return void Retorna una resposta JSON confirmant l'actualització o un missatge d'error
+     * @throws Exception Si l'ID no és vàlid o les dades són incorrectes
+     */
     public function apiUpdatePartido($id)
     {
         $this->checkApiKey();
@@ -141,7 +181,15 @@ class MatchControllerApi
         }
     }
 
-    // DELETE /api/partidos/{id} - Eliminar
+    /**
+     * DELETE /api/partidos/{id}
+     * 
+     * Endpoint per eliminar un partit existent.
+     * 
+     * @param int $id Identificador del partit a eliminar
+     * @return void Retorna una resposta JSON confirmant l'eliminació o un missatge d'error
+     * @throws Exception Si el partit no es pot eliminar
+     */
     public function apiDeletePartido($id)
     {
         $this->checkApiKey();
@@ -168,6 +216,13 @@ class MatchControllerApi
         }
     }
 
+    /**
+     * Genera una resposta JSON estandarditzada
+     * 
+     * @param mixed $data Les dades a retornar
+     * @param int $statusCode El codi d'estat HTTP
+     * @return void
+     */
     private function jsonResponse($data, $statusCode)
     {
         header('Content-Type: application/json; charset=utf-8');
@@ -181,6 +236,12 @@ class MatchControllerApi
         exit;
     }
 
+    /**
+     * Valida les dades obligatòries d'un partit
+     * 
+     * @param array $data Dades del partit a validar
+     * @throws Exception Si falten camps obligatoris o són invàlids
+     */
     private function validateMatchData($data)
     {
         $required = ['equipo_local', 'equipo_visitante', 'fecha', 'liga_id'];
@@ -201,6 +262,12 @@ class MatchControllerApi
         }
     }
 
+    /**
+     * Verifica que l'equip local i visitant siguin diferents
+     * 
+     * @param array $data Dades del partit
+     * @throws Exception Si els equips són iguals
+     */
     private function validateTeamsAreDifferent($data)
     {
         if ($data['equipo_local'] === $data['equipo_visitante']) {
@@ -208,6 +275,12 @@ class MatchControllerApi
         }
     }
 
+    /**
+     * Valida el format de la data
+     * 
+     * @param string $date Data a validar
+     * @throws Exception Si el format de la data no és vàlid
+     */
     private function validateDateFormat($date)
     {
         $format = 'Y-m-d';
@@ -217,7 +290,11 @@ class MatchControllerApi
         }
     }
 
-    // Nuevo método para validar la API Key consultando la base de datos
+    /**
+     * Verifica la validesa de la API KEY
+     * 
+     * @throws Exception Si la API KEY no és vàlida o no s'ha proporcionat
+     */
     private function checkApiKey()
     {
         $headers = getallheaders();

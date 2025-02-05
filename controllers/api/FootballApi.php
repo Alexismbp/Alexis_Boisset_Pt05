@@ -2,7 +2,9 @@
 // Alexis Boisset
 require_once __DIR__ . '/../../models/env.php';
 
-// Procesar petición AJAX
+/**
+ * Controlador per processar les peticions AJAX de l'API de futbol
+ */
 if (isset($_GET['action']) && $_GET['action'] === 'teamPlayers' && isset($_GET['team_id'])) {
     $api = new FootballApi();
     $response = $api->getTeamPlayers($_GET['team_id']);
@@ -11,6 +13,12 @@ if (isset($_GET['action']) && $_GET['action'] === 'teamPlayers' && isset($_GET['
     exit;
 }
 
+/**
+ * Classe per gestionar les crides a l'API de futbol
+ * 
+ * Aquesta classe proporciona mètodes per obtenir informació sobre equips i jugadors
+ * de diferents lligues de futbol, utilitzant una API externa.
+ */
 class FootballApi
 {
     private const API_KEY = FOOTBALL_API_KEY;
@@ -25,6 +33,11 @@ class FootballApi
         'ligue1' => 61
     ];
 
+    /**
+     * Constructor de la classe
+     * 
+     * Crea el directori de memòria cau si no existeix
+     */
     public function __construct()
     {
         // Crear directorio de caché si no existe
@@ -33,6 +46,14 @@ class FootballApi
         }
     }
 
+    /**
+     * Executa una crida a l'API amb gestió de memòria cau
+     * 
+     * @param string $endpoint Punt final de l'API
+     * @param array $params Paràmetres de la consulta
+     * @return array Resposta de l'API
+     * @throws Exception Si hi ha un error en la crida
+     */
     private function executeApiCall(string $endpoint, array $params): array
     {
         $cacheKey = md5($endpoint . serialize($params));
@@ -90,6 +111,12 @@ class FootballApi
         return $decodedResponse;
     }
 
+    /**
+     * Obté la llista d'equips d'una lliga específica
+     * 
+     * @param int $leagueId Identificador de la lliga
+     * @return array Llista d'equips o error si falla
+     */
     public function getTeams(int $leagueId): array
     {
         try {
@@ -119,6 +146,12 @@ class FootballApi
         }
     }
 
+    /**
+     * Obté la llista de jugadors d'un equip específic
+     * 
+     * @param int $teamId Identificador de l'equip
+     * @return array Llista de jugadors o error si falla
+     */
     public function getTeamPlayers(int $teamId): array
     {
         try {
@@ -132,6 +165,12 @@ class FootballApi
         }
     }
 
+    /**
+     * Obté l'identificador d'una lliga pel seu nom ja que l'API utilitza la seva propia numeració i he de fer una transformació
+     * 
+     * @param string $leagueName Nom de la lliga
+     * @return int|null Identificador de la lliga o null si no es troba
+     */
     public static function getLeagueId(string $leagueName): ?int
     {
         return self::$leagueIds[$leagueName] ?? null;
