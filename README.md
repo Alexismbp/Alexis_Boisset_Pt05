@@ -1,6 +1,8 @@
 # **Porra de Futbol - Gestió de Resultats**
 
-## **No perdis temps Xavi, et deixo el changelog desde l'última vegada que vas veure el projecte:**
+## Changelog
+
+**No perdis temps Xavi, et deixo el changelog desde l'última vegada que vas veure el projecte:**
 
 - He creat una API Rest per demanar partits, crear partits, actualitzar partits y eliminar partits. Aquesta API necessita una API KEY que es genera al perfil de cada usuari, abaix de tot de la view podrás veure el botó per generar aquesta key. Cada vegada que generas una nova API KEY es guarda a una tabla de la base de dades relacionada amb l'usuari. Aquesta API KEY es necessaria per fer qualsevol petició a la API Rest.
 - La API Rest a la que faig sol·licitud la pots trobar al menu dropdown a "Equips", tota la informació que hi ha allá reflexada ve per API, inclosa la dels jugadors de cada equip amb les seves imatges i posicions.
@@ -13,10 +15,29 @@
 - Fet aixó l'article ja estará a la taula de "shared_articles" així que qualsevol persona loguejada pot entrar a la vistaAjax (Partits compartits al menu dropdown) y veure aquest partit y agafar-lo com a plantilla
 - **OJO** que la meva pàgina filtra els partits per lligues, si dones d'alta com a article teu un article d'una lliga que no és la teva no el veurás a la teva pàgina d'inici a menys que al perfil canvïis la lliga a la que perteneixes a la lliga del article que has donat d'alta. (No sé si lo he explicado bien pero que tengas cuidado que la liga tiene que coincidir si no parece que se está bugueando la APP pero es así) Com a posible millora podría afegir un filtratge a la vistaAjax (Partits compartits) per lligues però no ho he fet per falta de temps.
 
+Dit això, pasem a les coses curioses o justificacions
+
+## -1. Justificacions i curiositats
+
+El controller que fa les sol·licituds a l'API de Football `FootballApi.php` té una funcionalitat que és senzillament el guardar "caché" (memoria cau). Es necessari ja que -a més de ser més ràpid- la API de Football té un límit de peticions diàries (100), així cada vegada que tiro enrere o algo així no fa una nova petició a la API de Football. Aquesta caché es guarda al mateix directori que l'arxiu PHP i és valid per 3600 segons (1 hora).
+
+El tema de que els articles s'han de poder duplicar pero després no poden haber duplicats: La meva solució és que a la taula de `shared_articles` es poden duplicar els articles, o sigui, puc compartir el mateix article 1000 vegades si vull i amb les mateixes condicions (mostrar només titol, cos, o les dos opcions). Però a l'hora de donar d'alta l'article a la taula d'`articles` un usuari no pot tenir el mateix article duplicat. Així arreglem la singularitat de l'enunciat.
+
+**Justificació i valoració fetch manual vistaAjax:** El botó permet que l'usuari controli quan es realitza el fetch, evitant peticions innecessàries a la base de dades i fer un ús excessiu dels recursos. També millora l'experiència d'usuari, ja que només s'actualitza la informació quan és realment necessari, imagina que estás 10 minuts buscant un article per donar d'alta i quan el trobes de sobte s'actualitza la pàgina i ara tens que tornar a trobar-lo. (WEBSOCKETS SERIA LA MILLOR SOLUCIÓ, però a día d'avui no se com fer-ho, se que és i que existeix pero no se com implementar-ho).
+
+**Justificació i valoració lectura API Rest:** El que he fet es que si la petició que s'està fent no es troba a la memòria cau llavors s'ha de fer petició a l'API, i ja està no s'acaba el món, els DNS funcionen així.
+
+**Justificació i valoració QR:** El que he fet amb el QR es simplement guardar a dins l'id (token) de l'article compartit a la taula de `shared_articles`. Cada vegada que s'escaneja el QR es fa una petició a la base de dades per obtenir l'article amb aquest token.
+
+**Configuracions i routing per API:** Sincerament no he fet res a l'htaccess, ja el tenia configurat de la pràctica pasada per al meu sistema de routing. El router si que l'he modificat i he afegit arrays bidimensionals pels metodes PUT y DELETE. Després només he hagut d'afegir les rutes a l'index.php i ja està.
+
+**Aquí acaben les justificacions i curiositats, lo que queda de README es el mateix que la pràctica anterior, qualsevol cosa pots mirar el codi que está en general documentat.**
+
 ## 0. Índex
 
 - [**Porra de Futbol - Gestió de Resultats**](#porra-de-futbol---gestió-de-resultats)
-  - [**No perdis temps Xavi, et deixo el changelog desde l'última vegada que vas veure el projecte:**](#no-perdis-temps-xavi-et-deixo-el-changelog-desde-lúltima-vegada-que-vas-veure-el-projecte)
+  - [Changelog](#changelog)
+  - [-1. Justificacions i curiositats](#-1-justificacions-i-curiositats)
   - [0. Índex](#0-índex)
   - [1. Explicació del Projecte (Deprecated)](#1-explicació-del-projecte-deprecated)
   - [2. Estructura del Projecte](#2-estructura-del-projecte)
