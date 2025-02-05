@@ -11,6 +11,9 @@ class MatchControllerApi
     private const HTTP_METHOD_NOT_ALLOWED = 405;
     private const HTTP_INTERNAL_ERROR = 500;
 
+    // Se elimina o ignora la constante fija de API Key
+    // private const API_KEY = 'MY_SECRET_API_KEY';
+
     private $conn;
 
     public function __construct($conn)
@@ -21,6 +24,7 @@ class MatchControllerApi
     // GET /api/partidos - Listar todos
     public function apiGetPartidos()
     {
+        $this->checkApiKey();
         try {
             if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
                 throw new Exception('Mètode no permès', self::HTTP_METHOD_NOT_ALLOWED);
@@ -42,6 +46,7 @@ class MatchControllerApi
     // GET /api/partidos/{id} - Obtener uno
     public function apiGetPartido($id)
     {
+        $this->checkApiKey();
         try {
             if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
                 throw new Exception('Mètode no permès', self::HTTP_METHOD_NOT_ALLOWED);
@@ -68,6 +73,7 @@ class MatchControllerApi
     // POST /api/partidos - Crear
     public function apiCreatePartido()
     {
+        $this->checkApiKey();
         try {
             if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                 throw new Exception('Mètode no permès', self::HTTP_METHOD_NOT_ALLOWED);
@@ -98,6 +104,7 @@ class MatchControllerApi
     // PUT /api/partidos/{id} - Actualizar
     public function apiUpdatePartido($id)
     {
+        $this->checkApiKey();
         try {
             if ($_SERVER['REQUEST_METHOD'] !== 'PUT') {
                 throw new Exception('Mètode no permès', self::HTTP_METHOD_NOT_ALLOWED);
@@ -136,6 +143,7 @@ class MatchControllerApi
     // DELETE /api/partidos/{id} - Eliminar
     public function apiDeletePartido($id)
     {
+        $this->checkApiKey();
         if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') {
             $this->jsonResponse(['error' => 'Mètode no permès'], self::HTTP_METHOD_NOT_ALLOWED);
         }
@@ -205,6 +213,20 @@ class MatchControllerApi
         $d = DateTime::createFromFormat($format, $date);
         if (!$d || $d->format($format) !== $date) {
             throw new Exception('Format de data invàlid. Utilitzeu YYYY-MM-DD', self::HTTP_BAD_REQUEST);
+        }
+    }
+
+    // Nuevo método para validar la API Key consultando la base de datos
+    private function checkApiKey()
+    {
+        $headers = getallheaders();
+        if (!isset($headers['X-API-KEY'])) {
+            $this->jsonResponse(['error' => 'API Key no proporcionada'], 401);
+        }
+        $providedKey = $headers['X-API-KEY'];
+        require_once BASE_PATH . '/models/api/apiKey.model.php';
+        if (!validarApiKey($this->conn, $providedKey)) {
+            $this->jsonResponse(['error' => 'API Key no autorizada'], 401);
         }
     }
 }

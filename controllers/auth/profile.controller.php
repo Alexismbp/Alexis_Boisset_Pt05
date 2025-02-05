@@ -3,11 +3,25 @@ require_once BASE_PATH . 'models/database/database.model.php';
 require_once BASE_PATH . 'models/user/user.model.php';
 require_once BASE_PATH . 'controllers/utils/SessionHelper.php';
 require_once BASE_PATH . 'controllers/utils/validation.controller.php';
+require_once BASE_PATH . 'models/api/apiKey.model.php';
 
 SessionHelper::checkLogin();
 
 $conn = Database::getInstance();
 $email = $_SESSION['email'];
+
+// Afegir gestió per generar API Key
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['generate_api_key'])) {
+    if (!isset($_SESSION['userid'])) {
+        $_SESSION['failure'] = 'Usuario no encontrado';
+    } else {
+        $newApiKey = generateApiKey($conn, $_SESSION['userid']);
+        $_SESSION['api_key'] = $newApiKey;
+        $_SESSION['success'] = 'API Key generada correctament';
+    }
+    header('Location: ' . BASE_URL . 'profile');
+    exit();
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {

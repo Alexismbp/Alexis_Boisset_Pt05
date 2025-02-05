@@ -344,6 +344,23 @@ INSERT INTO `usuaris` (`id`, `nom_usuari`, `correu_electronic`, `contrasenya`, `
 (5, 'SaPAlexis', 'a.boisset@sapalomera.cat', '$2y$10$locI6NR1S0Zt7oDvaV4Gf.wverj1wSU9FeJ3hr8ndvPf2O1CEq3LC', 'OGC Nice', '100e05311bbbfb18f288f830907720cb5a280b3883cbcc81bbe4141cc9636730', '2025-01-03 13:29:00', NULL, NULL, 0, '', NULL),
 (7, 'Alexis', 'alexis@gmail.com', '$2y$10$5jOplzI9.lewF548D4UBwe.4Q/9QKm5EvfMdZX1V9e.K5U/ydH3pe', 'OGC Nice', NULL, NULL, NULL, NULL, 0, NULL, NULL);
 
+-- --------------------------------------------------------
+
+--
+-- Nueva tabla para guardar la API Key de cada usuario
+CREATE TABLE IF NOT EXISTS `api_keys` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `api_key` varchar(64) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `api_key` (`api_key`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `fk_user_api` FOREIGN KEY (`user_id`) REFERENCES `usuaris` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
 --
 -- Restricciones para tablas volcadas
 --
