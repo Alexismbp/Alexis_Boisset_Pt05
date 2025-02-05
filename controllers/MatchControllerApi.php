@@ -1,8 +1,8 @@
 <?php
+require_once BASE_PATH . '/models/utils/porra.model.php';
 
 class MatchControllerApi
 {
-    // Almacenamos la conexión a la base de datos en lugar de un modelo
     private $conn;
 
     public function __construct($conn)
@@ -13,15 +13,13 @@ class MatchControllerApi
     // GET /api/partidos - Listar todos
     public function apiGetPartidos()
     {
-        // Se reemplaza $this->model->getAllMatches() por la función consultarPartits()
-        $partidos = consultarPartits($this->conn);
+        $partidos = getAllMatches($this->conn);
         $this->jsonResponse(['data' => $partidos]);
     }
 
     // GET /api/partidos/{id} - Obtener uno
     public function apiGetPartido($id)
     {
-        // Se reemplaza $this->model->getMatchById($id) por llamar a consultarPartido()
         $partido = consultarPartido($this->conn, $id);
         $this->jsonResponse(['data' => $partido]);
     }
@@ -32,7 +30,7 @@ class MatchControllerApi
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = json_decode(file_get_contents('php://input'), true);
             $this->validateMatchData($data);
-            // Se cambia la creación del partido por la función crearPartit()
+
             crearPartit($this->conn, $data);
             $this->jsonResponse(['message' => 'Partido creado'], 201);
         }
@@ -44,7 +42,7 @@ class MatchControllerApi
         if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
             $data = json_decode(file_get_contents('php://input'), true);
             $this->validateMatchData($data);
-            // Se actualiza el partido con la función actualitzarPartit()
+
             actualitzarPartit($this->conn, $id, $data);
             $this->jsonResponse(['message' => 'Partido actualizado']);
         }
@@ -70,11 +68,16 @@ class MatchControllerApi
 
     private function validateMatchData($data)
     {
-        $required = ['equipo_local', 'equipo_visitante', 'fecha'];
+        $required = ['equipo_local', 'equipo_visitante', 'fecha', 'liga_id'];
         foreach ($required as $field) {
-            if (empty($data[$field])) {
+            if (!isset($data[$field]) || $data[$field] === '') {
                 $this->jsonResponse(['error' => "Campo $field requerido"], 400);
             }
+        }
+
+        // Validar que liga_id sea un número positivo
+        if (!is_numeric($data['liga_id']) || $data['liga_id'] <= 0) {
+            $this->jsonResponse(['error' => "liga_id debe ser un número positivo"], 400);
         }
     }
 }

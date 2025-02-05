@@ -32,7 +32,6 @@ $sql = "SELECT p.*,
         FROM partits p 
         LEFT JOIN articles a ON p.id = a.match_id";
 
-// Asegúrate de que todas las rutas pasen los parámetros correctos y que no falten definiciones de parámetros en las funciones llamadas.
 
 if (isset($_SESSION['loggedin']) && isset($_GET['lliga'])) {
     $sql .= " WHERE p.liga_id = (SELECT id FROM lligues WHERE nom = :lliga)";
@@ -84,4 +83,3 @@ $viewData = [
 // Incluir la vista principal
 extract($viewData);
 include __DIR__ . '/../views/main/index.view.php';
-?>

@@ -21,8 +21,7 @@ if (!$id || !is_numeric($id)) {
 
 // Obtener datos del partido
 $conn = Database::getInstance();
-$stmt = consultarPartido($conn, $id);
-$partit = $stmt->fetch(PDO::FETCH_ASSOC);
+$partit = consultarPartido($conn, $id);
 
 // Pasar a una dada que sigui HUMAN READABLE (B2 English)
 $partit['equip_local'] = getTeamName($conn, $partit['equip_local_id']);
@@ -33,7 +32,7 @@ $partit['equip_visitant'] = getTeamName($conn, $partit['equip_visitant_id']);
 $article = getArticleByMatchId($conn, $id);
 
 if ($partit) {
-    if($_SESSION['equip'] != $partit['equip_local'] && $_SESSION['equip'] != $partit['equip_visitant']) {
+    if ($_SESSION['equip'] != $partit['equip_local'] && $_SESSION['equip'] != $partit['equip_visitant']) {
         $_SESSION['failure'] = "No tens permisos per veure aquest partit";
         header("Location: " . BASE_URL);
         exit();
@@ -49,7 +48,7 @@ if ($article) {
         $_SESSION['failure'] = "No tens permisos per editar aquest partit";
         header("Location: " . BASE_URL);
         exit();
-    } 
+    }
 }
 
 // Guardar datos en sesión para el formulario
@@ -71,4 +70,3 @@ function dadesEdicio($conn, $partit, $article, $id)
 
     return true;
 }
-?>

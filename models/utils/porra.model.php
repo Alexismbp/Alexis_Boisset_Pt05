@@ -77,16 +77,20 @@ function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fech
  * Consulta los datos de un partido específico
  * @param PDO $conn Conexión a la base de datos
  * @param int $id ID del partido a consultar
- * @return PDOStatement Objeto statement con los resultados
+ * @return array|false Datos del partido o false si no existe
  */
 function consultarPartido($conn, $id)
 {
-    $sql = "SELECT * FROM partits WHERE id = :id";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':id', $id);
-
-    $stmt->execute();
-    return $stmt; // Retorna el statement per a futures manipulacions
+    try {
+        $sql = "SELECT * FROM partits WHERE id = :id";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Error en consultarPartido: " . $e->getMessage());
+        return false;
+    }
 }
 
 /**
@@ -380,4 +384,91 @@ function searchBarQuery($conn, $term)
     $stmt->execute(['term' => '%' . $term . '%']);
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/**
+ * Obtiene todos los partidos de la base de datos
+ * @param PDO $conn Conexión a la base de datos
+ * @return array Array con todos los partidos
+ */
+function getAllMatches(PDO $conn): array
+{
+    try {
+        $stmt = $conn->prepare("SELECT * FROM partits");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Error en getAllMatches: " . $e->getMessage());
+        return [];
+    }
+}
+
+/**
+ * Crea un nuevo partido
+ * @param PDO $conn Conexión a la base de datos
+ * @param array $data Datos del partido (equipo_local, equipo_visitante, fecha)
+ * @return bool True si se creó correctamente
+ */
+function crearPartit($conn, $data)
+{
+    try {
+        $sql = "INSERT INTO partits (equip_local_id, equip_visitant_id, data, gols_local, gols_visitant, jugat, liga_id) 
+                VALUES (:equip_local_id, :equip_visitant_id, :data, :gols_local, :gols_visitant, :jugat, :liga_id)";
+
+        $stmt = $conn->prepare($sql);
+
+        // Crear variables temporales para bindParam
+        $equip_local_id = getTeamID($conn, $data['equipo_local']); // Convertir nombre a ID
+        $equip_visitant_id = getTeamID($conn, $data['equipo_visitante']); // Convertir nombre a ID
+        $fecha = $data['fecha'];
+        $goles_local = $data['goles_local'] ?? 0;
+        $goles_visitante = $data['goles_visitante'] ?? 0;
+        $jugado = $data['jugado'] ?? 0;
+        $liga_id = $data['liga_id'];
+
+        // Vincular parámetros usando las variables temporales
+        $stmt->bindParam(':equip_local_id', $equip_local_id);
+        $stmt->bindParam(':equip_visitant_id', $equip_visitant_id);
+        $stmt->bindParam(':data', $fecha);
+        $stmt->bindParam(':gols_local', $goles_local);
+        $stmt->bindParam(':gols_visitant', $goles_visitante);
+        $stmt->bindParam(':jugat', $jugado);
+        $stmt->bindParam(':liga_id', $liga_id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    } catch (PDOException $e) {
+        error_log("Error en crearPartit: " . $e->getMessage());
+        throw $e;
+    }
+}
+
+/**
+ * Actualiza un partido existente
+ * @param PDO $conn Conexión a la base de datos
+ * @param int $id ID del partido a actualizar
+ * @param array $data Nuevos datos del partido
+ * @return bool True si se actualizó correctamente
+ */
+function actualitzarPartit(PDO $conn, int $id, array $data): bool
+{
+    try {
+        $sql = "UPDATE partits 
+                SET equip_local_id = :equip_local_id,
+                    equip_visitant_id = :equip_visitant_id,
+                    data = :data
+                WHERE id = :id";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([
+            ':id' => $id,
+            ':equip_local_id' => getTeamID($conn, $data['equipo_local']),
+            ':equip_visitant_id' => getTeamID($conn, $data['equipo_visitante']),
+            ':data' => $data['fecha']
+        ]);
+
+        return true;
+    } catch (PDOException $e) {
+        error_log("Error en actualitzarPartit: " . $e->getMessage());
+        return false;
+    }
 }
