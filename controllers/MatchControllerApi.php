@@ -51,10 +51,26 @@ class MatchControllerApi
     // DELETE /api/partidos/{id} - Eliminar
     public function apiDeletePartido($id)
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-            // Se elimina el partido con la función deletePartit()
-            deletePartit($this->conn, $id);
-            $this->jsonResponse(['message' => 'Partido eliminado']);
+        if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') {
+            $this->jsonResponse(['error' => 'Método no permitido'], 405);
+        }
+
+        try {
+            // Verificar que el partido existe
+            $partido = consultarPartido($this->conn, $id);
+            if (!$partido) {
+                $this->jsonResponse(['error' => 'Partido no encontrado'], 404);
+            }
+
+            // Intentar eliminar el partido
+            if (deletePartit($this->conn, $id)) {
+                $this->jsonResponse(['message' => 'Partido eliminado correctamente']);
+            } else {
+                $this->jsonResponse(['error' => 'Error al eliminar el partido'], 500);
+            }
+        } catch (PDOException $e) {
+            error_log("Error en apiDeletePartido: " . $e->getMessage());
+            $this->jsonResponse(['error' => 'Error interno del servidor'], 500);
         }
     }
 
