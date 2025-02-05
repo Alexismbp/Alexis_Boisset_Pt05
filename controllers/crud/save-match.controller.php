@@ -4,25 +4,29 @@ require_once BASE_PATH . 'models/database/database.model.php';
 require_once BASE_PATH . 'models/utils/porra.model.php';
 require_once BASE_PATH . '/controllers/utils/SessionHelper.php';
 
-class SaveMatchController {
+class SaveMatchController
+{
     private $conn;
     private $errors = [];
-    
-    public function __construct() {
+
+    public function __construct()
+    {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
         $this->conn = Database::getInstance();
     }
 
-    public function handleRequest() {
+    public function handleRequest()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             return $this->handlePost();
-        } 
+        }
         return $this->redirectWithError("Método no válido");
     }
 
-    private function handlePost() {
+    private function handlePost()
+    {
         $data = $this->validateAndSanitizeInput();
         if (!empty($this->errors)) {
             return $this->redirectWithErrors($data);
@@ -34,7 +38,7 @@ class SaveMatchController {
                 $equip_local_id = $this->getTeamId($data['equip_local']);
                 $equip_visitant_id = $this->getTeamId($data['equip_visitant']);
                 $liga_id = getLigaID($this->conn, $equip_local_id);
-                
+
                 if (!$equip_local_id || !$equip_visitant_id) {
                     return $this->redirectWithError("Els equips seleccionats no són vàlids");
                 }
@@ -73,7 +77,7 @@ class SaveMatchController {
             // Obtenemos IDs de equipos
             $equip_local_id = $this->getTeamId($data['equip_local']);
             $equip_visitant_id = $this->getTeamId($data['equip_visitant']);
-            
+
             if (!$equip_local_id || !$equip_visitant_id) {
                 return $this->redirectWithError("Els equips seleccionats no són vàlids");
             }
@@ -83,12 +87,12 @@ class SaveMatchController {
 
             // Actualizar partido
             $stmt = updatePartido(
-                $this->conn, 
-                $data['id'], 
-                $equip_local_id, 
-                $equip_visitant_id, 
-                $data['data'], 
-                $data['gols_local'], 
+                $this->conn,
+                $data['id'],
+                $equip_local_id,
+                $equip_visitant_id,
+                $data['data'],
+                $data['gols_local'],
                 $data['gols_visitant'],
                 $jugado
             );
@@ -100,19 +104,19 @@ class SaveMatchController {
                     if ($existingArticle) {
                         // Actualizar artículo existente
                         updateArticle(
-                            $this->conn, 
-                            $data['id'], 
-                            $data['article_title'], 
-                            $data['article_content'], 
+                            $this->conn,
+                            $data['id'],
+                            $data['article_title'],
+                            $data['article_content'],
                             $data['user_id']
                         );
                     } else {
                         // Insertar nuevo artículo
                         insertArticle(
-                            $this->conn, 
-                            $data['id'], 
-                            $data['article_title'], 
-                            $data['article_content'], 
+                            $this->conn,
+                            $data['id'],
+                            $data['article_title'],
+                            $data['article_content'],
                             $data['user_id']
                         );
                     }
@@ -128,7 +132,8 @@ class SaveMatchController {
         }
     }
 
-    private function validateAndSanitizeInput() {
+    private function validateAndSanitizeInput()
+    {
         $data = [
             'id' => filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT),
             'equip_local' => filter_input(INPUT_POST, 'equip_local', FILTER_SANITIZE_SPECIAL_CHARS),
@@ -138,14 +143,15 @@ class SaveMatchController {
             'gols_visitant' => $_POST['gols_visitant'] === "" ? null : filter_input(INPUT_POST, 'gols_visitant', FILTER_SANITIZE_NUMBER_INT),
             'article_title' => filter_input(INPUT_POST, 'article_title', FILTER_SANITIZE_SPECIAL_CHARS),
             'article_content' => filter_input(INPUT_POST, 'article_content', FILTER_SANITIZE_SPECIAL_CHARS),
-            'user_id' => $_SESSION['userid'] // Asumiendo que el ID del usuario está en la sesión
+            'user_id' => $_SESSION['userid']
         ];
 
         $this->validateInput($data);
         return $data;
     }
 
-    private function validateInput($data) {
+    private function validateInput($data)
+    {
         if (empty($data['equip_local'])) {
             $this->errors[] = 'L\'equip local no pot estar buit';
         }
@@ -167,11 +173,13 @@ class SaveMatchController {
         }
     }
 
-    private function isMatchPlayed($gols_local, $gols_visitant) {
+    private function isMatchPlayed($gols_local, $gols_visitant)
+    {
         return (!is_null($gols_local) && !is_null($gols_visitant)) ? 1 : 0;
     }
 
-    private function getTeamId($teamName) {
+    private function getTeamId($teamName)
+    {
         try {
             return getTeamID($this->conn, $teamName);
         } catch (PDOException $e) {
@@ -180,11 +188,13 @@ class SaveMatchController {
         }
     }
 
-    private function clearEditingSession() {
+    private function clearEditingSession()
+    {
         unset($_SESSION['id'], $_SESSION['editant']);
     }
 
-    private function redirectWithErrors($data) {
+    private function redirectWithErrors($data)
+    {
         SessionHelper::setSessionData([
             'equip_local' => $data['equip_local'],
             'equip_visitant' => $data['equip_visitant'],
@@ -193,14 +203,15 @@ class SaveMatchController {
             'gols_visitant' => $data['gols_visitant'],
             'errors' => $this->errors
         ]);
-        
+
         // Redirigir a la página anterior
         $referer = $_SERVER['HTTP_REFERER'] ?? BASE_URL;
         header("Location: " . $referer);
         exit();
     }
 
-    private function redirectWithError($message) {
+    private function redirectWithError($message)
+    {
         $_SESSION['failure'] = $message;
         $referer = $_SERVER['HTTP_REFERER'] ?? BASE_URL;
         header("Location: " . $referer);

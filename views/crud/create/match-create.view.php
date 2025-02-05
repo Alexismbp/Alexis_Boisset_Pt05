@@ -71,7 +71,7 @@ if (isset($_GET['netejar'])) {
 
                 <div class="form-group">
                     <label for="gols_local">Gols Local (Opcional):</label>
-                    <input type="number" id="gols_local" name="gols_local" class="input-field" min="0">
+                    <input type="number" id="gols_local" name="gols_local" class="input-field" min="0" value="<?= isset($_SESSION['gols_local']) ? $_SESSION['gols_local'] : ''; ?>">
                 </div>
 
                 <div class="form-group">

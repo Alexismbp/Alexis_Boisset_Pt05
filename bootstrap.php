@@ -25,8 +25,8 @@ AuthMiddleware::handleRememberToken();
 // error_reporting(E_ALL);
 
 // require_once __DIR__ . '/models/user/user.model.php';
-// $_SERVER['REQUEST_METHOD'] = 'GET';
-// $_SERVER['REQUEST_URI'] = 'http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/qr-read';
+// $_SERVER['REQUEST_METHOD'] = 'POST';
+// $_SERVER['REQUEST_URI'] = 'http://localhost/Practiques/M07-Servidor/Alexis_Boisset_Pt05/save-match';
 // $email = 'a.boisset@sapalomera.cat';
 // $userData = getUserData($email, $conn);
 // SessionHelper::setSessionData([
