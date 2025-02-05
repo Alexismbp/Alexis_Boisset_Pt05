@@ -1,4 +1,5 @@
 <?php
+// Alexis Boisset
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../models/env.php';
 require_once __DIR__ . '/../models/database/database.model.php';
@@ -12,7 +13,7 @@ header('Content-Type: application/json');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $conn = Database::getInstance();
-        
+
         $article_id = filter_input(INPUT_POST, 'article_id', FILTER_VALIDATE_INT);
         $match_id = filter_input(INPUT_POST, 'match_id', FILTER_VALIDATE_INT);
         $titol = isset($_POST['titol']) ? 1 : 0;

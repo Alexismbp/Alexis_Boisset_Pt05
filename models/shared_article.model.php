@@ -1,5 +1,5 @@
 <?php
-
+// Alexis Boisset
 class SharedArticle
 {
     private $pdo;

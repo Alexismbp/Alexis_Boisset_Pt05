@@ -1,7 +1,22 @@
 # **Porra de Futbol - Gestió de Resultats**
+
+## **No perdis temps Xavi, et deixo el changelog desde l'última vegada que vas veure el projecte:**
+
+- He creat una API Rest per demanar partits, crear partits, actualitzar partits y eliminar partits. Aquesta API necessita una API KEY que es genera al perfil de cada usuari, abaix de tot de la view podrás veure el botó per generar aquesta key. Cada vegada que generas una nova API KEY es guarda a una tabla de la base de dades relacionada amb l'usuari. Aquesta API KEY es necessaria per fer qualsevol petició a la API Rest.
+- La API Rest a la que faig sol·licitud la pots trobar al menu dropdown a "Equips", tota la informació que hi ha allá reflexada ve per API, inclosa la dels jugadors de cada equip amb les seves imatges i posicions.
+- Després de tot el tema API: QR. El flux que ha de fer l'usuari es el següent:
+  - Crear un partit (si no té) amb article (titol o cos).
+  - Una vegada creat anar a "veure" aquest partit (botó veure a cada targeta de partit).
+  - A baix de tot de la view hi ha un botó "compartir".
+  - Selecciona els camps que vols compartir, després clica compartir un altre cop.
+  - Decideix si vols escanejar el QR, compartir-lo com imatge o clicar l'enllaç o el que vulguis.
+- Fet aixó l'article ja estará a la taula de "shared_articles" així que qualsevol persona loguejada pot entrar a la vistaAjax (Partits compartits al menu dropdown) y veure aquest partit y agafar-lo com a plantilla
+- **OJO** que la meva pàgina filtra els partits per lligues, si dones d'alta com a article teu un article d'una lliga que no és la teva no el veurás a la teva pàgina d'inici a menys que al perfil canvïis la lliga a la que perteneixes a la lliga del article que has donat d'alta. (No sé si lo he explicado bien pero que tengas cuidado que la liga tiene que coincidir si no parece que se está bugueando la APP pero es así) Com a posible millora podría afegir un filtratge a la vistaAjax (Partits compartits) per lligues però no ho he fet per falta de temps.
+
 ## 0. Índex
 
 - [**Porra de Futbol - Gestió de Resultats**](#porra-de-futbol---gestió-de-resultats)
+  - [**No perdis temps Xavi, et deixo el changelog desde l'última vegada que vas veure el projecte:**](#no-perdis-temps-xavi-et-deixo-el-changelog-desde-lúltima-vegada-que-vas-veure-el-projecte)
   - [0. Índex](#0-índex)
   - [1. Explicació del Projecte (Deprecated)](#1-explicació-del-projecte-deprecated)
   - [2. Estructura del Projecte](#2-estructura-del-projecte)
@@ -165,12 +180,12 @@ La base de dades inclou les taules principals següents:
 
 A continuació es mostren els usuaris predefinits:
 
-| Nom d'Usuari             | Contrasenya   | Equip Favorit    | Lliga           |
-|--------------------------|---------------|------------------|-----------------|
-| admin@alexisboisset.cat  | Admin123!     | -                | -               |
-| alexis@gmail.com         | Admin123      | OGC Nice         | Ligue 1         |
-| xavi@gmail.com           | Admin123      | Girona FC        | LaLiga          |
-| pedrerol@gmail.com       | Admin123      | Crystal Palace   | Premier League  |
+| Nom d'Usuari            | Contrasenya | Equip Favorit  | Lliga          |
+| ----------------------- | ----------- | -------------- | -------------- |
+| admin@alexisboisset.cat | Admin123!   | -              | -              |
+| alexis@gmail.com        | Admin123    | OGC Nice       | Ligue 1        |
+| xavi@gmail.com          | Admin123    | Girona FC      | LaLiga         |
+| pedrerol@gmail.com      | Admin123    | Crystal Palace | Premier League |
 
 ## 6. Tecnologies Utilitzades
 
@@ -248,7 +263,7 @@ Quan l'administrador elimina un usuari del sistema, tots els articles associats 
 4. **Coherència del sistema**: Mantenir articles d'usuaris eliminats podria crear confusió en el sistema i dificultar el manteniment a llarg termini.
 
 5. **Protecció de dades**: Compleix amb les bones pràctiques de protecció de dades, assegurant que tota la informació relacionada amb un usuari s'elimina quan aquest és donat de baixa del sistema.
-   
+
 ### change-password.controller.php
 
 El fitxer `change-password.controller.php` gestiona el procés de canvi de contrasenya per als usuaris. Si l'usuari és autenticat mitjançant OAuth, permet afegir una nova contrasenya al compte. En canvi, si l'usuari és normal, verifica la contrasenya actual abans d'actualitzar-la amb una de nova. La justificació d'aquest canvi és per que es molt comú que una pàgina permeti el login tant per OAuth com per usuari i contrasenya, he volgut afegir aquesta funcionalitat per aquesta raó i tampoc és massa complicat.
@@ -282,15 +297,18 @@ El fitxer `.gitignore` especifica els arxius i carpetes que han de ser ignorats 
 El projecte implementa diverses mesures de seguretat a través del fitxer `.htaccess`:
 
 #### Redirecció i Routing
+
 - Utilitza `RewriteEngine` per gestionar les URL netes
 - Redirigeix totes les peticions no existents a `index.php`
 - Gestiona errors 404 amb una pàgina personalitzada
 
 #### Protecció del Servidor
+
 - Desactiva el llistat de directoris amb `Options -Indexes`
 - Oculta la signatura del servidor amb `ServerSignature Off`
 
 #### Prevenció d'Accés
+
 - Bloqueja l'accés a fitxers que comencen amb punt (.)
 - Restringeix l'accés a fitxers sensibles com:
   - Backups (.bak)
@@ -302,6 +320,7 @@ El projecte implementa diverses mesures de seguretat a través del fitxer `.htac
   - .env (si l'hagués anomenat correctament) i altres fitxers de configuració
 
 #### HTTPS i WWW (Comentat en Desenvolupament)
+
 - Inclou regles per forçar HTTPS
 - Configuració per redirigir a www
 - Aquestes regles estan comentades per facilitar el desenvolupament local
