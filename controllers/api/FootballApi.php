@@ -15,7 +15,7 @@ class FootballApi
     private const API_KEY = FOOTBALL_API_KEY;
     private const API_HOST = API_HOST;
     private const SEASON = '2023';
-    private const CACHE_DURATION = 3600; // Duración del caché en segundos (1 hora)
+    private const CACHE_DURATION = 3600; // Duración del caché (1 hora)
     private const CACHE_DIR = __DIR__ . '/cache'; // Directorio para almacenar los archivos de caché
 
     private static $leagueIds = [
@@ -26,9 +26,17 @@ class FootballApi
 
     public function __construct()
     {
-        // Crear directorio de caché si no existe
+        // Verificar que las constantes están definidas
+        error_log('API_KEY: ' . (defined('FOOTBALL_API_KEY') ? 'definida' : 'no definida'));
+        error_log('API_HOST: ' . (defined('API_HOST') ? 'definido' : 'no definido'));
+
+        // Verificar permisos del directorio cache
         if (!file_exists(self::CACHE_DIR)) {
-            mkdir(self::CACHE_DIR, 0755, true);
+            error_log('Intentando crear directorio cache en: ' . self::CACHE_DIR);
+            $result = @mkdir(self::CACHE_DIR, 0755, true);
+            if (!$result) {
+                error_log('Error creando directorio cache: ' . error_get_last()['message']);
+            }
         }
     }
 
@@ -44,6 +52,7 @@ class FootballApi
         }
 
         $url = "https://" . self::API_HOST . "/$endpoint?" . http_build_query($params);
+        error_log('Llamando a API: ' . $url);
 
         $curl = curl_init();
         curl_setopt_array($curl, [
@@ -72,19 +81,33 @@ class FootballApi
 
         curl_close($curl);
 
+        // Loggear información detallada de la respuesta
         if ($err) {
             error_log("Curl Error: " . $err);
+            error_log("Curl Info: " . print_r(curl_getinfo($curl), true));
             throw new Exception("Error en la llamada a la API: $err");
         }
 
         if ($httpCode !== 200) {
+            error_log("API Response Code: " . $httpCode);
+            error_log("API Response Body: " . $response);
+            error_log("API Full Response: " . print_r(curl_getinfo($curl), true));
             throw new Exception("API respondió con código: $httpCode");
         }
 
-        $decodedResponse = json_decode($response, true) ?? [];
+        // Verificar que la respuesta es JSON válido
+        $decodedResponse = json_decode($response, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            error_log("JSON decode error: " . json_last_error_msg());
+            error_log("Response raw: " . $response);
+        }
 
         // Guardar la respuesta en caché
-        file_put_contents($cacheFile, $response);
+        try {
+            file_put_contents($cacheFile, $response);
+        } catch (Exception $e) {
+            error_log("Error guardando cache: " . $e->getMessage());
+        }
 
         return $decodedResponse;
     }
@@ -97,7 +120,7 @@ class FootballApi
                 'season' => self::SEASON
             ]);
 
-            // Cambiar la validación ya que la API devuelve un array vacío en errors cuando todo va bien
+
             if (!isset($response['response'])) {
                 throw new Exception('Respuesta de API inválida');
             }
@@ -121,12 +144,16 @@ class FootballApi
     public function getTeamPlayers(int $teamId): array
     {
         try {
-            return $this->executeApiCall('players', [
+            error_log("Solicitando jugadores para equipo ID: " . $teamId);
+            $response = $this->executeApiCall('players', [
                 'team' => $teamId,
                 'season' => self::SEASON
             ]);
+            error_log("Respuesta de jugadores: " . print_r($response, true));
+            return $response;
         } catch (Exception $e) {
-            error_log($e->getMessage());
+            error_log("Error obteniendo jugadores: " . $e->getMessage());
+            error_log("Stack trace: " . $e->getTraceAsString());
             return ['error' => 'Error obteniendo jugadores'];
         }
     }
