@@ -1,3 +1,6 @@
+<?php
+// Alexis Boisset
+?>
 <!DOCTYPE html>
 <html lang="ca">
 

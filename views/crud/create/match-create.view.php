@@ -92,9 +92,10 @@ if (isset($_GET['netejar'])) {
                     </div>
                     <div class="form-group">
                         <label for="article_content">Contingut de l'Article (Opcional):</label>
-                        <textarea id="article_content" name="article_content" class="input-field article-content"><?php
-                                                                                                                    echo isset($_GET['shared_content']) ? htmlspecialchars($_GET['shared_content']) : '';
-                                                                                                                    ?></textarea>
+                        <textarea id="article_content"
+                            name="article_content"
+                            class="input-field article-content">
+                                  <?php echo isset($_GET['shared_content']) ? htmlspecialchars($_GET['shared_content']) : ''; ?></textarea>
                     </div>
                 </div>
             </fieldset>

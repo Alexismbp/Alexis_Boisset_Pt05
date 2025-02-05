@@ -1,4 +1,5 @@
 <?php
+// Alexis Boisset
 require_once BASE_PATH . 'models/database/database.model.php';
 require_once BASE_PATH . 'models/utils/article.model.php';
 require_once BASE_PATH . 'models/utils/porra.model.php';

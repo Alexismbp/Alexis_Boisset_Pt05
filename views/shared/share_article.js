@@ -1,3 +1,4 @@
+// Alexis Boisset
 document.addEventListener("DOMContentLoaded", () => {
   const shareButton = document.getElementById("share-article-btn");
 
