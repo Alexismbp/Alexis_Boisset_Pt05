@@ -1,0 +1,116 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-container {
+  flex: 1;
+  padding: 1rem;
+}
+
+.qr-reader-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--background-secondary);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.qr-form {
+  margin-bottom: 2rem;
+}
+
+.qr-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  font-weight: bold;
+}
+
+.qr-form input[type="file"] {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+
+.result-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+#qr-output {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+}
+
+.btn-submit {
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-submit:hover {
+  background-color: var(--primary-color-dark);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn-link {
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-color); /* mismo verde que el header */
+  color: #fff; /* texto blanco */
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  display: none;
+}
+
+.btn-link:hover {
+  background-color: var(--primary-color-dark);
+  border-color: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Actualización para diferenciar los botones sobre fondo blanco */
+.btn-submit,
+.btn-link {
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  background-clip: padding-box;
+}
+
+.btn-submit:hover,
+.btn-link:hover {
+  border-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Footer siempre abajo */
+footer {
+  margin-top: auto;
+  padding: 1rem;
+  background-color: var(--background-secondary);
+  text-align: center;
+}
