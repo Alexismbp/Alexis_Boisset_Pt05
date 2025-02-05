@@ -1,5 +1,6 @@
 <header>
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/styles/search.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>views/main/styles.css">
     <a href="<?= BASE_URL ?>"><img src="<?php echo BASE_URL; ?>assets/img/football_forum_logo.png" alt="Logo" class="logo" width="50" height="50" style="margin-left: 10px;"></a>
     <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
         <div class="user-menu">

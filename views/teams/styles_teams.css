@@ -1,6 +1,6 @@
 .container {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 80px auto 0; /* Añadir margen superior para el header fijo */
   padding: 20px;
 }
 
@@ -13,16 +13,48 @@
 }
 
 .team-card {
-  background: white;
+  background: linear-gradient(145deg, #1a472a, #2d5a3f);
   border-radius: 10px;
   padding: 20px;
   text-align: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: white;
+  border: 2px solid #ffd700;
+}
+
+/* Modificar los estilos para el nombre del equipo */
+.team-card h2 {
+  color: #ffd700; /* Amarillo dorado para contrastar */
+  font-size: 1.4em;
+  margin: 15px 0;
+  padding: 10px;
+  border: none;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Sombra suave para mejorar legibilidad */
+  display: block;
+  text-align: center;
+}
+
+/* Añadir un fondo suave detrás del nombre si es necesario */
+.team-card h2::after {
+  content: "";
+  display: block;
+  width: 50%;
+  height: 2px;
+  background-color: #ffd700;
+  margin: 10px auto 0;
+}
+
+/* Ajustar el estilo del texto del estadio */
+.team-card p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9em;
+  margin: 10px 0;
 }
 
 .team-card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
 .team-logo {
@@ -30,6 +62,10 @@
   height: 120px;
   object-fit: contain;
   margin-bottom: 15px;
+  background: white;
+  padding: 10px;
+  border-radius: 50%;
+  border: 2px solid #ffd700;
 }
 
 /* Estilos para la cuadrícula de jugadores */
@@ -41,16 +77,19 @@
 }
 
 .player-card {
-  background: white;
+  background: linear-gradient(145deg, #1a472a, #2d5a3f);
   border-radius: 10px;
-  padding: 15px;
+  padding: 20px;
   text-align: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: white;
+  border: 2px solid #ffd700;
 }
 
 .player-card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
 .player-photo {
@@ -58,37 +97,73 @@
   height: 150px;
   object-fit: cover;
   border-radius: 50%;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  border: 3px solid #ffd700;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .view-players {
-  display: inline-block;
-  padding: 8px 16px;
-  background-color: #1a472a;
-  color: white;
+  background-color: #ffd700;
+  color: #1a472a;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
   text-decoration: none;
-  border-radius: 5px;
-  margin-top: 10px;
-  transition: background-color 0.3s ease;
+  display: inline-block;
+  margin-top: 15px;
 }
 
 .view-players:hover {
-  background-color: #2d5a3f;
+  background-color: #fff;
+  transform: scale(1.05);
 }
 
 .back-button {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #1a472a;
-  color: white;
+  background-color: #ffd700;
+  color: #1a472a;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
   text-decoration: none;
-  border-radius: 5px;
-  margin-top: 20px;
-  transition: background-color 0.3s ease;
+  display: inline-block;
+  margin: 20px 0;
 }
 
 .back-button:hover {
-  background-color: #2d5a3f;
+  background-color: #fff;
+  transform: scale(1.05);
+}
+
+/* Nuevos estilos para nombre y posición del jugador */
+.player-name {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #ffd700;
+  margin: 10px 0;
+}
+
+.player-position {
+  color: #fff;
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+.team-name {
+  font-size: 1.3em;
+  font-weight: bold;
+  color: #ffd700;
+  margin: 10px 0;
+}
+
+.team-country {
+  color: #fff;
+  margin-bottom: 15px;
 }
 
 @media (max-width: 768px) {

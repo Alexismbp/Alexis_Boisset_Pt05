@@ -1,4 +1,14 @@
 <?php
+require_once __DIR__ . '/../../models/env.php';
+
+// Procesar petición AJAX si existe
+if (isset($_GET['action']) && $_GET['action'] === 'teamPlayers' && isset($_GET['team_id'])) {
+    $api = new FootballApi();
+    $response = $api->getTeamPlayers($_GET['team_id']);
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit;
+}
 
 class FootballApi
 {

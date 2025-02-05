@@ -149,7 +149,7 @@ class MatchControllerApi
 
             // Intentar eliminar el partido
             if (deletePartit($this->conn, $id)) {
-                $this->jsonResponse(['message' => 'Partit eliminat correctament']);
+                $this->jsonResponse(['message' => 'Partit eliminat correctament'], self::HTTP_OK);
             } else {
                 $this->jsonResponse(['error' => 'Error al eliminar el partit'], self::HTTP_INTERNAL_ERROR);
             }
